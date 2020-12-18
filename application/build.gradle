@@ -1,0 +1,66 @@
+plugins {
+  id 'java'
+  id 'io.quarkus'
+  id "com.github.node-gradle.node" version "2.2.4"
+}
+
+node {
+  version = '12.13.0'
+  npmVersion = '6.13.0'
+  yarnVersion = '1.19.1'
+  distBaseUrl = 'https://nodejs.org/dist'
+  download = true
+  workDir = file("${project.projectDir}/node/nodejs")
+  npmWorkDir = file("${project.projectDir}/node/npm")
+  yarnWorkDir = file("${project.projectDir}/node/yarn")
+  nodeModulesDir = file("${project.projectDir}")
+}
+
+repositories {
+  mavenCentral()
+}
+
+dependencies {
+  implementation enforcedPlatform("${quarkusPlatformGroupId}:${quarkusPlatformArtifactId}:${quarkusPlatformVersion}")
+
+  implementation 'io.quarkus:quarkus-resteasy'
+  implementation 'io.quarkus:quarkus-resteasy-jsonb'
+  implementation 'io.quarkus:quarkus-undertow'
+  implementation 'io.quarkus:quarkus-oidc'
+
+  testImplementation 'io.quarkus:quarkus-junit5'
+  testImplementation 'io.rest-assured:rest-assured'
+}
+
+task ngBuild(type: NpmTask, dependsOn: npmInstall) {
+  args = ['run', 'build']
+}
+
+task vueBuild(type: NpxTask) {
+  workingDir = file("${project.projectDir}/src/main/vue")
+  command = 'npm'
+  args = ['run', 'build']
+  dependsOn(npmInstall)
+  inputs.dir(fileTree('src').exclude('**/*.spec.ts'))
+  inputs.dir(fileTree('node_modules').exclude('.cache'))
+  inputs.files(
+    'babel.config.js',
+    'package.json',
+    'package-lock.json',
+    'vue.config.js'
+  )
+}
+
+task copyConfig(type: Copy) {
+  from 'src/main/config/'
+  into 'build/classes/java/main/config'
+}
+
+gradle.projectsEvaluated {
+  compileJava.dependsOn(copyConfig)
+}
+
+//tasks.compileJava.dependsOn(copyConfig)
+
+//tasks.processResources.dependsOn(ngBuild)
+tasks.compileJava.dependsOn(vueBuild)

@@ -1,0 +1,5 @@
+== Flows
+
+The application implements the (user) flows described in the following chapters.
+
+=== Login
