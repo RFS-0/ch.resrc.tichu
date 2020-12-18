@@ -1,0 +1,26 @@
+== Testing
+
+=== Provision S3 locally
+
+`docker run -it --publish 8008:4566 -e SERVICES=s3 -e START_WEB=0 localstack/localstack:0.11.5`
+
+
+=== Create an AWS profile for your local instance using AWS CLI:
+
+[source,shell]
+----
+$ aws configure --profile localstack
+AWS Access Key ID [None]: test-tichu-resrc-ch
+AWS Secret Access Key [None]: test-tichu-resrc-ch
+Default region name [None]: us-east-1
+Default output format [None]:
+----
+
+=== Create a S3 bucket
+[source,shell]
+----
+aws s3 mb s3://test.games.tichu.resrc.ch --profile localstack --endpoint-url=http://localhost:8008
+aws s3 mb s3://test.users.tichu.resrc.ch --profile localstack --endpoint-url=http://localhost:8008
+aws s3 mb s3://test.players.tichu.resrc.ch --profile localstack --endpoint-url=http://localhost:8008
+aws s3 mb s3://test.teams.tichu.resrc.ch --profile localstack --endpoint-url=http://localhost:8008
+----

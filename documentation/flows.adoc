@@ -1,0 +1,101 @@
+== Flows
+
+The application implements the (user) flows described in the following chapters.
+
+=== Login
+
+.Involved Domain Objects in Login flow
+|===
+| Domain Object Type |Value
+
+| Entity
+| <<user-entity,User>>
+| Value Object
+| -
+|Aggregates
+| -
+| Domain Events
+| <<logged-in-event,LoggedIn>>
+| Services
+| -
+| Repositories
+| UserRepository
+|===
+
+==== Input
+
+This flow is initiated by the user, thus there is no input.
+
+==== Operation
+
+Upon receiving the JWT token from the identity provider, the user information is extracted, an entity of type <<user-entity,User>>
+created and stored into the database.
+A unique user id is generated upon storing the user.
+
+=== Output
+
+This flow produces a domain event of type <<logged-in-event,LoggedIn>> on channel `users`.
+
+=== Create Game
+
+.Involved Domain Objects in Login flow
+|===
+| Domain Object Type |Value
+
+| Entity
+| <<user-entity,User>>, <<team-entity,Team>>
+| Value Object
+| -
+|Aggregates
+| -
+| Domain Events
+| <<create-game-event,CreateGameEvent>>
+| Services
+| -
+| Repositories
+| GameRepository
+|===
+
+==== Input
+
+This flow is triggered by the domain event <<create-game-event,CreateGameEvent>>.
+
+==== Operation
+
+Upon receiving the event a <<game-entity,GameEntity>> is created and stored into the database.
+Two <<team-entity,Teams>> are created as well and added to the game.
+
+==== Output
+
+This flow produces a domain event of type <<created-game-event,CreatedGame>> on channel `games`.
+
+=== Add Player
+
+==== Input
+
+This flow is triggered by the domain event <<add-player-event,AddPlayer>>.
+
+==== Operation
+
+Upon receiving the event a <<player-entity,PlayerEntity>> is created and stored into the database.
+The player is added to the specified team.
+
+==== Output
+
+This flow produces a domain event of type <<added-player-event,AddedPlayer>> on channel `games/{gameId}`.
+
+=== Join Game
+
+==== Input
+This flow is triggered by the domain event <<join-game-event,JoinGame>>.
+
+
+==== Operation
+
+Upon receiving the event the <<user-entity,User>> is linked to the game.
+
+==== Output
+
+This flow produces a domain event of type <<navigate-to-add-player-event,NavigateToAddPlayer>> on channel `navigation/{userId}`.
+
+---

@@ -1,0 +1,65 @@
+== CI/CD
+
+This chapter describes how to build and deploy the application.
+
+== Build
+
+There are two build variants: dev and prod.
+
+=== Dev
+
+Execute the following command to build and run the quarkus in with dev profile.
+
+[source, shell]
+----
+./gradlew quarkusDev
+----
+
+=== Prod
+
+[source, shell]
+----
+./gradlew build
+----
+
+To build the docker image of the backend execute the following command:
+
+=== Docker Image
+
+The command assumes the working directory is `ch.resrc.tichu/application`
+
+[source, shell]
+----
+docker build -f src/main/docker/Dockerfile.jvm -t quarkus/application-jvm .
+----
+
+== Deployment
+
+The deployment requires the following steps:
+
+1. Tag the docker image
+2. Push the docker image
+3. Deploy the new image
+
+=== Tag the Docker Image
+
+[source, shell]
+----
+docker tag quarkus/application-jvm gcr.io/resrc-263011/resrc-tichu
+----
+
+=== Push the Docker Image
+
+[source, shell]
+----
+docker push gcr.io/resrc-263011/resrc-tichu
+----
+
+=== Deploy the New Image
+
+[source, shell]
+----
+gcloud run deploy SERVICE --image IMAGE_URL
+----
+
+---

@@ -1,0 +1,196 @@
+= Application
+
+This application serves as a playground to test out various interesting concept related to fullstack application development.
+It focuses on the following topics:
+
+* Domain Driven Design
+* Clean Architecture
+* Ports & Adapters
+
+== Overview
+
+The application's functionality is implemented as use cases. The currently available use cases are:
+
+* Login
+* Create a game
+
+[graphviz, usecases, svg]
+....
+digraph login {
+    "tichu.resrc.ch" -> "/login"
+    "/login" -> "FindOrCreateUserUseCase"
+    "FindOrCreateUserUseCase" -> "/start"
+}
+....
+
+
+The following chapter describe each of these use cases in more detail.
+
+=== Login
+
+The entry point for all users of the application is `tichu.resrc.ch`. The user must complete the login use case to trigger any of the other use cases:
+
+[graphviz, login-flow, svg]
+....
+digraph login {
+    "tichu.resrc.ch" -> "/login"
+    "/login" -> "FindOrCreateUserUseCase"
+    "FindOrCreateUserUseCase" -> "/start"
+    "/start" -> "CreateGameUseCase"
+    "CreateGameUseCase" -> "/configure-game/:game_id"
+}
+....
+
+To login a the user must:
+
+* specify a name
+* specify an email address
+* click the login button
+
+This triggers the following sequence of operations.
+
+[plantuml, login-sequence, svg]
+....
+@startuml
+title Use case: Login
+autonumber
+
+actor Client #blue
+boundary FindOrCreateUserInput
+boundary GetAllUsers
+boundary AddUser
+
+box "Rest Adapter" #99b1ff
+    participant UsersResource
+    participant FindOrCreateUserRestInput
+end box
+
+box "Use Cases" #ffe0af
+    participant FindOrCreateUserInput
+    participant GetAllUsers
+    participant AddUser
+    participant FindOrCreateUserUseCase
+end box
+
+box "Persistence Adapter" #d0ffd5
+    participant MicroStreamUsersRepository
+end box
+
+
+MicroStreamUsersRepository -> GetAllUsers **: <<create>>
+MicroStreamUsersRepository -> AddUser **: <<create>>
+
+activate FindOrCreateUserUseCase
+FindOrCreateUserUseCase -> FindOrCreateUserUseCase: <<constructor>>
+GetAllUsers -> FindOrCreateUserUseCase : <<inject>>
+AddUser -> FindOrCreateUserUseCase : <<inject>>
+FindOrCreateUserUseCase -> FindOrCreateUserInput **: <<create>>
+deactivate FindOrCreateUserUseCase
+
+activate UsersResource
+UsersResource -> UsersResource: <<constructor>>
+FindOrCreateUserInput -> UsersResource : <<inject>>
+deactivate UsersResource
+
+Client -> UsersResource: findOrCreate
+activate UsersResource
+note left: Call to endpoint: Users.FIND_OR_CREATE
+UsersResource -> FindOrCreateUserRestInput **: <<create>>
+UsersResource -> FindOrCreateUserRestInput: request()
+activate FindOrCreateUserRestInput
+return FindOrCreateUserInput.Request
+
+
+UsersResource -> FindOrCreateUserInput: apply(FindOrCreateUserInput.Request)
+FindOrCreateUserInput -> FindOrCreateUserUseCase: apply(FindOrCreateUserInput.Request)
+
+activate FindOrCreateUserUseCase
+note right: Use case logic
+FindOrCreateUserUseCase -> GetAllUsers: getAll()
+
+alt requested user found case
+    FindOrCreateUserUseCase ->  FindOrCreateUserInput: FindOrCreateUserOutput.Response
+else requested user not found
+    FindOrCreateUserUseCase -> AddUser: add(User)
+
+return FindOrCreateUserOutput.Response
+
+end
+
+FindOrCreateUserInput --> UsersResource: FindOrCreateUserOutput.Response
+
+return Response
+
+@enduml
+....
+
+=== Create a game
+
+To create a game a user must:
+
+* be logged in
+* click on the button to create a game
+
+This triggers the following sequence of operations:
+
+[plantuml, create-a-game-sequence, svg]
+....
+@startuml
+title Use case: Create a game
+autonumber
+
+actor Client #blue
+boundary CreateGameInput
+boundary PersistenceOperations
+
+box "Websocket Adapter" #dcc1ff
+    participant CreateGameWebSocket
+    participant CreateGameWebSocketInput
+    participant CreatedGameWebSocket
+    participant CreatedGameWebSocketOutput
+end box
+
+box "Use Cases" #ffe0af
+    participant CreateGameInput
+    participant CreateGameUseCase
+    participant PersistenceOperations
+end box
+
+box "Persistence Adapter" #d0ffd5
+    participant MicroStreamRepositories
+end box
+
+MicroStreamRepositories -> PersistenceOperations **: <<create>>
+
+activate CreateGameUseCase
+CreateGameUseCase -> CreateGameUseCase: <<constructor>>
+PersistenceOperations -> CreateGameUseCase : <<inject>>
+deactivate CreateGameUseCase
+
+Client -> CreateGameWebSocket: onMessage(CreateGameWebSocketInput)
+activate CreateGameWebSocket
+note left: Call to endpoint: Games.CREATE
+CreateGameWebSocket -> CreateGameWebSocketInput **: <<create>>
+CreateGameWebSocket -> CreateGameWebSocketInput: request()
+activate CreateGameWebSocketInput
+return CreateGameInput.Request
+
+CreateGameWebSocket -> CreateGameInput: apply(CreateGameInput.Request)
+
+CreateGameInput -> CreateGameUseCase: apply(CreateGameInput.Request)
+activate CreateGameUseCase
+CreateGameUseCase -> PersistenceOperations: findOrCreatePlayer, createTeams, createGame
+return CreateGameOutput.Response
+
+CreateGameInput -> CreateGameWebSocket: CreateGameOutput.Response
+
+CreateGameWebSocket -> CreatedGameWebSocketOutput **: <<create>>
+
+CreateGameWebSocket -> CreatedGameWebSocket: send(CreatedGameWebSocketOutput)
+
+CreatedGameWebSocket -> Client
+
+@enduml
+....
+
+---

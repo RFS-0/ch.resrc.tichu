@@ -1,0 +1,18 @@
+== Todos
+
+=== Current task
+
+* Implement UpdateTeamNameFake
+
+=== Open
+
+* Implement AddFirstPlayerToTeamFake
+* RemoveFirstPlayerFromTeamFake
+* AddSecondPlayerToTeamFake
+* RemoveSecondPlayerFromTeamFake
+* UpdateRankFake
+* ResetRankFake
+* UpdateCardPointsFake
+* FinishRoundFake
+* UpdateRoundFake
+* FinishGameFake

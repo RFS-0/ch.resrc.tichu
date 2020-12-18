@@ -1,0 +1,13 @@
+== Adapters
+
+tbd
+
+=== Communication
+
+tbd
+
+=== Persistence
+
+tbd
+
+---

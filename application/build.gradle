@@ -1,0 +1,96 @@
+plugins {
+  id 'java'
+  id 'io.quarkus'
+  id "com.github.node-gradle.node" version "2.2.4"
+}
+
+node {
+  version = '12.13.0'
+  npmVersion = '6.13.0'
+  yarnVersion = '1.19.1'
+  distBaseUrl = 'https://nodejs.org/dist'
+  download = true
+  workDir = file("${project.projectDir}/node/nodejs")
+  npmWorkDir = file("${project.projectDir}/node/npm")
+  yarnWorkDir = file("${project.projectDir}/node/yarn")
+  nodeModulesDir = file("${project.projectDir}")
+}
+
+repositories {
+  mavenCentral()
+  maven {
+    url 'https://repo.microstream.one/repository/maven-public'
+  }
+}
+
+dependencies {
+  implementation enforcedPlatform("${quarkusPlatformGroupId}:${quarkusPlatformArtifactId}:${quarkusPlatformVersion}")
+
+  implementation 'commons-validator:commons-validator:1.7'
+
+  implementation 'com.google.guava:guava:28.0-jre'
+  implementation 'com.google.code.gson:gson:2.8.6'
+
+  implementation 'io.quarkus:quarkus-amazon-s3'
+  implementation 'io.quarkus:quarkus-hibernate-validator'
+  implementation 'io.quarkus:quarkus-oidc'
+  implementation 'io.quarkus:quarkus-resteasy-jackson'
+  implementation 'io.quarkus:quarkus-undertow'
+  implementation 'io.quarkus:quarkus-undertow-websockets'
+  implementation 'io.quarkus:quarkus-vertx'
+
+  implementation 'io.vavr:vavr:0.10.3'
+  implementation 'io.vavr:vavr-jackson:0.10.3'
+
+  implementation 'org.apache.commons:commons-lang3:3.1'
+
+  implementation 'one.microstream:base:04.01.00-MS-GA'
+  implementation 'one.microstream:storage.embedded:04.01.00-MS-GA'
+  implementation 'one.microstream:storage.embedded.configuration:04.01.00-MS-GA'
+  implementation 'one.microstream:filesystem.aws:04.01.00-MS-GA'
+
+  implementation 'software.amazon.awssdk:url-connection-client'
+
+  annotationProcessor 'one.microstream:base:04.01.00-MS-GA'
+
+  testImplementation 'io.quarkus:quarkus-jacoco'
+  testImplementation 'io.quarkus:quarkus-junit5'
+  testImplementation 'io.quarkus:quarkus-junit5-mockito'
+  testImplementation 'io.quarkus:quarkus-resteasy-jackson'
+  testImplementation 'io.rest-assured:rest-assured'
+  testImplementation 'org.assertj:assertj-core:3.11.1'
+  testImplementation 'org.awaitility:awaitility:4.0.3'
+}
+
+task ngBuild(type: NpmTask, dependsOn: npmInstall) {
+  args = ['run', 'build']
+}
+
+task vueBuild(type: NpxTask) {
+  workingDir = file("${project.projectDir}/src/main/vue")
+  command = 'npm'
+  args = ['run', 'build']
+  dependsOn(npmInstall)
+  inputs.dir(fileTree('src').exclude('**/*.spec.ts'))
+  inputs.dir(fileTree('node_modules').exclude('.cache'))
+  inputs.files(
+    'babel.config.js',
+    'package.json',
+    'package-lock.json',
+    'vue.config.js'
+  )
+}
+
+task copyConfig(type: Copy) {
+  from 'src/main/config/'
+  into 'build/classes/java/main/config'
+}
+
+gradle.projectsEvaluated {
+  compileJava.dependsOn(copyConfig)
+}
+
+//tasks.compileJava.dependsOn(copyConfig)
+
+//tasks.processResources.dependsOn(ngBuild)
+//tasks.compileJava.dependsOn(vueBuild)
