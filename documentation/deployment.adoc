@@ -26,9 +26,11 @@ To build the docker image of the backend execute the following command:
 
 === Docker Image
 
+The command assumes the working directory is `ch.resrc.tichu/application`
+
 [source, shell]
 ----
- docker build -f application/src/main/docker/Dockerfile.jvm -t quarkus/application-jvm .
+ docker build -f src/main/docker/Dockerfile.jvm -t quarkus/application-jvm .
 ----
 
 == Deployment
