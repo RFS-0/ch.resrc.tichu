@@ -1,4 +1,4 @@
-= CI/CD
+== CI/CD
 
 This chapter describes how to build and deploy the application.
 
@@ -30,7 +30,7 @@ The command assumes the working directory is `ch.resrc.tichu/application`
 
 [source, shell]
 ----
- docker build -f src/main/docker/Dockerfile.jvm -t quarkus/application-jvm .
+     docker build -f src/main/docker/Dockerfile.jvm -t quarkus/application-jvm .
 ----
 
 == Deployment
@@ -61,3 +61,5 @@ docker push gcr.io/resrc-263011/resrc-tichu
 ----
 gcloud run deploy SERVICE --image IMAGE_URL
 ----
+
+---

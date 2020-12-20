@@ -1,6 +1,7 @@
 = tichu.resrc.ch
 :icons: font
 :toc:
+:sectanchors:
 
 include::deployment.adoc[]
 include::architecture.adoc[]

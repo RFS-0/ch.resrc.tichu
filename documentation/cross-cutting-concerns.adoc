@@ -13,4 +13,5 @@ Examples for cross-cutting concerns are:
 
 Users have to be authenticated in order to be able to execute useful functionality.
 Only a limited set of functionality, such as the authentication itself, does not require authentication.
-We use OIDC
+
+---
