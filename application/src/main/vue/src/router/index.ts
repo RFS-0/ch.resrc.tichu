@@ -1,28 +1,20 @@
 import Vue from "vue";
-import VueRouter, {RouteConfig} from "vue-router";
+import VueRouter, { RouteConfig } from "vue-router";
+import Home from '@/views/Home.vue'
+import Lobby from '@/views/Lobby.vue'
 
 Vue.use(VueRouter);
 
 const routes: Array<RouteConfig> = [
   {
-    path: "/",
-    name: "Home",
-    component: () => import("../views/HomeView.vue")
+    path: '/',
+    name: 'Home',
+    component: Home
   },
   {
-    path: "/create-game",
-    name: "Create game",
-    component: () => import("../views/CreateGameView.vue")
-  },
-  {
-    path: "/join-game",
-    name: "Join game",
-    component: () => import("../views/JoinGameView.vue")
-  },
-  {
-    path: "/statistics",
-    name: "Statistics",
-    component: () => import("../views/StatisticsView.vue")
+    path: '/Lobby',
+    name: 'Lobby',
+    component: Lobby
   }
 ];
 

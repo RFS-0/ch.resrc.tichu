@@ -1,0 +1,60 @@
+<template>
+  <div class="code-container">
+    <h1>join code</h1>
+    <div class="join-code">{{animatedCode}}</div>
+  </div>
+</template>
+
+<script lang="ts">
+import { Component, Vue, Prop } from "vue-property-decorator";
+import 'vue-class-component/hooks'
+import { Player } from "../../types";
+
+@Component
+export default class JoinCode extends Vue {
+  @Prop(String) readonly code!: string
+  private animatedCode = 'BA6KD'
+  private readonly duration = 30
+  private counter = 0
+  mounted(){
+    window.requestAnimationFrame(this.animateCode)
+  }
+  animateCode(): void {
+    if(this.counter >= this.duration){
+      this.animatedCode = this.code;
+      return;
+    }
+    this.counter++
+    
+    let result             = '';
+    const characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    const charactersLength = characters.length;
+    for ( let i = 0; i < this.code.length; i++ ) {
+      result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+    this.animatedCode = result;
+
+    window.requestAnimationFrame(this.animateCode)
+  }
+}
+</script>
+
+<style scoped>
+  .code-container
+  {
+    display: grid;
+    grid-template-rows: auto auto;
+  }
+
+  h1 {
+    margin: auto;
+    margin-top: 15px;
+    font-size: 23px;
+  }
+
+  .join-code {
+    font-size: 20vw;
+    margin: auto;
+    margin-top: 5px;
+  }
+</style>
