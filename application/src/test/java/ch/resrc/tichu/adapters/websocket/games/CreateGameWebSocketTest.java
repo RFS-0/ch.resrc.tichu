@@ -41,16 +41,14 @@ class CreateGameWebSocketTest {
   @Test
   public void onMessage_creates_theIntendedGame() throws Exception {
     // given
-    final var theIntendedGame = new IntendedGameJson()
-      .but(theIntended -> theIntended.userId = userId.asLiteral());
+    final var theIntendedGame = new IntendedGameJson().but(theIntended -> theIntended.userId = userId.asLiteral());
     gameRepository.deleteAll();
-
-    // when
     Session senderSession = ContainerProvider.getWebSocketContainer().connectToServer(OutputSender.class, created);
     Session receiverSession = ContainerProvider.getWebSocketContainer().connectToServer(InputReceiver.class, create);
-
     assertThat(INPUT_MESSAGES.poll(10, TimeUnit.SECONDS)).isEqualTo("CONNECT");
     assertThat(OUTPUT_MESSAGES.poll(10, TimeUnit.SECONDS)).isEqualTo("CONNECT");
+
+    // when
     receiverSession.getAsyncRemote().sendText(theIntendedGame.toString());
     assertThat(OUTPUT_MESSAGES.poll(10, TimeUnit.SECONDS)).isNotEmpty();
 
@@ -59,7 +57,6 @@ class CreateGameWebSocketTest {
     assertThat(allGames).hasSize(1);
     assertThat(allGames).anyMatch(game -> game.team().players().contains(userId));
   }
-
 
   @ClientEndpoint
   public static class InputReceiver {
