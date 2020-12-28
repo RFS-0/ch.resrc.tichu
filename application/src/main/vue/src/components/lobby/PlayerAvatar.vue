@@ -1,13 +1,6 @@
 <template>
   <div class="align-center">
-    <div class="avatar-container">
       <img src="@/assets/avatar-1.svg" alt="avatar" class="avatar">
-      <!-- <div class="avatar">
-      </div> -->
-      <h1 class="name">
-        {{player.name}}
-      </h1>
-    </div>
   </div>
 </template>
 
@@ -27,22 +20,15 @@ export default class PlayerAvatar extends Vue {
     display: flex;
     flex-flow: column;
     justify-content: center;
-  }
-
-  .avatar-container
-  {
-    display: grid;
-    /* gap: 20px; */
-    grid-template-rows: min(20vh, 40vw) min-content;
+    align-content: center;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
   }
 
   .avatar {
-    height: 100%;
-    margin: auto;
+    height: 13vh;
+    /* max-width: 100%;
+    max-height: 100%; */
   } 
-
-  .name {
-    font-size: 20px;
-    margin: auto;
-  }
 </style>

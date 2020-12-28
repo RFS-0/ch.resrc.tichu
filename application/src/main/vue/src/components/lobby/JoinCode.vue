@@ -1,6 +1,6 @@
 <template>
   <div class="code-container">
-    <h1>join code</h1>
+    <h1 class="code">join code</h1>
     <div class="join-code">{{animatedCode}}</div>
   </div>
 </template>
@@ -46,14 +46,15 @@ export default class JoinCode extends Vue {
     grid-template-rows: auto auto;
   }
 
-  h1 {
+  .code {
     margin: auto;
     margin-top: 15px;
-    font-size: 23px;
+    font-size: 16px;
+    /* -webkit-text-stroke: 1px red; */
   }
 
   .join-code {
-    font-size: 20vw;
+    font-size: 50px;
     margin: auto;
     margin-top: 5px;
   }
