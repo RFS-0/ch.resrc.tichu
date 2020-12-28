@@ -6,6 +6,7 @@
 
 <script lang="ts">
 import { Component, Vue, Ref } from "vue-property-decorator";
+import 'vue-meta'
 
 Component.registerHooks([
   'mounted'
@@ -13,11 +14,19 @@ Component.registerHooks([
 
 @Component
 export default class ScoreInput extends Vue {
-  @Ref('app') app: HTMLElement | undefined
+  @Ref('app') app!: HTMLElement
 
   mounted(){
-    this.app?.style.setProperty('--window-height', `${window.innerHeight}px`);
+    this.calculateHeight();
+    window.addEventListener('resize', this.calculateHeight);
+    window.addEventListener('orientationchange', this.calculateHeight);
+    screen.orientation.lock('portrait').catch(err => console.log(err));
     // this.$refs.app.style.setProperty('--window-height', `10px`);
+  }
+
+  private calculateHeight() {
+    console.log('height adjusted');
+    this.app.style.setProperty('--window-height', `${window.innerHeight}px`);
   }
 }
 </script>
@@ -28,6 +37,7 @@ export default class ScoreInput extends Vue {
    v2.0 | 20110126
    License: none (public domain)
 */
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@900&display=swap');
 
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
@@ -78,29 +88,36 @@ table {
 :root {
   --color-main: rgb(221, 215, 181);
   --color-main-transparent: rgba(221, 215, 181, 0);
+  --color-main-dark: rgb(170, 166, 141);
   --color-team-1: rgb(62, 197, 145);
+  --color-team-1-dark: rgb(45, 143, 105);
   --color-team-2: rgb(214, 86, 97);
+  --color-team-2-dark: rgb(160, 63, 71);
   --color-dark: rgb(25, 29, 49);
   --color-light: rgb(247, 242, 216);
 
-  font-family: Arial, Helvetica, sans-serif;
+  /* font-family: Arial, Helvetica, sans-serif; */
+  font-family: 'Lato', sans-serif;
 }
 
-#app {
-  --window-height: 100vh;
+* {
   overflow: hidden;
-  width: 100vw;
-  height: var(--window-height);
-  /* height: -webkit-fill-available; */
-  background-color: var(--color-main);
 }
 
 /* App Style */
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
+  /* font-family: Avenir, Helvetica, Arial, sans-serif; */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+  --window-height: 100vh;
+  overflow: hidden;
+  width: 100vw;
+  /* height: 100vh; */
+  /* height: stretch; */
+  height: var(--window-height);
+  /* height: -webkit-fill-available; */
+  background-color: var(--color-main);
 }
 </style>
