@@ -1,6 +1,8 @@
 import Vue from "vue";
 import Vuex from "vuex";
-import Game from "@/store/game"
+import Games from "@/store/games"
+import Teams from "@/store/teams"
+import Players from "@/store/players"
 
 Vue.use(Vuex);
 
@@ -9,6 +11,8 @@ export default new Vuex.Store({
   mutations: {},
   actions: {},
   modules: {
-    Game
+    Players,
+    Teams,
+    Games
   }
 });

@@ -5,43 +5,55 @@ export interface User {
 export interface Player {
   id: string
   name: string
-  user?: User
+  avatar?: string
 }
 
 export interface Team {
   id: string
   name: string
-  players: Player[]
-}
-
-export enum TichuType {
-  Tichu, GrandTichu
-}
-
-export enum TichuState {
-  Called, Successful, Failed
-}
-
-export interface Tichu {
-  type: TichuType
-  state: TichuState
-  caler: Player
-}
-
-export interface Round {
-  tichus: { [playerId: number]: Tichu }
-  points: { [teamId: number]: number }
-  rankedPlayers: Player[];
-}
-
-export enum GameState {
-  Created, Active, Finished
+  firstPlayer?: string
+  secondPlayer?: string
 }
 
 export interface Game {
   id: string
   joinCode: string
-  state: GameState
-  teams: Team[]
+  leftTeam: string
+  rightTeam: string
   rounds: Round[]
+  finishedAt?: Date
+}
+
+export interface Tichu {
+  playerId: string
+  // null if round is not finished yet
+  successful?: boolean;
+  value: number;
+}
+
+export interface GrandTichu {
+  playerId: string
+  // null if round is not finished yet
+  successful?: boolean;
+  value: number;
+}
+
+export interface CardPoints {
+  teamId: string
+  value: number
+}
+
+export interface Ranks {
+  firstPlayer: string
+  secondPlayer: string
+  thirdPlayer: string
+  fourthPlayer: string
+}
+
+export interface Round {
+  roundNumber: number
+  cardPoints: Set<CardPoints>
+  tichus: Tichu[]
+  grandTichus: Tichu[]
+  ranks: Ranks
 }
