@@ -55,7 +55,6 @@ class CreateGameWebSocketTest {
     // then
     final Set<Game> allGames = gameRepository.all();
     assertThat(allGames).hasSize(1);
-    assertThat(allGames).anyMatch(game -> game.team().players().contains(userId));
   }
 
   @ClientEndpoint

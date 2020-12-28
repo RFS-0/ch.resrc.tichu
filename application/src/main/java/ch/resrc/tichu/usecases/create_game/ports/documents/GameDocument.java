@@ -12,7 +12,6 @@ import ch.resrc.tichu.capabilities.validation.InvalidInputDetected;
 import ch.resrc.tichu.capabilities.validation.Validation;
 import ch.resrc.tichu.capabilities.validation.ValidationError;
 import ch.resrc.tichu.capabilities.validation.Validations;
-import ch.resrc.tichu.domain.entities.Team;
 import ch.resrc.tichu.domain.value_objects.Id;
 import ch.resrc.tichu.domain.value_objects.JoinCode;
 import ch.resrc.tichu.domain.value_objects.Round;
@@ -25,8 +24,8 @@ public class GameDocument {
 
   private Id id;
   private JoinCode joinCode;
-  private Team team;
-  private Team otherTeam;
+  private Id leftTeam;
+  private Id rightTeam;
   private Set<Round> rounds;
   private Instant createdAt;
   private Instant finishedAt;
@@ -41,13 +40,14 @@ public class GameDocument {
     return joinCode;
   }
 
-  public Team team() {
-    return team;
+  public Id leftTeam() {
+    return leftTeam;
   }
 
-  public Team otherTeam() {
-    return otherTeam;
+  public Id rightTeam() {
+    return rightTeam;
   }
+
 
   public Set<Round> rounds() {
     return rounds;
@@ -66,8 +66,8 @@ public class GameDocument {
     return new ToStringBuilder(this)
       .append("id", id)
       .append("joinCode", joinCode)
-      .append("team", team)
-      .append("otherTeam", otherTeam)
+      .append("leftTeam", leftTeam)
+      .append("rightTeam", rightTeam)
       .append("rounds", rounds)
       .append("createdAt", createdAt)
       .append("finishedAt", finishedAt)
@@ -80,7 +80,6 @@ public class GameDocument {
     return modified(Validations.allOf(
       attribute(x -> x.id, notNull(mustBeSpecifiedMsg(), context(Id.class))),
       attribute(x -> x.joinCode, notNull(mustBeSpecifiedMsg(), context(JoinCode.class))),
-      attribute(x -> x.team, notNull(mustBeSpecifiedMsg(), context(Team.class))),
       attribute(x -> x.rounds, notNull(cannotBeUndefinedMsg(), context(Round.class))),
       attribute(x -> x.createdAt, notNull(cannotBeUndefinedMsg(), context(Instant.class)))
     ), context(GameDocument.class));
@@ -110,8 +109,8 @@ public class GameDocument {
   private GameDocument(GameDocument other) {
     this.id = other.id;
     this.joinCode = other.joinCode;
-    this.team = other.team;
-    this.otherTeam = other.otherTeam;
+    this.leftTeam = other.leftTeam;
+    this.rightTeam = other.rightTeam;
     this.rounds = other.rounds;
     this.createdAt = other.createdAt;
     this.finishedAt = other.finishedAt;
@@ -137,12 +136,12 @@ public class GameDocument {
       return new Builder(workpiece.copied(but -> but.joinCode = joinCode));
     }
 
-    public Builder withTeam(Team team) {
-      return new Builder(workpiece.copied(but -> but.team = team));
+    public Builder withLeftTeam(Id leftTeam) {
+      return new Builder(workpiece.copied(but -> but.leftTeam = leftTeam));
     }
 
-    public Builder withOtherTeam(Team otherTeam) {
-      return new Builder(workpiece.copied(but -> but.otherTeam = otherTeam));
+    public Builder withRightTeam(Id rightTeam) {
+      return new Builder(workpiece.copied(but -> but.rightTeam = rightTeam));
     }
 
     public Builder withRounds(Set<Round> rounds) {

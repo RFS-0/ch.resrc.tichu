@@ -43,7 +43,6 @@ All users are also players.
 ----
 {
   "id": "0a5f6ea3-cf08-4dbd-9ea3-174502c4e4d1",
-  "userId": "05bed545-1e18-4bf3-9f21-59237311f938",
   "name": "Tichu Master",
   "picture": "www.my-awesome-profile-picture.com",
   "createdAt": "2020-12-31 06:23:17"
@@ -58,10 +57,9 @@ A team is a collection of exactly two players.
 ----
 {
   "id": "71a0b577-8f64-412c-8da6-835eb88b77e0",
-  "players": [
-    "094667f2-c967-476a-933d-1106ba61af51",
-    "8329001b-591e-4496-96ca-c71a331c29f8"
-  ],
+  "name": "The name of the team",
+  "firstPlayer": "094667f2-c967-476a-933d-1106ba61af51",
+  "secondPlayer": "8329001b-591e-4496-96ca-c71a331c29f8",
   "createdAt": "2020-12-31 06:23:17"
 }
 ----

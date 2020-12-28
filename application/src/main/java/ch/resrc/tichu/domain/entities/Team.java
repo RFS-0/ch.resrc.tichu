@@ -24,17 +24,18 @@ import ch.resrc.tichu.capabilities.result.Result;
 import ch.resrc.tichu.capabilities.validation.Validation;
 import ch.resrc.tichu.capabilities.validation.ValidationError;
 import ch.resrc.tichu.domain.value_objects.Id;
+import ch.resrc.tichu.domain.value_objects.Name;
 import java.time.Instant;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.function.Consumer;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 public class Team implements ChangeLogging {
 
   private Id id;
-  private Set<Id> players;
+  private Name name;
+  private Id firstPlayer;
+  private Id secondPlayer;
   private Instant createdAt;
 
   private ChangeLog changeLog = ChangeLog.empty();
@@ -50,8 +51,16 @@ public class Team implements ChangeLogging {
     return id;
   }
 
-  public Set<Id> players() {
-    return players;
+  public Name name() {
+    return name;
+  }
+
+  public Id firstPlayer() {
+    return firstPlayer;
+  }
+
+  public Id secondPlayer() {
+    return secondPlayer;
   }
 
   public Instant createdAt() {
@@ -62,8 +71,11 @@ public class Team implements ChangeLogging {
   public String toString() {
     return new ToStringBuilder(this)
       .append("id", id)
-      .append("players", players)
+      .append("name", name)
+      .append("firstPlayer", firstPlayer)
+      .append("secondPlayer", secondPlayer)
       .append("createdAt", createdAt)
+      .append("changeLog", changeLog)
       .toString();
   }
 
@@ -78,21 +90,12 @@ public class Team implements ChangeLogging {
 
     Team team = (Team) o;
 
-    if (!id.equals(team.id)) {
-      return false;
-    }
-    if (!players.equals(team.players)) {
-      return false;
-    }
-    return createdAt.equals(team.createdAt);
+    return id.equals(team.id);
   }
 
   @Override
   public int hashCode() {
-    int result = id.hashCode();
-    result = 31 * result + players.hashCode();
-    result = 31 * result + createdAt.hashCode();
-    return result;
+    return id.hashCode();
   }
 
   private Result<Team, ProblemDiagnosis> validated() {
@@ -110,7 +113,6 @@ public class Team implements ChangeLogging {
   private static Validation<Team, ValidationError> mandatoryProperties() {
     return allOf(
       attribute(x -> x.id, notNull(mustBeSpecifiedMsg(), context(Id.class))),
-      attribute(x -> x.players, notNull(mustBeSpecifiedMsg(), context(Id.class))),
       attribute(x -> x.createdAt, notNull(cannotBeUndefinedMsg(), context(Instant.class)))
     );
   }
@@ -122,7 +124,9 @@ public class Team implements ChangeLogging {
 
   private Team(Team other) {
     this.id = other.id;
-    this.players = other.players;
+    this.name = other.name;
+    this.firstPlayer = other.firstPlayer;
+    this.secondPlayer = other.secondPlayer;
     this.createdAt = other.createdAt;
     this.changeLog = other.changeLog;
   }
@@ -149,19 +153,19 @@ public class Team implements ChangeLogging {
     }
   }
 
-  public static class PlayerAdded extends Event {
+  public static class FirstPlayerAdded extends Event {
 
     private Id playerId;
 
-    public PlayerAdded(Id playerId) {
+    public FirstPlayerAdded(Id playerId) {
       this.playerId = playerId;
     }
   }
 
   //// Mutation Execution ////
 
-  public Result<Team, AddPlayerError> addedPlayer(Id thePlayerId) {
-    return this.applied(new PlayerAdded(thePlayerId)).mapErrors(AddPlayerError::new);
+  public Result<Team, AddPlayerError> addedFirstPlayer(Id thePlayerId) {
+    return this.applied(new FirstPlayerAdded(thePlayerId)).mapErrors(AddPlayerError::new);
   }
 
   private Result<Team, ProblemDiagnosis> applied(Event change) {
@@ -175,7 +179,7 @@ public class Team implements ChangeLogging {
   private Team mutated(Event change) {
     return Match(change).of(
       Case($(instanceOf(Created.class)), this::when),
-      Case($(instanceOf(PlayerAdded.class)), this::when)
+      Case($(instanceOf(FirstPlayerAdded.class)), this::when)
     );
   }
 
@@ -183,14 +187,11 @@ public class Team implements ChangeLogging {
     return this.copied(theCopy -> {
       theCopy.id = Id.next();
       theCopy.createdAt = Instant.now();
-      final Set<Id> players = new HashSet<>();
-      players.add(the.userId);
-      theCopy.players = players;
     });
   }
 
-  private Team when(PlayerAdded the) {
-    return this.copied(theCopy -> theCopy.players().add(the.playerId));
+  private Team when(FirstPlayerAdded the) {
+    return this.copied(theCopy -> theCopy.firstPlayer = the.playerId);
   }
 
   ///// Errors /////

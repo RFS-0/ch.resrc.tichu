@@ -32,14 +32,13 @@ import java.util.List;
 import java.util.Set;
 import java.util.function.Consumer;
 import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
 
 public class Game implements ChangeLogging {
 
   private Id id;
   private JoinCode joinCode;
-  private Team team;
-  private Team otherTeam;
+  private Id leftTeam;
+  private Id rightTeam;
   private Set<Round> rounds;
   private Instant createdAt;
   private Instant finishedAt;
@@ -61,12 +60,12 @@ public class Game implements ChangeLogging {
     return joinCode;
   }
 
-  public Team team() {
-    return team;
+  public Id leftTeam() {
+    return leftTeam;
   }
 
-  public Team otherTeam() {
-    return otherTeam;
+  public Id rightTeam() {
+    return rightTeam;
   }
 
   public Set<Round> rounds() {
@@ -83,15 +82,15 @@ public class Game implements ChangeLogging {
 
   @Override
   public String toString() {
-    return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE)
+    return new ToStringBuilder(this)
       .append("id", id)
       .append("joinCode", joinCode)
-      .append("team", team)
-      .append("otherTeam", otherTeam)
+      .append("leftTeam", leftTeam)
+      .append("rightTeam", rightTeam)
       .append("rounds", rounds)
       .append("createdAt", createdAt)
       .append("finishedAt", finishedAt)
-      .append("events", changeLog.asEventClassNames())
+      .append("changeLog", changeLog)
       .toString();
   }
 
@@ -114,13 +113,12 @@ public class Game implements ChangeLogging {
     return id.hashCode();
   }
 
-///// Constraints /////
+  ///// Constraints /////
 
   private static Validation<Game, ValidationError> mandatoryProperties() {
     return allOf(
       attribute(x -> x.id, notNull(mustBeSpecifiedMsg(), context(Id.class))),
       attribute(x -> x.joinCode, notNull(mustBeSpecifiedMsg(), context(JoinCode.class))),
-      attribute(x -> x.team, notNull(mustBeSpecifiedMsg(), context(Team.class))),
       attribute(x -> x.rounds, notNull(cannotBeUndefinedMsg(), context(Round.class))),
       attribute(x -> x.createdAt, notNull(cannotBeUndefinedMsg(), context(Instant.class)))
     );
@@ -138,8 +136,8 @@ public class Game implements ChangeLogging {
   private Game(Game other) {
     this.id = other.id;
     this.joinCode = other.joinCode;
-    this.team = other.team;
-    this.otherTeam = other.otherTeam;
+    this.leftTeam = other.leftTeam;
+    this.rightTeam = other.rightTeam;
     this.rounds = other.rounds;
     this.createdAt = other.createdAt;
     this.finishedAt = other.createdAt;
@@ -208,7 +206,6 @@ public class Game implements ChangeLogging {
     return this.copied(theCopy -> {
       theCopy.id = Id.next();
       theCopy.joinCode = JoinCode.next();
-      theCopy.team = Team.create(the.userId).value();
       theCopy.rounds = new HashSet<>();
       theCopy.createdAt = Instant.now();
     });

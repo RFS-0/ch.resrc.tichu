@@ -13,8 +13,8 @@ public class GameDto {
 
   public String id;
   public String joinCode;
-  public String team;
-  public String otherTeam;
+  public String leftTeam;
+  public String rightTeam;
   public Set<Round> rounds;
   public String createdAt;
   public String finishedAt;
@@ -31,11 +31,10 @@ public class GameDto {
   public static GameDto fromDocument(GameDocument the) {
 
     return new GameDto(x -> {
-
       x.id = nullSafeToString(the.id());
       x.joinCode = nullSafeToString(the.joinCode());
-      x.team = nullSafeToString(the.team());
-      x.otherTeam = nullSafeToString(the.otherTeam());
+      x.leftTeam = nullSafeToString(the.leftTeam());
+      x.rightTeam = nullSafeToString(the.rightTeam());
     });
   }
 
