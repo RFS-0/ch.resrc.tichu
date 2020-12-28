@@ -18,17 +18,35 @@ node {
 
 repositories {
   mavenCentral()
+  maven {
+    url 'https://repo.microstream.one/repository/maven-public'
+  }
 }
 
 dependencies {
   implementation enforcedPlatform("${quarkusPlatformGroupId}:${quarkusPlatformArtifactId}:${quarkusPlatformVersion}")
 
-  implementation 'io.quarkus:quarkus-resteasy'
+  implementation 'io.quarkus:quarkus-resteasy-mutiny'
+  implementation 'io.quarkus:quarkus-resteasy-jackson'
   implementation 'io.quarkus:quarkus-resteasy-jsonb'
   implementation 'io.quarkus:quarkus-undertow'
   implementation 'io.quarkus:quarkus-oidc'
+  implementation 'io.quarkus:quarkus-vertx'
+  implementation 'io.quarkus:quarkus-undertow-websockets'
+  implementation 'io.quarkus:quarkus-hibernate-validator'
+
+  implementation 'io.vavr:vavr:0.10.2'
+  implementation 'org.apache.commons:commons-lang3:3.1'
+  implementation 'com.google.guava:guava:28.0-jre'
+  implementation 'com.google.code.gson:gson:2.8.6'
+  implementation 'one.microstream:base:04.01.00-MS-GA'
+  implementation 'one.microstream:storage.embedded:04.01.00-MS-GA'
+  implementation 'one.microstream:storage.embedded.configuration:04.01.00-MS-GA'
+
+  annotationProcessor 'one.microstream:base:04.01.00-MS-GA'
 
   testImplementation 'io.quarkus:quarkus-junit5'
+  testImplementation 'org.assertj:assertj-core:3.11.1'
   testImplementation 'io.rest-assured:rest-assured'
 }
 

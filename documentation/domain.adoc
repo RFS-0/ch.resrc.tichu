@@ -43,7 +43,6 @@ All users are also players.
 ----
 {
   "id": "0a5f6ea3-cf08-4dbd-9ea3-174502c4e4d1",
-  "userId": "05bed545-1e18-4bf3-9f21-59237311f938",
   "name": "Tichu Master",
   "picture": "www.my-awesome-profile-picture.com",
   "createdAt": "2020-12-31 06:23:17"
@@ -58,10 +57,9 @@ A team is a collection of exactly two players.
 ----
 {
   "id": "71a0b577-8f64-412c-8da6-835eb88b77e0",
-  "players": [
-    "094667f2-c967-476a-933d-1106ba61af51",
-    "8329001b-591e-4496-96ca-c71a331c29f8"
-  ],
+  "name": "The name of the team",
+  "firstPlayer": "094667f2-c967-476a-933d-1106ba61af51",
+  "secondPlayer": "8329001b-591e-4496-96ca-c71a331c29f8",
   "createdAt": "2020-12-31 06:23:17"
 }
 ----
@@ -75,76 +73,110 @@ A game is a container for all information related to exactly one Tichu game.
 {
   "id": "3466b1bc-821c-42f6-9f83-1d29cb58699e",
   "joinCode": "5f52cd8c",
-  "teams": [
-    "71a0b577-8f64-412c-8da6-835eb88b77e0",
-    "d6c7fddc-a8ba-4509-95e2-27b428ba21b4"
+  "team": "71a0b577-8f64-412c-8da6-835eb88b77e0",
+  "otherTeam": "d6c7fddc-a8ba-4509-95e2-27b428ba21b4",
+  "rounds": [
+    {
+      "roundNumber": 1,
+      "cardPoints": [
+        {
+          "teamId": "71a0b577-8f64-412c-8da6-835eb88b77e0",
+          "value": 15
+        },
+        {
+          "teamId": "d6c7fddc-a8ba-4509-95e2-27b428ba21b4",
+          "value": 85
+        }
+      ],
+      "tichus": [
+        {
+          "playerId": "094667f2-c967-476a-933d-1106ba61af51",
+          "successful": true,
+          "value": 100
+        },
+        {
+          "playerId": "8329001b-591e-4496-96ca-c71a331c29f8",
+          "successful": false,
+          "value": -100
+        }
+      ],
+      "grandTichu": [
+        {
+          "playerId": "094667f2-c967-476a-933d-1106ba61af51",
+          "successful": true,
+          "value": 200
+        },
+        {
+          "playerId": "8329001b-591e-4496-96ca-c71a331c29f8",
+          "successful": false,
+          "value": -200
+    }
+  ]
+}
   ],
   "createdAt": "2020-12-31 06:23:17",
   "finishedAt": "2020-12-31 06:23:17"
 }
 ----
 
-==== Round [[round-entity]]
+=== Value Objects
 
-A game is a container for all information related to exactly one Tichu game.
+==== Round [[round-value-object]]
 
-[source,json5]
-----
-{
-  "id": "3466b1bc-821c-42f6-9f83-1d29cb58699e",
-  "gameId": "3466b1bc-821c-42f6-9f83-1d29cb58699e",
-  "intermediateResults": [
-    "3466b1bc-821c-42f6-9f83-1d29cb58699e",
-    "b83fcd91-2fda-4a18-b6ab-a7603ddfe992"
-  ],
-  "createdAt": "2020-12-31 06:23:17",
-}
-----
-
-==== Intermediate Result [[intermediate-result-entity]]
-
-The result of one round of a Tichu game.
+A round is a container for all information related to exactly one Tichu round.
 
 [source,json5]
 ----
 {
-  "id": "43d8d992-a254-41e9-aa7f-a7e2936863a8",
-  "roundId": "3466b1bc-821c-42f6-9f83-1d29cb58699e",
-  "points": [
+  "roundNumber": 1,
+  "cardPoints": [
     {
       "teamId": "71a0b577-8f64-412c-8da6-835eb88b77e0",
-      "value": 85
+      "value": 15
     },
     {
       "teamId": "d6c7fddc-a8ba-4509-95e2-27b428ba21b4",
-      "value": 15
+      "value": 85
     }
   ],
-  "tichus" : [
+  "tichus": [
     {
       "playerId": "094667f2-c967-476a-933d-1106ba61af51",
-      "successful": true
+      "successful": true,
+      "value": 100
     },
     {
       "playerId": "8329001b-591e-4496-96ca-c71a331c29f8",
-      "successful": false
+      "successful": false,
+      "value": -100
     }
   ],
-  "grandTichus" : [
+  "grandTichu": [
     {
       "playerId": "094667f2-c967-476a-933d-1106ba61af51",
-      "successful": true
+      "successful": true,
+      "value": 200
     },
     {
       "playerId": "8329001b-591e-4496-96ca-c71a331c29f8",
-      "successful": false
+      "successful": false,
+      "value": -200
     }
-  ],
-  "createdAt": "2020-12-31 06:23:17"
+  ]
 }
 ----
 
-=== Value Objects
+==== CardPoints [[card-points-value-object]]
+
+CardPoints represent the points a team achieved via the cards it won in one Tichu round.
+
+[source,json5]
+----
+{
+  "teamId": "71a0b577-8f64-412c-8da6-835eb88b77e0",
+  "value": 15
+}
+----
 
 === Aggregates
 
@@ -214,9 +246,7 @@ A domain object that defines an event which is relevant to the application.
 ==== JoinGame [[join-game-event]]
 
 Input:
-JoinGame
-- user id
-- join code
+JoinGame - user id - join code
 
 [source,json5]
 ----
@@ -239,4 +269,4 @@ JoinGame
 
 === Repositories
 
----
+'''

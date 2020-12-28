@@ -1,0 +1,19 @@
+package ch.resrc.tichu.capabilities.events;
+
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class Dispatcher implements Subscribable {
+
+  private final List<Notifiable> listeners = new ArrayList<>();
+
+  @Override
+  public void subscribe(Notifiable object) {
+    listeners.add(object);
+  }
+
+  public void dispatch(Object event) {
+    listeners.forEach(it -> it.on(event));
+  }
+}
