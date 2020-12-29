@@ -1,12 +1,20 @@
 <template>
   <div class="team-container" :class="{'team-1': isTeam1, 'team-2': isTeam2}">
-    <div @click="addplayer" class="team-info">
+    <div class="team-info">
       <div class="team-name">
         <h1>{{team.name.toUpperCase()}}</h1>
       </div>
     </div>
-    <PlayerSlot @add-player="addplayer" :playerId="team.firstPlayer" v-on:addplayer="addplayer"/>
-    <PlayerSlot :playerId="team.secondPlayer"/>
+    <PlayerSlot
+      :playerId="team.firstPlayer"
+      :teamId="team.id"
+      :left="teamIndex==1"
+    />
+    <PlayerSlot 
+      :playerId="team.secondPlayer"
+      :teamId="team.id"
+      :left="teamIndex==1"
+    />
   </div>
 </template>
 
@@ -25,6 +33,7 @@ import 'vue-class-component/hooks'
 })
 export default class LobbyTeam extends Vue {
   @Prop(String) readonly teamId!: string
+  @Prop(Boolean) readonly overlay!: boolean
   get team() {
     return this.$store.getters.teamById(this.teamId) as Team;
   }
@@ -37,18 +46,6 @@ export default class LobbyTeam extends Vue {
     return !this.isTeam1
   }
   private player = {id: 'test-id', name: 'test-player'} as Player
-
-  public addplayer(){
-    console.log('team.recieve addPlayer2')
-    // if(!this.team.firstPlayer || !this.team.firstPlayer) {
-    //   this.playerAdded(this.team.id);
-    // }
-  }
-
-  @Emit()
-  playerAdded(teamId: string) {
-    return this.team;
-  }
 }
 </script>
 

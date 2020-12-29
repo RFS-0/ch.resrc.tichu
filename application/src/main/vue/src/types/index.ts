@@ -57,3 +57,13 @@ export interface Round {
   grandTichus: Tichu[]
   ranks: Ranks
 }
+
+export interface AddPlayerInfo {
+  teamId: string;
+  name: string;
+}
+
+export interface RemovePlayerInfo {
+  teamId: string;
+  playerId: string;
+}

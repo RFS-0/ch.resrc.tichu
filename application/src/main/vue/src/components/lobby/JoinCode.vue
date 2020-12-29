@@ -50,7 +50,6 @@ export default class JoinCode extends Vue {
     margin: auto;
     margin-top: 15px;
     font-size: 16px;
-    /* -webkit-text-stroke: 1px red; */
   }
 
   .join-code {
