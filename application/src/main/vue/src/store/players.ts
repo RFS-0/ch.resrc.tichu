@@ -19,6 +19,10 @@ class Players extends VuexModule {
     {
       id: '9bbce77e-4929-11eb-b378-0242ac130002',
       name: 'player 4'
+    } as Player,
+    {
+      id: '24b173d0-49be-11eb-b378-0242ac130002',
+      name: 'test player'
     } as Player
   ]
 
