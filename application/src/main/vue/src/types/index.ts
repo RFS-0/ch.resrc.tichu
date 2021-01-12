@@ -52,9 +52,9 @@ export interface Ranks {
 
 export interface Round {
   roundNumber: number
-  cardPoints: Set<CardPoints>
-  tichus: Tichu[]
-  grandTichus: Tichu[]
+  cardPoints: CardPoints[]
+  tichus?: Tichu[]
+  grandTichus?: Tichu[]
   ranks: Ranks
 }
 

@@ -13,7 +13,7 @@ Component.registerHooks([
 ])
 
 @Component
-export default class ScoreInput extends Vue {
+export default class TichuGuru extends Vue {
   @Ref('app') app!: HTMLElement
 
   mounted(){
@@ -94,6 +94,7 @@ table {
   --color-team-2: rgb(214, 86, 97);
   --color-team-2-dark: rgb(160, 63, 71);
   --color-dark: rgb(25, 29, 49);
+  --color-dark-light: rgb(60, 68, 112);
   --color-light: rgb(247, 242, 216);
 
   /* font-family: Arial, Helvetica, sans-serif; */
