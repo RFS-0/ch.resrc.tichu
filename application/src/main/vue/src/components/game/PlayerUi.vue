@@ -43,10 +43,16 @@
           <div class="tichu" v-if="isTichuCalled">TICHU</div>
           <div class="tichu grand" v-if="isGrandTichuCalled">GR.<br>TICHU</div>
         </div>
-        <div class="btn-finish">
+        <!-- <div class="btn-finish">
           <svg width="35" viewBox="0 0 50 40">
               <path d="M10 20 l 10 10 l 20 -20" fill="transparent" stroke="black" stroke-width="9" stroke-linejoin="round"/>
           </svg> 
+        </div> -->
+        <div class="rank">
+          <div class="rank-container">
+            <div class="rank-number">{{rank}}</div>
+            <div class="rank-suffix">{{ranksuffix[rank]}}</div>
+          </div>
         </div>
       </div>
     </div>
@@ -79,7 +85,21 @@ export default class PlayerUi extends Vue {
   width = 1;
   buttonsHeight = 1;
   selectingTichu = false;
+  // rank = 1;
+  ranksuffix = ["","ST","ND","RD","TH"]
   // calledTichu = '';
+
+  get rank(): number {
+    if(this.round.ranks.firstPlayer == this.playerId)
+      return 1;
+    else if(this.round.ranks.secondPlayer == this.playerId)
+      return 2;
+    else if(this.round.ranks.thirdPlayer == this.playerId)
+      return 3;
+    else if(this.round.ranks.fourthPlayer == this.playerId)
+      return 4;
+    else return 0;
+  }
 
   get calledTichu(): string {
     const tichu = this.round.tichus?.find(
@@ -377,5 +397,28 @@ export default class PlayerUi extends Vue {
   svg>path {
     stroke: var(--team-color);
     transform: translate(-2px, 2px);
+  }
+
+  .rank {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .rank-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: flex-start;
+    color: var(--bg-color);
+  }
+
+  .rank-number {
+    font-size: 30px;
+  }
+
+  .rank-suffix {
+    margin: 3px 0 0 2px;
+    font-size: 13px;
   }
 </style>
