@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div :style="colorVars">
     <div class="scroll-container">
       <div class="scroll-wheel" ref="scroll1" @scroll="onScroll1">
         <div class="space"></div>
@@ -18,38 +18,12 @@
           <div class="bottom"></div>
         </div>
       </div>
-
-      <div class="dots">
-        <div></div>
-        <div class="dot"></div>
-        <div></div>
-        <div class="dot"></div>
-        <div></div>
-      </div>
-
-      <div class="scroll-wheel" ref="scroll2" @scroll="onScroll2">
-        <div class="space"></div>
-        <div
-          class="item"
-          v-for="value in values" :key="value"
-        >
-          <h1 class="value right">
-            {{value}}
-          </h1>
-        </div>
-        <div class="overlay">
-          <div class="top"></div>
-          <div></div>
-          <div class="bottom"></div>
-        </div>
-        <div class="space"></div>
-      </div>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue, Ref } from "vue-property-decorator";
+import { Component, Vue, Ref, Prop } from "vue-property-decorator";
 
 Component.registerHooks([
   'mounted'
@@ -61,9 +35,19 @@ export default class ScoreInput extends Vue {
   @Ref('scroll1') readonly scrollWheel1!: HTMLElement;
   @Ref('scroll2') readonly scrollWheel2!: HTMLElement;
 
+  @Prop() color!: string;
+  @Prop() backgroundColor!: string;
+
   mounted() {
     this.scrollToValue(this.scrollWheel2, 0);
     this.scrollToValue(this.scrollWheel1, 0);
+  }
+
+  get colorVars() {
+    return {
+      '--bg-color':this.backgroundColor,
+      '--color':this.color,
+      }
   }
 
   private score1 = 0;
@@ -146,8 +130,8 @@ export default class ScoreInput extends Vue {
 .scroll-container {
   display: grid;
   grid-template-columns: auto min-content auto;
-  width: 80%;
-  margin: auto;
+  width: 110px;
+  position: relative;
   /* background-color: cornflowerblue; */
 }
 
@@ -158,7 +142,6 @@ export default class ScoreInput extends Vue {
   scroll-snap-type: y mandatory;
   /* background-color: aqua; */
   margin: auto;
-  width: 100px;
 
   --height: 80px;
   --item-height: 66px;
@@ -168,20 +151,6 @@ export default class ScoreInput extends Vue {
   display: grid;
   /* gap: 1px; */
   grid-template-rows: var(--space) repeat(32, var(--item-height)) var(--space);
-}
-
-.dots {
-  --dot-diameter: 6px;
-  display: grid;
-  grid-template-rows: 5fr var(--dot-diameter) 3fr 10px 4fr;
-  /* background-color: crimson; */
-}
-
-.dot {
-  width: var(--dot-diameter);
-  height: var(--dot-diameter);
-  background-color: var(--color-dark);
-  border-radius: calc(var(--dot-diameter) / 2);
 }
 
 .space {
@@ -197,13 +166,13 @@ export default class ScoreInput extends Vue {
   /* background-color:crimson; */
   height: 100%;
   max-height: var(--item-height);
-  display: flex;
   overflow: hidden;
 }
 
 .value {
   font-size: 60px;
-  font-family: Avenir, Arial, Helvetica, sans-serif;
+  font-family: Lato;
+  color: var(--color);
 }
 
 .left {
@@ -215,25 +184,25 @@ export default class ScoreInput extends Vue {
 }
 
 .overlay {
-  z-index: 10;
+  z-index: 1;
   position: absolute;
-  width: 100px;
+  width: 110px;
   height: var(--height);
   /* height: calc(var(--height) / 4); */
   /* background-image: linear-gradient(var(--color-main), var(--color-main-transparent)); */
   /* background-color: orange; */
   pointer-events: none;
   display: grid;
-  grid-template-rows: 1fr 1fr 1fr;
+  grid-template-rows: 1fr 2fr 1fr;
 }
 
 .top {
   /* background-color: black; */
-  background-image: linear-gradient(var(--color-main), var(--color-main-transparent));
+  background-image: linear-gradient(var(--bg-color), var(--color-main-transparent));
 }
 .bottom {
   /* background-color: black; */
-  background-image: linear-gradient(var(--color-main-transparent), var(--color-main));
+  background-image: linear-gradient(var(--color-main-transparent), var(--bg-color));
 }
 
 /* .child {
