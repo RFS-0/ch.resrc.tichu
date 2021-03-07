@@ -43,12 +43,18 @@
           <div class="tichu" v-if="isTichuCalled">TICHU</div>
           <div class="tichu grand" v-if="isGrandTichuCalled">GR.<br>TICHU</div>
         </div>
-        <!-- <div class="btn-finish">
+        <div
+          class="btn-finish"
+          v-if="rank==0"
+        >
           <svg width="35" viewBox="0 0 50 40">
               <path d="M10 20 l 10 10 l 20 -20" fill="transparent" stroke="black" stroke-width="9" stroke-linejoin="round"/>
           </svg> 
-        </div> -->
-        <div class="rank">
+        </div>
+        <div
+          class="rank"
+          v-if="rank>0"
+        >
           <div class="rank-container">
             <div class="rank-number">{{rank}}</div>
             <div class="rank-suffix">{{ranksuffix[rank]}}</div>

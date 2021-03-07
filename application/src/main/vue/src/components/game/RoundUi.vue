@@ -7,6 +7,7 @@
 
     </div> -->
     <RoundTeamUi
+      :gameId="gameId"
       :round="round"
       :teamId="leftTeam"
       :teamColor="'var(--color-team-1)'"
@@ -15,6 +16,7 @@
       :side="'left'"
     />
     <RoundTeamUi
+      :gameId="gameId"
       :round="round"
       :teamId="rightTeam"
       :teamColor="'var(--color-team-2)'"
@@ -36,6 +38,7 @@ import RoundTeamUi from './RoundTeamUi.vue'
   }
 })
 export default class RoundUi extends Vue {
+  @Prop() gameId!: string;
   @Prop() round!: Round;
   @Prop() leftTeam!: string;
   @Prop() rightTeam!: string;

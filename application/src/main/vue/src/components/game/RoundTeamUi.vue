@@ -23,9 +23,14 @@
       :side="side"
     />
     <ScoreUi
+      :gameId="gameId"
       :teamColor="teamColor"
       :teamColorDark="teamColorDark"
       :backgroundColor="backgroundColor"
+      :side="side"
+      :round="round"
+      :roundNumber="roundNumber"
+      :teamId="teamId"
     />
     <!-- <ScoreUi/> -->
   </div>
@@ -44,6 +49,7 @@ import ScoreUi from './ScoreUi.vue'
   }
 })
 export default class RoundTeamUi extends Vue {
+  @Prop() gameId!: string;
   @Prop() round!: Round;
   @Prop() teamId!: string;
 

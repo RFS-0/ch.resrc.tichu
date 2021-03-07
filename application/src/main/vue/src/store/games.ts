@@ -73,6 +73,32 @@ class Games extends VuexModule {
       )
     }
   }
+
+  @Mutation
+  changeroundscore(gameId: string, roundNumber: number, teamId: string, score: number) {
+    //check for valid score
+    if (score % 5 != 0) return;
+    if (score < -25) return;
+    if (score > 125 && score != 200) return;
+
+    const cardPoints = this.gameById(gameId)?.rounds[roundNumber].cardPoints;
+
+    // cardpoints not defined
+    if (!cardPoints) return;
+
+    const index = cardPoints?.findIndex(cp => cp.teamId == teamId);
+
+    // team not found in round
+    if (index == -1) return;
+    
+    cardPoints![index].value = score;
+    
+    const otherIndex = (index + 1) % 2;
+    let otherScore = cardPoints![otherIndex].value;
+    otherScore = 100 - score;
+    if (score == 200)
+      otherScore = 0;
+  }
 }
 
 export default Games

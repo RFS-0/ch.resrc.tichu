@@ -23,7 +23,8 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Ref, Prop } from "vue-property-decorator";
+import { Component, Vue, Ref, Prop, Watch } from "vue-property-decorator";
+import { Round } from "../../types"
 
 Component.registerHooks([
   'mounted'
@@ -33,14 +34,26 @@ Component.registerHooks([
 export default class ScoreInput extends Vue {
 
   @Ref('scroll1') readonly scrollWheel1!: HTMLElement;
-  @Ref('scroll2') readonly scrollWheel2!: HTMLElement;
 
+  @Prop() gameId!: Round;
+  @Prop() round!: Round;
+  @Prop() teamId!: string;
   @Prop() color!: string;
   @Prop() backgroundColor!: string;
 
   mounted() {
-    this.scrollToValue(this.scrollWheel2, 0);
-    this.scrollToValue(this.scrollWheel1, 0);
+    this.scrollToValue(this.scrollWheel1, this.score);
+  }
+
+  get score() {
+    let points = this.round.cardPoints?.find(points => points.teamId == this.teamId)?.value;
+    if (!points) points = 50;
+    return points;
+  }
+
+  @Watch('score')
+  onScoreChanged(score: number, oldScore: number) {
+    this.scrollToValue(this.scrollWheel1, this.score);
   }
 
   get colorVars() {
@@ -63,48 +76,12 @@ export default class ScoreInput extends Vue {
       return;
 
     const score = this.values[index];
-    if (this.score1 == score)
-      return;
-
-    this.score1 = score;
-    if(this.score1 == 0 && this.score2 == 200)
-      this.score2 = 200;
-    else if(this.score1 == 200)
-      this.score2 = 0;
-    else
-      this.score2 = 100 - this.score1;
-    this.scrollToValue(this.scrollWheel2, this.score2);
-    // console.log(this.selectedValue);
-  }
-
-  public onScroll2(): void {
-    if(this.scrollWheel1 == null)
-      return
-
-    const scroll = this.scrollWheel2.scrollTop;
-    const index = Math.round(scroll / 66);
-    if(index < 0 || index >= this.values.length)
-      return;
-
-    const score = this.values[index];
-    
-    if(this.score2 == score)
-      return;
-
-    this.score2 = score;
-    if(this.score2 == 0 && this.score1 == 200)
-      this.score1 = 200;
-    else if(this.score2 == 200)
-      this.score1 = 0;
-    else
-      this.score1 = 100 - this.score2;
-    this.scrollToValue(this.scrollWheel1, this.score1);
   }
 
   public scrollTo50(): void {
     const index = this.values.indexOf(50);
     const scroll = index * 66;
-    this.scrollWheel2.scrollTop = scroll;
+    this.scrollWheel1.scrollTop = scroll;
   }
 
   public scrollToValue(scrollWheel: HTMLElement, score: number): void

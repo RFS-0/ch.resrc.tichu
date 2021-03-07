@@ -36,6 +36,7 @@
       <div class="spacer">
       </div>
       <RoundUi
+        :gameId="game.id"
         :round="currentRound"
         :leftTeam="leftTeam"
         :rightTeam="rightTeam"
