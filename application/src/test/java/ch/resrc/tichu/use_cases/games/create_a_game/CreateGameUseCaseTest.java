@@ -13,7 +13,7 @@ import ch.resrc.tichu.use_cases.games.create_a_game.ports.input.CreateGameInput;
 import ch.resrc.tichu.use_cases.games.create_a_game.ports.output.CreateGameOutput;
 import ch.resrc.tichu.use_cases.games.create_a_game.ports.output.GameDocument;
 import ch.resrc.tichu.use_cases.ports.documents.PlayerDocument;
-import ch.resrc.tichu.use_cases.ports.documents.TeamDocument;
+import ch.resrc.tichu.use_cases.teams.ports.output.TeamDocument;
 import io.vavr.collection.HashSet;
 import org.junit.jupiter.api.Test;
 

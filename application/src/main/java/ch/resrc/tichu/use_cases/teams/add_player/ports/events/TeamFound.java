@@ -4,10 +4,10 @@ import ch.resrc.tichu.capabilities.events.Event;
 import ch.resrc.tichu.domain.entities.Player;
 import ch.resrc.tichu.domain.entities.Team;
 import ch.resrc.tichu.use_cases.ports.documents.PlayerDocument;
-import ch.resrc.tichu.use_cases.ports.documents.TeamDocument;
 import ch.resrc.tichu.use_cases.teams.add_player.ports.documents.IntendedPlayerAddition;
+import ch.resrc.tichu.use_cases.teams.ports.output.TeamDocument;
 
-import static ch.resrc.tichu.use_cases.ports.documents.TeamDocument.aTeamDocument;
+import static ch.resrc.tichu.use_cases.teams.ports.output.TeamDocument.aTeamDocument;
 
 public class TeamFound extends Event {
 

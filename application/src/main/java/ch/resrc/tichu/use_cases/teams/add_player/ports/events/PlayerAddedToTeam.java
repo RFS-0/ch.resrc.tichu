@@ -7,8 +7,8 @@ import ch.resrc.tichu.use_cases.ports.documents.PlayerDocument;
 import ch.resrc.tichu.use_cases.teams.add_player.ports.documents.PlayerAddedToTeamDocument;
 
 import static ch.resrc.tichu.use_cases.ports.documents.PlayerDocument.aPlayerDocument;
-import static ch.resrc.tichu.use_cases.ports.documents.TeamDocument.aTeamDocument;
 import static ch.resrc.tichu.use_cases.teams.add_player.ports.documents.PlayerAddedToTeamDocument.aPlayerAddedToTeamDocument;
+import static ch.resrc.tichu.use_cases.teams.ports.output.TeamDocument.aTeamDocument;
 
 public class PlayerAddedToTeam extends Event {
 

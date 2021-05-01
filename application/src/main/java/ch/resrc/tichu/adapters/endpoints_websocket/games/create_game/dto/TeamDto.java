@@ -1,7 +1,7 @@
 package ch.resrc.tichu.adapters.endpoints_websocket.games.create_game.dto;
 
 import ch.resrc.tichu.adapters.endpoints_websocket.teams.dto.PlayerDto;
-import ch.resrc.tichu.use_cases.ports.documents.TeamDocument;
+import ch.resrc.tichu.use_cases.teams.ports.output.TeamDocument;
 import io.vavr.collection.Set;
 
 import java.util.function.Consumer;

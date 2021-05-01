@@ -4,7 +4,7 @@ import ch.resrc.tichu.capabilities.validation.InvalidInputDetected;
 import ch.resrc.tichu.capabilities.validation.Validation;
 import ch.resrc.tichu.capabilities.validation.ValidationError;
 import ch.resrc.tichu.use_cases.ports.documents.PlayerDocument;
-import ch.resrc.tichu.use_cases.ports.documents.TeamDocument;
+import ch.resrc.tichu.use_cases.teams.ports.output.TeamDocument;
 import io.vavr.collection.Seq;
 import io.vavr.control.Either;
 import org.apache.commons.lang3.builder.ToStringBuilder;

@@ -1,4 +1,4 @@
-package ch.resrc.tichu.use_cases.ports.documents;
+package ch.resrc.tichu.use_cases.teams.ports.output;
 
 import ch.resrc.tichu.capabilities.validation.InvalidInputDetected;
 import ch.resrc.tichu.capabilities.validation.Validation;
@@ -6,6 +6,7 @@ import ch.resrc.tichu.capabilities.validation.ValidationError;
 import ch.resrc.tichu.domain.entities.Team;
 import ch.resrc.tichu.domain.value_objects.Id;
 import ch.resrc.tichu.domain.value_objects.Name;
+import ch.resrc.tichu.use_cases.ports.documents.PlayerDocument;
 import io.vavr.collection.Seq;
 import io.vavr.collection.Set;
 import io.vavr.control.Either;
@@ -16,7 +17,7 @@ import java.util.function.Supplier;
 import static ch.resrc.tichu.capabilities.validation.Validations.allOf;
 import static ch.resrc.tichu.capabilities.validation.Validations.attribute;
 import static ch.resrc.tichu.capabilities.validation.Validations.notNull;
-import static ch.resrc.tichu.use_cases.ports.documents.TeamDocumentValidationError.MUST_NOT_BE_NULL;
+import static ch.resrc.tichu.use_cases.teams.ports.output.TeamDocumentValidationError.MUST_NOT_BE_NULL;
 
 public class TeamDocument {
 

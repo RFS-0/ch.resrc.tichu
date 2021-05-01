@@ -8,7 +8,7 @@ import ch.resrc.tichu.domain.value_objects.Id;
 import ch.resrc.tichu.domain.value_objects.JoinCode;
 import ch.resrc.tichu.domain.value_objects.Round;
 import ch.resrc.tichu.use_cases.find_or_create_user.ports.output.UserDocument;
-import ch.resrc.tichu.use_cases.ports.documents.TeamDocument;
+import ch.resrc.tichu.use_cases.teams.ports.output.TeamDocument;
 import io.vavr.collection.Seq;
 import io.vavr.collection.Set;
 import io.vavr.control.Either;
