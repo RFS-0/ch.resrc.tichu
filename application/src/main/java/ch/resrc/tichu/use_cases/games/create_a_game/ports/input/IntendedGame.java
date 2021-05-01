@@ -17,10 +17,6 @@ public class IntendedGame implements InputData {
 
   private Id createdBy;
 
-  public Id createdBy() {
-    return createdBy;
-  }
-
   private IntendedGame() {
   }
 
@@ -44,9 +40,8 @@ public class IntendedGame implements InputData {
     return theCopy;
   }
 
-  public Builder but() {
-    return new Builder(this.copied(__ -> {
-    }));
+  public Id createdBy() {
+    return createdBy;
   }
 
   public static class Builder {
