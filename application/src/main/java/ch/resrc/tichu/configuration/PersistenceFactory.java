@@ -18,6 +18,7 @@ import ch.resrc.tichu.domain.operations.GetAllGames;
 import ch.resrc.tichu.domain.operations.GetAllPlayers;
 import ch.resrc.tichu.domain.operations.GetAllTeams;
 import ch.resrc.tichu.domain.operations.GetAllUsers;
+import ch.resrc.tichu.domain.operations.UpdateTeam;
 import software.amazon.awssdk.services.s3.S3Client;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -129,6 +130,21 @@ public class PersistenceFactory {
   }
 
   public GetAllTeams produceGetAllTeamsOperation(Environment environment, S3Client s3Client, String bucketName) {
+    switch (environment) {
+      case TEST -> {
+        return new InMemoryTeamsRepository();
+      }
+      case DEV, PROD -> {
+        if (microStreamTeamsRepository == null) {
+          microStreamTeamsRepository = new MicroStreamTeamsRepository(s3Client, bucketName);
+        }
+        return microStreamTeamsRepository;
+      }
+      default -> throw Defect.of(ProblemDiagnosis.of(ConfigurationProblem.INVALID_ENVIRONMENT));
+    }
+  }
+
+  public UpdateTeam produceUpdateTeamOperation(Environment environment, S3Client s3Client, String bucketName) {
     switch (environment) {
       case TEST -> {
         return new InMemoryTeamsRepository();
