@@ -5,9 +5,11 @@ import ch.resrc.tichu.capabilities.errorhandling.Problem;
 import ch.resrc.tichu.domain.entities.Game;
 import ch.resrc.tichu.domain.operations.AddGame;
 import ch.resrc.tichu.domain.operations.GetAllGames;
+import ch.resrc.tichu.domain.operations.UpdateGame;
 import io.vavr.collection.HashSet;
 import io.vavr.collection.Set;
 import io.vavr.control.Either;
+import io.vavr.control.Option;
 import one.microstream.afs.aws.s3.S3Connector;
 import one.microstream.afs.blobstore.BlobStoreFileSystem;
 import one.microstream.reflect.ClassLoaderProvider;
@@ -17,7 +19,7 @@ import software.amazon.awssdk.services.s3.S3Client;
 
 import javax.annotation.PreDestroy;
 
-public class MicroStreamGamesRepository implements AddGame, GetAllGames {
+public class MicroStreamGamesRepository implements AddGame, GetAllGames, UpdateGame {
 
   private final GamesRoot gamesRoot;
   private final EmbeddedStorageManager storage;
@@ -44,5 +46,19 @@ public class MicroStreamGamesRepository implements AddGame, GetAllGames {
   @Override
   public Either<? extends Problem, Set<Game>> getAll() {
     return Either.right(HashSet.ofAll(gamesRoot.games()));
+  }
+
+  @Override
+  public Either<? extends Problem, Set<Game>> update(Set<Game> existing, Game updatedGame) {
+    Option<Game> maybeToBeUpdated = existing.find(game -> game.id().equals(updatedGame.id()));
+    if (!maybeToBeUpdated.isDefined()) {
+      return Either.left(PersistenceProblem.UPDATE_FAILED_DUE_TO_MISSING_ENTITY);
+    }
+
+    Game teamToUpdate = maybeToBeUpdated.get();
+
+    gamesRoot.update(existing.remove(teamToUpdate).add(updatedGame));
+
+    return Either.right(gamesRoot.games());
   }
 }

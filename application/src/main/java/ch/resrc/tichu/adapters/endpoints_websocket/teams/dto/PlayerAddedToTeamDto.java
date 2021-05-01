@@ -1,6 +1,6 @@
 package ch.resrc.tichu.adapters.endpoints_websocket.teams.dto;
 
-import ch.resrc.tichu.adapters.endpoints_websocket.games.create_game.dto.TeamDto;
+import ch.resrc.tichu.adapters.endpoints_websocket.dto.TeamDto;
 import ch.resrc.tichu.use_cases.teams.add_player.ports.documents.PlayerAddedToTeamDocument;
 
 import java.util.function.Consumer;

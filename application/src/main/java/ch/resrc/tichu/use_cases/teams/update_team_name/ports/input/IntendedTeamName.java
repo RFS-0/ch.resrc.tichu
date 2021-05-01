@@ -17,6 +17,7 @@ import static ch.resrc.tichu.use_cases.teams.update_team_name.ports.input.Intend
 
 public class IntendedTeamName {
 
+  private Id gameId;
   private Id teamId;
   private Name teamName;
 
@@ -24,6 +25,7 @@ public class IntendedTeamName {
   }
 
   private IntendedTeamName(IntendedTeamName other) {
+    this.gameId = other.gameId;
     this.teamId = other.teamId;
     this.teamName = other.teamName;
   }
@@ -40,9 +42,14 @@ public class IntendedTeamName {
 
   private static Validation<Seq<ValidationError>, IntendedTeamName> validation() {
     return allOf(
+      attribute(x -> x.gameId, notNull(MUST_NOT_BE_NULL)),
       attribute(x -> x.teamId, notNull(MUST_NOT_BE_NULL)),
       attribute(x -> x.teamName, notNull(MUST_NOT_BE_NULL))
     );
+  }
+
+  public Id gameId() {
+    return gameId;
   }
 
   public Name teamName() {
@@ -63,6 +70,10 @@ public class IntendedTeamName {
 
     private Builder(IntendedTeamName workpiece) {
       this.workpiece = workpiece;
+    }
+
+    public IntendedTeamName.Builder withGameId(Id gameId) {
+      return new IntendedTeamName.Builder(workpiece.copied(but -> but.gameId = gameId));
     }
 
     public IntendedTeamName.Builder withTeamId(Id teamId) {

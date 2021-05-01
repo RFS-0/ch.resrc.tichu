@@ -18,10 +18,14 @@ import ch.resrc.tichu.domain.operations.GetAllGames;
 import ch.resrc.tichu.domain.operations.GetAllPlayers;
 import ch.resrc.tichu.domain.operations.GetAllTeams;
 import ch.resrc.tichu.domain.operations.GetAllUsers;
+import ch.resrc.tichu.domain.operations.UpdateGame;
 import ch.resrc.tichu.domain.operations.UpdateTeam;
+import ch.resrc.tichu.use_cases.ports.output_boundary.OutputBoundary;
 import software.amazon.awssdk.services.s3.S3Client;
 
 import javax.enterprise.context.ApplicationScoped;
+
+import static ch.resrc.tichu.configuration.ConfigurationProblem.INVALID_ENVIRONMENT;
 
 @ApplicationScoped
 public class PersistenceFactory {
@@ -42,9 +46,7 @@ public class PersistenceFactory {
         case "prod" -> {
           return PROD;
         }
-        default -> {
-          throw Defect.of(ProblemDiagnosis.of(ConfigurationProblem.INVALID_ENVIRONMENT));
-        }
+        default -> throw Defect.of(ProblemDiagnosis.of(INVALID_ENVIRONMENT));
       }
     }
   }
@@ -60,12 +62,9 @@ public class PersistenceFactory {
         return new InMemoryUserRepository();
       }
       case DEV, PROD -> {
-        if (microStreamUsersRepository == null) {
-          microStreamUsersRepository = new MicroStreamUsersRepository(s3Client, bucketName);
-        }
-        return microStreamUsersRepository;
+        return getOrCreateRepository(MicroStreamUsersRepository.class, s3Client, bucketName);
       }
-      default -> throw Defect.of(ProblemDiagnosis.of(ConfigurationProblem.INVALID_ENVIRONMENT));
+      default -> throw Defect.of(ProblemDiagnosis.of(INVALID_ENVIRONMENT));
     }
   }
 
@@ -75,12 +74,9 @@ public class PersistenceFactory {
         return new InMemoryUserRepository();
       }
       case DEV, PROD -> {
-        if (microStreamUsersRepository == null) {
-          microStreamUsersRepository = new MicroStreamUsersRepository(s3Client, bucketName);
-        }
-        return microStreamUsersRepository;
+        return getOrCreateRepository(MicroStreamUsersRepository.class, s3Client, bucketName);
       }
-      default -> throw Defect.of(ProblemDiagnosis.of(ConfigurationProblem.INVALID_ENVIRONMENT));
+      default -> throw Defect.of(ProblemDiagnosis.of(INVALID_ENVIRONMENT));
     }
   }
 
@@ -90,12 +86,9 @@ public class PersistenceFactory {
         return new InMemoryGamesRepository();
       }
       case DEV, PROD -> {
-        if (microStreamGamesRepository == null) {
-          microStreamGamesRepository = new MicroStreamGamesRepository(s3Client, bucketName);
-        }
-        return microStreamGamesRepository;
+        return getOrCreateRepository(MicroStreamGamesRepository.class, s3Client, bucketName);
       }
-      default -> throw Defect.of(ProblemDiagnosis.of(ConfigurationProblem.INVALID_ENVIRONMENT));
+      default -> throw Defect.of(ProblemDiagnosis.of(INVALID_ENVIRONMENT));
     }
   }
 
@@ -105,12 +98,21 @@ public class PersistenceFactory {
         return new InMemoryGamesRepository();
       }
       case DEV, PROD -> {
-        if (microStreamGamesRepository == null) {
-          microStreamGamesRepository = new MicroStreamGamesRepository(s3Client, bucketName);
-        }
-        return microStreamGamesRepository;
+        return getOrCreateRepository(MicroStreamGamesRepository.class, s3Client, bucketName);
       }
-      default -> throw Defect.of(ProblemDiagnosis.of(ConfigurationProblem.INVALID_ENVIRONMENT));
+      default -> throw Defect.of(ProblemDiagnosis.of(INVALID_ENVIRONMENT));
+    }
+  }
+
+  public UpdateGame produceUpdateGameOperation(Environment environment, S3Client s3Client, String bucketName) {
+    switch (environment) {
+      case TEST -> {
+        return new InMemoryGamesRepository();
+      }
+      case DEV, PROD -> {
+        return getOrCreateRepository(MicroStreamGamesRepository.class, s3Client, bucketName);
+      }
+      default -> throw Defect.of(ProblemDiagnosis.of(INVALID_ENVIRONMENT));
     }
   }
 
@@ -120,12 +122,9 @@ public class PersistenceFactory {
         return new InMemoryTeamsRepository();
       }
       case DEV, PROD -> {
-        if (microStreamTeamsRepository == null) {
-          microStreamTeamsRepository = new MicroStreamTeamsRepository(s3Client, bucketName);
-        }
-        return microStreamTeamsRepository;
+        return getOrCreateRepository(MicroStreamTeamsRepository.class, s3Client, bucketName);
       }
-      default -> throw Defect.of(ProblemDiagnosis.of(ConfigurationProblem.INVALID_ENVIRONMENT));
+      default -> throw Defect.of(ProblemDiagnosis.of(INVALID_ENVIRONMENT));
     }
   }
 
@@ -135,12 +134,9 @@ public class PersistenceFactory {
         return new InMemoryTeamsRepository();
       }
       case DEV, PROD -> {
-        if (microStreamTeamsRepository == null) {
-          microStreamTeamsRepository = new MicroStreamTeamsRepository(s3Client, bucketName);
-        }
-        return microStreamTeamsRepository;
+        return getOrCreateRepository(MicroStreamTeamsRepository.class, s3Client, bucketName);
       }
-      default -> throw Defect.of(ProblemDiagnosis.of(ConfigurationProblem.INVALID_ENVIRONMENT));
+      default -> throw Defect.of(ProblemDiagnosis.of(INVALID_ENVIRONMENT));
     }
   }
 
@@ -150,12 +146,9 @@ public class PersistenceFactory {
         return new InMemoryTeamsRepository();
       }
       case DEV, PROD -> {
-        if (microStreamTeamsRepository == null) {
-          microStreamTeamsRepository = new MicroStreamTeamsRepository(s3Client, bucketName);
-        }
-        return microStreamTeamsRepository;
+        return getOrCreateRepository(MicroStreamTeamsRepository.class, s3Client, bucketName);
       }
-      default -> throw Defect.of(ProblemDiagnosis.of(ConfigurationProblem.INVALID_ENVIRONMENT));
+      default -> throw Defect.of(ProblemDiagnosis.of(INVALID_ENVIRONMENT));
     }
   }
 
@@ -165,12 +158,9 @@ public class PersistenceFactory {
         return new InMemoryPlayersRepository();
       }
       case DEV, PROD -> {
-        if (microStreamPlayersRepository == null) {
-          microStreamPlayersRepository = new MicroStreamPlayersRepository(s3Client, bucketName);
-        }
-        return microStreamPlayersRepository;
+        return getOrCreateRepository(MicroStreamPlayersRepository.class, s3Client, bucketName);
       }
-      default -> throw Defect.of(ProblemDiagnosis.of(ConfigurationProblem.INVALID_ENVIRONMENT));
+      default -> throw Defect.of(ProblemDiagnosis.of(INVALID_ENVIRONMENT));
     }
   }
 
@@ -180,12 +170,38 @@ public class PersistenceFactory {
         return new InMemoryPlayersRepository();
       }
       case DEV, PROD -> {
-        if (microStreamPlayersRepository == null) {
-          microStreamPlayersRepository = new MicroStreamPlayersRepository(s3Client, bucketName);
-        }
-        return microStreamPlayersRepository;
+        return getOrCreateRepository(MicroStreamPlayersRepository.class, s3Client, bucketName);
       }
-      default -> throw Defect.of(ProblemDiagnosis.of(ConfigurationProblem.INVALID_ENVIRONMENT));
+      default -> throw Defect.of(ProblemDiagnosis.of(INVALID_ENVIRONMENT));
+    }
+  }
+
+  @SuppressWarnings("unchecked")
+  private <O extends OutputBoundary> O getOrCreateRepository(Class<? extends OutputBoundary> repositoryClass,
+                                                             S3Client s3Client,
+                                                             String bucketName) {
+    if (repositoryClass.isAssignableFrom(MicroStreamUsersRepository.class)) {
+      if (microStreamUsersRepository == null) {
+        microStreamUsersRepository = new MicroStreamUsersRepository(s3Client, bucketName);
+      }
+      return (O) microStreamUsersRepository;
+    } else if (repositoryClass.isAssignableFrom(InMemoryGamesRepository.class)) {
+      if (microStreamGamesRepository == null) {
+        microStreamGamesRepository = new MicroStreamGamesRepository(s3Client, bucketName);
+      }
+      return (O) microStreamGamesRepository;
+    } else if (repositoryClass.isAssignableFrom(InMemoryTeamsRepository.class)) {
+      if (microStreamTeamsRepository == null) {
+        microStreamTeamsRepository = new MicroStreamTeamsRepository(s3Client, bucketName);
+      }
+      return (O) microStreamTeamsRepository;
+    } else if (repositoryClass.isAssignableFrom(InMemoryPlayersRepository.class)) {
+      if (microStreamPlayersRepository == null) {
+        microStreamPlayersRepository = new MicroStreamPlayersRepository(s3Client, bucketName);
+      }
+      return (O) microStreamPlayersRepository;
+    } else {
+      throw Defect.of(ProblemDiagnosis.of(INVALID_ENVIRONMENT));
     }
   }
 }

@@ -23,7 +23,7 @@ public class Game {
   private final Id id;
   private final User createdBy;
   private final JoinCode joinCode;
-  private final Set<Team> teams;
+  private Set<Team> teams;
   private final Set<Round> rounds;
   private final Instant createdAt;
   private Instant finishedAt;
@@ -81,6 +81,10 @@ public class Game {
 
   public Set<Team> teams() {
     return teams;
+  }
+
+  public Game butTeam(Team team) {
+    return copied(game -> game.teams = game.teams.remove(team).add(team));
   }
 
   public Set<Round> rounds() {

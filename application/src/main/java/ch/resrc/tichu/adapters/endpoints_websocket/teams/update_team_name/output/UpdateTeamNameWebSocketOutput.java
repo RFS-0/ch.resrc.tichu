@@ -1,26 +1,26 @@
-package ch.resrc.tichu.adapters.endpoints_websocket.games.create_game.output;
+package ch.resrc.tichu.adapters.endpoints_websocket.teams.update_team_name.output;
 
 import ch.resrc.tichu.adapters.endpoints_websocket.games.create_game.dto.GameDto;
 import ch.resrc.tichu.capabilities.json.Json;
 import ch.resrc.tichu.capabilities.validation.ValidationError;
 import ch.resrc.tichu.domain.value_objects.Id;
-import ch.resrc.tichu.use_cases.games.create_a_game.ports.output.CreateGameOutput;
 import ch.resrc.tichu.use_cases.games.create_a_game.ports.output.GameDocument;
+import ch.resrc.tichu.use_cases.teams.update_team_name.ports.output.UpdateTeamNameOutput;
 import io.vavr.collection.Seq;
 import io.vavr.control.Either;
 
 import static ch.resrc.tichu.capabilities.errorhandling.DomainProblem.INVARIANT_VIOLATED;
 import static ch.resrc.tichu.capabilities.errorhandling.DomainProblemDetected.supplierFor;
 
-public class CreatedGameWebSocketOutput {
+public class UpdateTeamNameWebSocketOutput {
 
   private final Json json;
   private final Id receiver;
   private final GameDto gameDto;
 
-  public CreatedGameWebSocketOutput(Json json, CreateGameOutput.Response response) {
+  public UpdateTeamNameWebSocketOutput(Json json, UpdateTeamNameOutput.Response response) {
     this.json = json;
-    this.receiver = response.toBePresented().createdBy().id();
+    this.receiver = response.toBePresented().id();
     this.gameDto = validateGameDto(response.toBePresented()).getOrElseThrow(supplierFor(INVARIANT_VIOLATED));
   }
 

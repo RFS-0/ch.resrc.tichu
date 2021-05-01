@@ -1,21 +1,21 @@
 package ch.resrc.tichu.use_cases.teams.update_team_name.ports.output;
 
 import ch.resrc.tichu.use_cases.UseCaseOutput;
-import ch.resrc.tichu.use_cases.teams.ports.output.TeamDocument;
+import ch.resrc.tichu.use_cases.games.create_a_game.ports.output.GameDocument;
 
 public interface UpdateTeamNameOutput extends UseCaseOutput {
 
-  TeamDocument get();
+  GameDocument get();
 
   class Response implements UseCaseOutput {
 
-    private final TeamDocument toBePresented;
+    private final GameDocument toBePresented;
 
-    public Response(TeamDocument toBePresented) {
+    public Response(GameDocument toBePresented) {
       this.toBePresented = toBePresented;
     }
 
-    public TeamDocument toBePresented() {
+    public GameDocument toBePresented() {
       return toBePresented;
     }
   }

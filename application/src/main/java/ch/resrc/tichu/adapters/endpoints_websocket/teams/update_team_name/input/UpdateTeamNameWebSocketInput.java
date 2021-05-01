@@ -22,6 +22,7 @@ public class UpdateTeamNameWebSocketInput {
 
   private Either<Seq<ValidationError>, IntendedTeamName> validatedIntendedTeamName(IntendedTeamNameDto dto) {
     return anIntendedTeamName()
+      .withGameId(parse(Id.class, dto.gameId))
       .withTeamId(parse(Id.class, dto.teamId))
       .withTeamName(parse(Name.class, dto.teamName))
       .buildResult();

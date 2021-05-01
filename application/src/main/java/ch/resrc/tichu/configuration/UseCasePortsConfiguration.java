@@ -8,6 +8,7 @@ import ch.resrc.tichu.domain.operations.GetAllGames;
 import ch.resrc.tichu.domain.operations.GetAllPlayers;
 import ch.resrc.tichu.domain.operations.GetAllTeams;
 import ch.resrc.tichu.domain.operations.GetAllUsers;
+import ch.resrc.tichu.domain.operations.UpdateGame;
 import ch.resrc.tichu.domain.operations.UpdateTeam;
 import ch.resrc.tichu.use_cases.find_or_create_user.FindOrCreateUserUseCase;
 import ch.resrc.tichu.use_cases.games.create_a_game.CreateGameUseCase;
@@ -25,7 +26,7 @@ import ch.resrc.tichu.use_cases.teams.update_team_name.ports.UpdateTeamNameUseCa
 
 import javax.enterprise.context.ApplicationScoped;
 
-public class UseCasePortsConfiguration {
+public final class UseCasePortsConfiguration {
 
   @ApplicationScoped
   public CreateGameUseCase createGame(GetAllGames getAllGames,
@@ -47,9 +48,13 @@ public class UseCasePortsConfiguration {
   }
 
   @ApplicationScoped
-  public UpdateTeamNameUseCase updateTeamName(GetAllTeams getAllTeams,
+  public UpdateTeamNameUseCase updateTeamName(GetAllGames getAllGames,
+                                              UpdateGame updateGame,
+                                              GetAllTeams getAllTeams,
                                               UpdateTeam updateTeam) {
     return new UpdateTeamNameUseCase(
+      getAllGames,
+      updateGame,
       getAllTeams,
       updateTeam
     );

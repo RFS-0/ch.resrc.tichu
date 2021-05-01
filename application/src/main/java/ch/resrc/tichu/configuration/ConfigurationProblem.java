@@ -5,6 +5,7 @@ import ch.resrc.tichu.capabilities.errorhandling.Problem;
 public enum ConfigurationProblem implements Problem {
 
   INVALID_ENVIRONMENT("Configuration failed", "Configuration failed since an invalid environment was specified."),
+  INVALID_REPOSITORY("Configuration failed", "Configuration failed since an invalid repository was specified."),
   INVALID_PROFILE("Configuration failed", "Configuration failed since an invalid profile was specified.");
 
   private final String title;
