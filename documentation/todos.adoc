@@ -3,7 +3,6 @@
 === Current task
 
 * Provide Implementation of UpdateTeamNameFake
-** Implement Domain Operation
 ** Implement Domain Operation in Repository
 ** Implement Use Case Input
 ** Implement Use Case
