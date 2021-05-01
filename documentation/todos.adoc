@@ -2,17 +2,94 @@
 
 === Current task
 
-* Implement UpdateTeamNameFake
+* Provide Implementation of UpdateTeamNameFake
+** Implement Domain Operation
+** Implement Domain Operation in Repository
+** Implement Use Case Input
+** Implement Use Case
+** Implement Endpoint Input
+** Implement Endpoint Output
+** Implement Endpoint(s)
 
 === Open
 
-* Implement AddFirstPlayerToTeamFake
-* RemoveFirstPlayerFromTeamFake
-* AddSecondPlayerToTeamFake
-* RemoveSecondPlayerFromTeamFake
-* UpdateRankFake
-* ResetRankFake
-* UpdateCardPointsFake
-* FinishRoundFake
-* UpdateRoundFake
-* FinishGameFake
+* Provide Implementation of Implement AddFirstPlayerToTeamFake
+** Implement Domain Operation
+** Implement Domain Operation in Repository
+** Implement Use Case Input
+** Implement Use Case
+** Implement Endpoint Input
+** Implement Endpoint Output
+** Implement Endpoint(s)
+* Provide Implementation of RemoveFirstPlayerFromTeamFake
+** Implement Domain Operation
+** Implement Domain Operation in Repository
+** Implement Use Case Input
+** Implement Use Case
+** Implement Endpoint Input
+** Implement Endpoint Output
+** Implement Endpoint(s)
+* Provide Implementation of AddSecondPlayerToTeamFake
+** Implement Domain Operation
+** Implement Domain Operation in Repository
+** Implement Use Case Input
+** Implement Use Case
+** Implement Endpoint Input
+** Implement Endpoint Output
+** Implement Endpoint(s)
+* Provide Implementation of RemoveSecondPlayerFromTeamFake
+** Implement Domain Operation
+** Implement Domain Operation in Repository
+** Implement Use Case Input
+** Implement Use Case
+** Implement Endpoint Input
+** Implement Endpoint Output
+** Implement Endpoint(s)
+* Provide Implementation of UpdateRankFake
+** Implement Domain Operation
+** Implement Domain Operation in Repository
+** Implement Use Case Input
+** Implement Use Case
+** Implement Endpoint Input
+** Implement Endpoint Output
+** Implement Endpoint(s)
+* Provide Implementation of ResetRankFake
+** Implement Domain Operation
+** Implement Domain Operation in Repository
+** Implement Use Case Input
+** Implement Use Case
+** Implement Endpoint Input
+** Implement Endpoint Output
+** Implement Endpoint(s)
+* Provide Implementation of UpdateCardPointsFake
+** Implement Domain Operation
+** Implement Domain Operation in Repository
+** Implement Use Case Input
+** Implement Use Case
+** Implement Endpoint Input
+** Implement Endpoint Output
+** Implement Endpoint(s)
+* Provide Implementation of FinishRoundFake
+** Implement Domain Operation
+** Implement Domain Operation in Repository
+** Implement Use Case Input
+** Implement Use Case
+** Implement Endpoint Input
+** Implement Endpoint Output
+** Implement Endpoint(s)
+* Provide Implementation of UpdateRoundFake
+** Implement Domain Operation
+** Implement Domain Operation in Repository
+** Implement Use Case Input
+** Implement Use Case
+** Implement Endpoint Input
+** Implement Endpoint Output
+** Implement Endpoint(s)
+* Provide Implementation of FinishGameFake
+** Implement Domain Operation
+** Implement Domain Operation in Repository
+** Implement Use Case Input
+** Implement Use Case
+** Implement Endpoint Input
+** Implement Endpoint Output
+** Implement Endpoint(s)
