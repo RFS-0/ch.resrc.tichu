@@ -9,17 +9,23 @@ It focuses on the following topics:
 
 == Overview
 
-The application's functionality is implemented as use cases. The currently available use cases are:
+The application's functionality is implemented as use cases.
+The currently available use cases are:
 
 * Login
 * Create a game
+* UpdateTeamNameUseCase
 
-[graphviz, usecases, svg]
+[graphviz,usecases,svg]
 ....
 digraph login {
     "tichu.resrc.ch" -> "/login"
     "/login" -> "FindOrCreateUserUseCase"
     "FindOrCreateUserUseCase" -> "/start"
+    "/start" -> "CreateGameUseCase"
+    "CreateGameUseCase" -> "/configure-game/:game_id"
+    "/configure-game/:game_id" -> UpdateTeamNameUseCase
+    UpdateTeamNameUseCase -> "/configure-game/:game_id"
 }
 ....
 
@@ -28,16 +34,14 @@ The following chapter describe each of these use cases in more detail.
 
 === Login
 
-The entry point for all users of the application is `tichu.resrc.ch`. The user must complete the login use case to trigger any of the other use cases:
+The entry point for all users of the application is `tichu.resrc.ch`.The user must complete the login use case to trigger any of the other use cases:
 
-[graphviz, login-flow, svg]
+[graphviz,login-flow,svg]
 ....
 digraph login {
     "tichu.resrc.ch" -> "/login"
     "/login" -> "FindOrCreateUserUseCase"
     "FindOrCreateUserUseCase" -> "/start"
-    "/start" -> "CreateGameUseCase"
-    "CreateGameUseCase" -> "/configure-game/:game_id"
 }
 ....
 
