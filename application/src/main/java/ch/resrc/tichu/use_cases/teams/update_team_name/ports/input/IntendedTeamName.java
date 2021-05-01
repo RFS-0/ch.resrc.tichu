@@ -28,6 +28,10 @@ public class IntendedTeamName {
     this.teamName = other.teamName;
   }
 
+  public static IntendedTeamName.Builder anIntendedTeamName() {
+    return new Builder();
+  }
+
   private IntendedTeamName copied(Consumer<IntendedTeamName> modification) {
     var theCopy = new IntendedTeamName(this);
     modification.accept(theCopy);

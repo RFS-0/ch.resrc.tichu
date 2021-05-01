@@ -29,6 +29,10 @@ public class IntendedUser {
     this.name = other.name;
   }
 
+  public static IntendedUser.Builder anIntendedUser() {
+    return new Builder();
+  }
+
   private IntendedUser copied(Consumer<IntendedUser> modification) {
     var theCopy = new IntendedUser(this);
     modification.accept(theCopy);
@@ -40,10 +44,6 @@ public class IntendedUser {
       attribute(x -> x.email, notNull(MUST_NOT_BE_NULL)),
       attribute(x -> x.name, notNull(MUST_NOT_BE_NULL))
     );
-  }
-
-  public static IntendedUser.Builder anIntendedUser() {
-    return new Builder();
   }
 
   public Email email() {
