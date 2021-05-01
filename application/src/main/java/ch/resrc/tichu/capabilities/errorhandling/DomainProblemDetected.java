@@ -1,9 +1,9 @@
 package ch.resrc.tichu.capabilities.errorhandling;
 
-import static ch.resrc.tichu.capabilities.errorhandling.ProblemDiagnosis.aProblemDiagnosis;
-
 import java.util.List;
+import java.util.function.Supplier;
 
+import static ch.resrc.tichu.capabilities.errorhandling.ProblemDiagnosis.aProblemDiagnosis;
 
 public class DomainProblemDetected extends ProblemDetected {
 
@@ -14,6 +14,10 @@ public class DomainProblemDetected extends ProblemDetected {
 
   private DomainProblemDetected(DomainProblemDetected other) {
     super(other);
+  }
+
+  public static Supplier<ProblemDetected> supplierFor(Problem problem) {
+    return () -> DomainProblemDetected.of(problem);
   }
 
   public static DomainProblemDetected of(DomainProblem detected) {
