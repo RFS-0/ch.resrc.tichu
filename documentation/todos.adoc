@@ -3,7 +3,6 @@
 === Current task
 
 * Provide Implementation of UpdateTeamNameFake
-** Implement Use Case
 ** Implement Endpoint Input
 ** Implement Endpoint Output
 ** Implement Endpoint(s)

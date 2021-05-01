@@ -7,7 +7,7 @@ import ch.resrc.tichu.use_cases.teams.update_team_name.ports.output.UpdateTeamNa
 @FunctionalInterface
 public interface UpdateTeamNameInput extends InputBoundary {
 
-  UpdateTeamNameOutput apply(Request requested);
+  UpdateTeamNameOutput.Response apply(Request requested);
 
   class Request implements UseCaseInput {
 

@@ -2,6 +2,7 @@ package ch.resrc.tichu.use_cases.teams.update_team_name.ports.input;
 
 import ch.resrc.tichu.capabilities.validation.Validation;
 import ch.resrc.tichu.capabilities.validation.ValidationError;
+import ch.resrc.tichu.domain.value_objects.Id;
 import ch.resrc.tichu.domain.value_objects.Name;
 import io.vavr.collection.Seq;
 import io.vavr.control.Either;
@@ -16,12 +17,14 @@ import static ch.resrc.tichu.use_cases.teams.update_team_name.ports.input.Intend
 
 public class IntendedTeamName {
 
+  private Id teamId;
   private Name teamName;
 
   private IntendedTeamName() {
   }
 
   private IntendedTeamName(IntendedTeamName other) {
+    this.teamId = other.teamId;
     this.teamName = other.teamName;
   }
 
@@ -33,12 +36,17 @@ public class IntendedTeamName {
 
   private static Validation<Seq<ValidationError>, IntendedTeamName> validation() {
     return allOf(
+      attribute(x -> x.teamId, notNull(MUST_NOT_BE_NULL)),
       attribute(x -> x.teamName, notNull(MUST_NOT_BE_NULL))
     );
   }
 
   public Name teamName() {
     return teamName;
+  }
+
+  public Id teamId() {
+    return teamId;
   }
 
   public static class Builder {
@@ -51,6 +59,10 @@ public class IntendedTeamName {
 
     private Builder(IntendedTeamName workpiece) {
       this.workpiece = workpiece;
+    }
+
+    public IntendedTeamName.Builder withTeamId(Id teamId) {
+      return new IntendedTeamName.Builder(workpiece.copied(but -> but.teamId = teamId));
     }
 
     public IntendedTeamName.Builder withTeamName(Name teamName) {

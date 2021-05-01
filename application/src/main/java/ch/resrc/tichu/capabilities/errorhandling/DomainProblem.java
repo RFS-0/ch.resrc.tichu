@@ -16,6 +16,8 @@ public enum DomainProblem implements Problem {
 
   TEAM_NOT_SAVED("Team with id=<${id}> could not be saved."),
 
+  TEAM_NOT_UPDATED("Team with id=<${id}> could not be updated."),
+
   TEAMS_NOT_FOUND("Could not load existing teams."),
 
   PLAYER_NOT_FOUND("Player with id=<${id}> does not exist."),

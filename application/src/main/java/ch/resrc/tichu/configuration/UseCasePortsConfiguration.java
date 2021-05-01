@@ -8,6 +8,7 @@ import ch.resrc.tichu.domain.operations.GetAllGames;
 import ch.resrc.tichu.domain.operations.GetAllPlayers;
 import ch.resrc.tichu.domain.operations.GetAllTeams;
 import ch.resrc.tichu.domain.operations.GetAllUsers;
+import ch.resrc.tichu.domain.operations.UpdateTeam;
 import ch.resrc.tichu.use_cases.find_or_create_user.FindOrCreateUserUseCase;
 import ch.resrc.tichu.use_cases.games.create_a_game.CreateGameUseCase;
 import ch.resrc.tichu.use_cases.teams.add_player.add_first_player.AddFirstPlayerToTeamUseCase;
@@ -20,6 +21,7 @@ import ch.resrc.tichu.use_cases.teams.remove_player.remove_first_player_from_tea
 import ch.resrc.tichu.use_cases.teams.remove_player.remove_first_player_from_team.ports.inbound.RemoveFirstPlayerFromTeam;
 import ch.resrc.tichu.use_cases.teams.remove_player.remove_second_player_from_team.RemoveSecondPlayerFromTeamUseCase;
 import ch.resrc.tichu.use_cases.teams.remove_player.remove_second_player_from_team.ports.inbound.RemoveSecondPlayerFromTeam;
+import ch.resrc.tichu.use_cases.teams.update_team_name.ports.UpdateTeamNameUseCase;
 
 import javax.enterprise.context.ApplicationScoped;
 
@@ -41,6 +43,15 @@ public class UseCasePortsConfiguration {
       getAllPlayers,
       addPlayer,
       getAllUsers
+    );
+  }
+
+  @ApplicationScoped
+  public UpdateTeamNameUseCase updateTeamName(GetAllTeams getAllTeams,
+                                              UpdateTeam updateTeam) {
+    return new UpdateTeamNameUseCase(
+      getAllTeams,
+      updateTeam
     );
   }
 
