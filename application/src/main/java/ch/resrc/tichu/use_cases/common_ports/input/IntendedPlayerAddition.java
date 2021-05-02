@@ -1,4 +1,4 @@
-package ch.resrc.tichu.use_cases.teams.add_player.ports.documents;
+package ch.resrc.tichu.use_cases.common_ports.input;
 
 import ch.resrc.tichu.capabilities.validation.Validation;
 import ch.resrc.tichu.capabilities.validation.ValidationError;

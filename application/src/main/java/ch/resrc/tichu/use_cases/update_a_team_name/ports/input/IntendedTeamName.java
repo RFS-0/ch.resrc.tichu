@@ -1,4 +1,4 @@
-package ch.resrc.tichu.use_cases.games.update_a_team_name.ports.input;
+package ch.resrc.tichu.use_cases.update_a_team_name.ports.input;
 
 import ch.resrc.tichu.capabilities.validation.Validation;
 import ch.resrc.tichu.capabilities.validation.ValidationError;
@@ -13,7 +13,7 @@ import java.util.function.Supplier;
 import static ch.resrc.tichu.capabilities.validation.Validations.allOf;
 import static ch.resrc.tichu.capabilities.validation.Validations.attribute;
 import static ch.resrc.tichu.capabilities.validation.Validations.notNull;
-import static ch.resrc.tichu.use_cases.games.update_a_team_name.ports.input.IntendedTeamNameValidationErrors.MUST_NOT_BE_NULL;
+import static ch.resrc.tichu.use_cases.update_a_team_name.ports.input.IntendedTeamNameValidationErrors.MUST_NOT_BE_NULL;
 
 public class IntendedTeamName {
 

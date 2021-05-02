@@ -1,4 +1,4 @@
-package ch.resrc.tichu.use_cases.games.create_a_game;
+package ch.resrc.tichu.use_cases.create_a_game;
 
 import ch.resrc.tichu.adapters.persistence_in_memory.InMemoryGamesRepository;
 import ch.resrc.tichu.adapters.persistence_in_memory.InMemoryPlayersRepository;
@@ -8,10 +8,10 @@ import ch.resrc.tichu.domain.entities.User;
 import ch.resrc.tichu.domain.value_objects.Email;
 import ch.resrc.tichu.domain.value_objects.Id;
 import ch.resrc.tichu.domain.value_objects.Name;
+import ch.resrc.tichu.use_cases.create_a_game.ports.input.CreateGameInput;
+import ch.resrc.tichu.use_cases.create_a_game.ports.output.CreateGameOutput;
+import ch.resrc.tichu.use_cases.create_a_game.ports.output.GameDocument;
 import ch.resrc.tichu.use_cases.find_or_create_user.ports.output.UserDocument;
-import ch.resrc.tichu.use_cases.games.create_a_game.ports.input.CreateGameInput;
-import ch.resrc.tichu.use_cases.games.create_a_game.ports.output.CreateGameOutput;
-import ch.resrc.tichu.use_cases.games.create_a_game.ports.output.GameDocument;
 import ch.resrc.tichu.use_cases.ports.documents.PlayerDocument;
 import ch.resrc.tichu.use_cases.teams.ports.output.TeamDocument;
 import io.vavr.collection.HashSet;
@@ -20,7 +20,7 @@ import org.junit.jupiter.api.Test;
 import java.time.Instant;
 import java.util.Objects;
 
-import static ch.resrc.tichu.use_cases.games.create_a_game.ports.input.IntendedGame.anIntendedGame;
+import static ch.resrc.tichu.use_cases.create_a_game.ports.input.IntendedGame.anIntendedGame;
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 

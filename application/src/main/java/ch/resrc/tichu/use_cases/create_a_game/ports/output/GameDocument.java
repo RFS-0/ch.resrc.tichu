@@ -1,4 +1,4 @@
-package ch.resrc.tichu.use_cases.games.create_a_game.ports.output;
+package ch.resrc.tichu.use_cases.create_a_game.ports.output;
 
 import ch.resrc.tichu.capabilities.validation.InvalidInputDetected;
 import ch.resrc.tichu.capabilities.validation.Validation;
@@ -20,7 +20,7 @@ import java.util.function.Supplier;
 import static ch.resrc.tichu.capabilities.validation.Validations.allOf;
 import static ch.resrc.tichu.capabilities.validation.Validations.attribute;
 import static ch.resrc.tichu.capabilities.validation.Validations.notNull;
-import static ch.resrc.tichu.use_cases.games.create_a_game.ports.output.GameDocumentValidationErrors.MUST_NOT_BE_NULL;
+import static ch.resrc.tichu.use_cases.create_a_game.ports.output.GameDocumentValidationErrors.MUST_NOT_BE_NULL;
 
 public class GameDocument {
 

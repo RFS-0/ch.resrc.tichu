@@ -5,13 +5,13 @@ import ch.resrc.tichu.capabilities.json.Json;
 import ch.resrc.tichu.capabilities.validation.InvalidInputDetected;
 import ch.resrc.tichu.capabilities.validation.ValidationError;
 import ch.resrc.tichu.domain.value_objects.Id;
-import ch.resrc.tichu.use_cases.games.create_a_game.ports.input.CreateGameInput;
-import ch.resrc.tichu.use_cases.games.create_a_game.ports.input.IntendedGame;
+import ch.resrc.tichu.use_cases.create_a_game.ports.input.CreateGameInput;
+import ch.resrc.tichu.use_cases.create_a_game.ports.input.IntendedGame;
 import io.vavr.collection.Seq;
 import io.vavr.control.Either;
 
 import static ch.resrc.tichu.domain.validation.DomainObjectInput.parse;
-import static ch.resrc.tichu.use_cases.games.create_a_game.ports.input.IntendedGame.anIntendedGame;
+import static ch.resrc.tichu.use_cases.create_a_game.ports.input.IntendedGame.anIntendedGame;
 
 public class CreateGameWebSocketInput {
 

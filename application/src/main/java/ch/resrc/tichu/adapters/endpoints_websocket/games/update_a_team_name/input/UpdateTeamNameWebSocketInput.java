@@ -6,13 +6,13 @@ import ch.resrc.tichu.capabilities.validation.InvalidInputDetected;
 import ch.resrc.tichu.capabilities.validation.ValidationError;
 import ch.resrc.tichu.domain.value_objects.Id;
 import ch.resrc.tichu.domain.value_objects.Name;
-import ch.resrc.tichu.use_cases.games.update_a_team_name.ports.input.IntendedTeamName;
-import ch.resrc.tichu.use_cases.games.update_a_team_name.ports.input.UpdateTeamNameInput;
+import ch.resrc.tichu.use_cases.update_a_team_name.ports.input.IntendedTeamName;
+import ch.resrc.tichu.use_cases.update_a_team_name.ports.input.UpdateTeamNameInput;
 import io.vavr.collection.Seq;
 import io.vavr.control.Either;
 
 import static ch.resrc.tichu.domain.validation.DomainObjectInput.parse;
-import static ch.resrc.tichu.use_cases.games.update_a_team_name.ports.input.IntendedTeamName.anIntendedTeamName;
+import static ch.resrc.tichu.use_cases.update_a_team_name.ports.input.IntendedTeamName.anIntendedTeamName;
 
 public class UpdateTeamNameWebSocketInput {
 

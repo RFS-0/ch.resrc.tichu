@@ -5,8 +5,8 @@ import ch.resrc.tichu.adapters.endpoints_websocket.games.create_a_game.input.Cre
 import ch.resrc.tichu.adapters.endpoints_websocket.games.create_a_game.output.CreatedGameWebSocketOutput;
 import ch.resrc.tichu.capabilities.json.Json;
 import ch.resrc.tichu.capabilities.validation.InvalidInputDetected;
-import ch.resrc.tichu.use_cases.games.create_a_game.ports.input.CreateGameInput;
-import ch.resrc.tichu.use_cases.games.create_a_game.ports.output.CreateGameOutput;
+import ch.resrc.tichu.use_cases.create_a_game.ports.input.CreateGameInput;
+import ch.resrc.tichu.use_cases.create_a_game.ports.output.CreateGameOutput;
 import io.vavr.collection.HashSet;
 import io.vavr.collection.Set;
 

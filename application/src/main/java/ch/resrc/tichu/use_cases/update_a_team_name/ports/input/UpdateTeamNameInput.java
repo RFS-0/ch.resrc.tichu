@@ -1,8 +1,8 @@
-package ch.resrc.tichu.use_cases.games.update_a_team_name.ports.input;
+package ch.resrc.tichu.use_cases.update_a_team_name.ports.input;
 
 import ch.resrc.tichu.use_cases.UseCaseInput;
-import ch.resrc.tichu.use_cases.games.update_a_team_name.ports.output.UpdateTeamNameOutput;
 import ch.resrc.tichu.use_cases.ports.input_boundary.InputBoundary;
+import ch.resrc.tichu.use_cases.update_a_team_name.ports.output.UpdateTeamNameOutput;
 
 @FunctionalInterface
 public interface UpdateTeamNameInput extends InputBoundary {

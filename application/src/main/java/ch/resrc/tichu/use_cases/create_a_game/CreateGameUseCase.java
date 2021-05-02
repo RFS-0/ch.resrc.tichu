@@ -1,4 +1,4 @@
-package ch.resrc.tichu.use_cases.games.create_a_game;
+package ch.resrc.tichu.use_cases.create_a_game;
 
 import ch.resrc.tichu.domain.entities.Game;
 import ch.resrc.tichu.domain.entities.Player;
@@ -13,10 +13,10 @@ import ch.resrc.tichu.domain.operations.GetAllTeams;
 import ch.resrc.tichu.domain.operations.GetAllUsers;
 import ch.resrc.tichu.domain.value_objects.Id;
 import ch.resrc.tichu.domain.value_objects.JoinCode;
-import ch.resrc.tichu.use_cases.games.create_a_game.ports.input.CreateGameInput;
-import ch.resrc.tichu.use_cases.games.create_a_game.ports.input.IntendedGame;
-import ch.resrc.tichu.use_cases.games.create_a_game.ports.output.CreateGameOutput;
-import ch.resrc.tichu.use_cases.games.create_a_game.ports.output.GameDocument;
+import ch.resrc.tichu.use_cases.create_a_game.ports.input.CreateGameInput;
+import ch.resrc.tichu.use_cases.create_a_game.ports.input.IntendedGame;
+import ch.resrc.tichu.use_cases.create_a_game.ports.output.CreateGameOutput;
+import ch.resrc.tichu.use_cases.create_a_game.ports.output.GameDocument;
 import io.vavr.collection.HashSet;
 import io.vavr.collection.Set;
 import io.vavr.control.Option;

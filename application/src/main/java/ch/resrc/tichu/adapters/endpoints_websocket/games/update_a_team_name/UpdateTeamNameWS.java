@@ -5,8 +5,8 @@ import ch.resrc.tichu.adapters.endpoints_websocket.games.update_a_team_name.inpu
 import ch.resrc.tichu.adapters.endpoints_websocket.games.update_a_team_name.output.UpdateTeamNameWebSocketOutput;
 import ch.resrc.tichu.capabilities.json.Json;
 import ch.resrc.tichu.capabilities.validation.InvalidInputDetected;
-import ch.resrc.tichu.use_cases.games.update_a_team_name.ports.input.UpdateTeamNameInput;
-import ch.resrc.tichu.use_cases.games.update_a_team_name.ports.output.UpdateTeamNameOutput;
+import ch.resrc.tichu.use_cases.update_a_team_name.ports.input.UpdateTeamNameInput;
+import ch.resrc.tichu.use_cases.update_a_team_name.ports.output.UpdateTeamNameOutput;
 import io.vavr.collection.HashSet;
 import io.vavr.collection.Set;
 

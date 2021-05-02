@@ -1,4 +1,4 @@
-package ch.resrc.tichu.use_cases.games.create_a_game.ports.input;
+package ch.resrc.tichu.use_cases.create_a_game.ports.input;
 
 import ch.resrc.tichu.capabilities.validation.Validation;
 import ch.resrc.tichu.capabilities.validation.ValidationError;

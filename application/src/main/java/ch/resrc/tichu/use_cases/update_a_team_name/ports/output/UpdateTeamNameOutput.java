@@ -1,8 +1,9 @@
-package ch.resrc.tichu.use_cases.games.create_a_game.ports.output;
+package ch.resrc.tichu.use_cases.update_a_team_name.ports.output;
 
 import ch.resrc.tichu.use_cases.UseCaseOutput;
+import ch.resrc.tichu.use_cases.create_a_game.ports.output.GameDocument;
 
-public interface CreateGameOutput extends UseCaseOutput {
+public interface UpdateTeamNameOutput extends UseCaseOutput {
 
   GameDocument get();
 

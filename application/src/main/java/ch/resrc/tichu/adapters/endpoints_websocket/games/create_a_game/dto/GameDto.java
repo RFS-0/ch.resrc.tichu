@@ -2,7 +2,7 @@ package ch.resrc.tichu.adapters.endpoints_websocket.games.create_a_game.dto;
 
 import ch.resrc.tichu.adapters.endpoints_rest.users.dto.UserDto;
 import ch.resrc.tichu.adapters.endpoints_websocket.dto.TeamDto;
-import ch.resrc.tichu.use_cases.games.create_a_game.ports.output.GameDocument;
+import ch.resrc.tichu.use_cases.create_a_game.ports.output.GameDocument;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.vavr.collection.Set;
 

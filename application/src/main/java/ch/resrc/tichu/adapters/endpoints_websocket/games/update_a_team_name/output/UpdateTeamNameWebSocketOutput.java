@@ -4,8 +4,8 @@ import ch.resrc.tichu.adapters.endpoints_websocket.games.create_a_game.dto.GameD
 import ch.resrc.tichu.capabilities.json.Json;
 import ch.resrc.tichu.capabilities.validation.ValidationError;
 import ch.resrc.tichu.domain.value_objects.Id;
-import ch.resrc.tichu.use_cases.games.create_a_game.ports.output.GameDocument;
-import ch.resrc.tichu.use_cases.games.update_a_team_name.ports.output.UpdateTeamNameOutput;
+import ch.resrc.tichu.use_cases.create_a_game.ports.output.GameDocument;
+import ch.resrc.tichu.use_cases.update_a_team_name.ports.output.UpdateTeamNameOutput;
 import io.vavr.collection.Seq;
 import io.vavr.control.Either;
 

@@ -1,6 +1,6 @@
 package ch.resrc.tichu.use_cases.teams.add_player.ports.inbound;
 
-import ch.resrc.tichu.use_cases.teams.add_player.ports.documents.IntendedPlayerAddition;
+import ch.resrc.tichu.use_cases.common_ports.input.IntendedPlayerAddition;
 
 public class AddPlayerToTeamRequest {
 

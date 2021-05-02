@@ -1,7 +1,7 @@
-package ch.resrc.tichu.use_cases.games.create_a_game.ports.input;
+package ch.resrc.tichu.use_cases.create_a_game.ports.input;
 
 import ch.resrc.tichu.use_cases.UseCaseInput;
-import ch.resrc.tichu.use_cases.games.create_a_game.ports.output.CreateGameOutput;
+import ch.resrc.tichu.use_cases.create_a_game.ports.output.CreateGameOutput;
 import ch.resrc.tichu.use_cases.ports.input_boundary.InputBoundary;
 
 @FunctionalInterface

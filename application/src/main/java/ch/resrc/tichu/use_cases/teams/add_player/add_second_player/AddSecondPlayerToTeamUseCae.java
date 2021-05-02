@@ -10,9 +10,9 @@ import ch.resrc.tichu.domain.entities.Team;
 import ch.resrc.tichu.domain.value_objects.Id;
 import ch.resrc.tichu.use_cases.UseCaseEnactment;
 import ch.resrc.tichu.use_cases.UseCaseOutput;
+import ch.resrc.tichu.use_cases.common_ports.input.IntendedPlayerAddition;
 import ch.resrc.tichu.use_cases.ports.output_boundary.PlayerAddedToTeamPresenter;
 import ch.resrc.tichu.use_cases.teams.add_player.add_second_player.ports.inbound.AddSecondPlayerToTeam;
-import ch.resrc.tichu.use_cases.teams.add_player.ports.documents.IntendedPlayerAddition;
 import ch.resrc.tichu.use_cases.teams.add_player.ports.documents.PlayerAddedToTeamDocument;
 import ch.resrc.tichu.use_cases.teams.add_player.ports.events.CreateAnonymousPlayer;
 import ch.resrc.tichu.use_cases.teams.add_player.ports.events.PlayerAddedToTeam;
@@ -134,7 +134,6 @@ public class AddSecondPlayerToTeamUseCae implements AddSecondPlayerToTeam {
   static class TeamsSource extends Eventful implements EventForwarding {
 
     public TeamsSource() {
-      ;
     }
 
     @Override

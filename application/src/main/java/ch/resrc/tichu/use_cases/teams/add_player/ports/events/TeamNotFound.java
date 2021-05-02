@@ -2,7 +2,7 @@ package ch.resrc.tichu.use_cases.teams.add_player.ports.events;
 
 import ch.resrc.tichu.capabilities.events.Event;
 import ch.resrc.tichu.domain.entities.Player;
-import ch.resrc.tichu.use_cases.teams.add_player.ports.documents.IntendedPlayerAddition;
+import ch.resrc.tichu.use_cases.common_ports.input.IntendedPlayerAddition;
 
 public class TeamNotFound extends Event {
 
