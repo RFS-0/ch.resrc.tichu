@@ -1,6 +1,7 @@
 package ch.resrc.tichu.use_cases.find_or_create_user;
 
-import ch.resrc.tichu.adapters.persistence_in_memory.InMemoryUserRepository;
+import ch.resrc.tichu.adapters.persistence_in_memory.InMemoryPlayersRepository;
+import ch.resrc.tichu.adapters.persistence_in_memory.InMemoryUsersRepository;
 import ch.resrc.tichu.capabilities.errorhandling.PersistenceProblem;
 import ch.resrc.tichu.capabilities.errorhandling.ProblemDetected;
 import ch.resrc.tichu.domain.entities.User;
@@ -31,11 +32,14 @@ class FindOrCreateUserUseCaseTest {
     Email email = Email.resultOf("archibald@cobb.com").get();
     var createUserRequest = createFindOrCreateUserRequest(archibaldCobb, email);
 
-    InMemoryUserRepository fakeUserRepository = new InMemoryUserRepository();
+    InMemoryUsersRepository fakeUsersRepository = new InMemoryUsersRepository();
+    InMemoryPlayersRepository fakePlayersRepository = new InMemoryPlayersRepository();
 
     FindOrCreateUserUseCase findOrCreateUserUseCase = new FindOrCreateUserUseCase(
-      fakeUserRepository,
-      fakeUserRepository
+      fakeUsersRepository,
+      fakeUsersRepository,
+      fakePlayersRepository,
+      fakePlayersRepository
     );
 
     // when
@@ -60,12 +64,15 @@ class FindOrCreateUserUseCaseTest {
     User existingUser = User.create(id, archibaldCobb, email, now).get();
     var createUserRequest = createFindOrCreateUserRequest(archibaldCobb, email);
 
-    InMemoryUserRepository fakeUserRepository = new InMemoryUserRepository();
+    InMemoryUsersRepository fakeUserRepository = new InMemoryUsersRepository();
+    InMemoryPlayersRepository fakePlayersRepository = new InMemoryPlayersRepository();
     fakeUserRepository.add(HashSet.empty(), existingUser);
 
     FindOrCreateUserUseCase findOrCreateUserUseCase = new FindOrCreateUserUseCase(
       fakeUserRepository,
-      fakeUserRepository
+      fakeUserRepository,
+      fakePlayersRepository,
+      fakePlayersRepository
     );
 
     // when
@@ -86,12 +93,15 @@ class FindOrCreateUserUseCaseTest {
     Email email = Email.resultOf("nate@sweeney.org").get();
     var findOrCreateUserRequest = createFindOrCreateUserRequest(nateSweeney, email);
 
-    InMemoryUserRepository fakeUserRepository = new InMemoryUserRepository();
+    InMemoryUsersRepository fakeUserRepository = new InMemoryUsersRepository();
     GetAllUsers getAllUsersFailure = () -> Either.left(PersistenceProblem.READ_FAILED);
+    InMemoryPlayersRepository fakePlayersRepository = new InMemoryPlayersRepository();
 
     FindOrCreateUserUseCase findOrCreateUserUseCase = new FindOrCreateUserUseCase(
+      getAllUsersFailure,
       fakeUserRepository,
-      getAllUsersFailure
+      fakePlayersRepository,
+      fakePlayersRepository
     );
 
     ProblemDetected error = assertThrows(
@@ -108,12 +118,15 @@ class FindOrCreateUserUseCaseTest {
     Email email = Email.resultOf("nate@sweeney.org").get();
     var findOrCreateUserRequest = createFindOrCreateUserRequest(nateSweeney, email);
 
-    InMemoryUserRepository fakeUserRepository = new InMemoryUserRepository();
+    InMemoryUsersRepository fakeUserRepository = new InMemoryUsersRepository();
+    InMemoryPlayersRepository fakePlayersRepository = new InMemoryPlayersRepository();
     AddUser addUserFailure = (_1, _2) -> Either.left(PersistenceProblem.INSERT_FAILED);
 
     FindOrCreateUserUseCase findOrCreateUserUseCase = new FindOrCreateUserUseCase(
+      fakeUserRepository,
       addUserFailure,
-      fakeUserRepository
+      fakePlayersRepository,
+      fakePlayersRepository
     );
 
     ProblemDetected error = assertThrows(

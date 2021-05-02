@@ -3,7 +3,7 @@ package ch.resrc.tichu.configuration;
 import ch.resrc.tichu.adapters.persistence_in_memory.InMemoryGamesRepository;
 import ch.resrc.tichu.adapters.persistence_in_memory.InMemoryPlayersRepository;
 import ch.resrc.tichu.adapters.persistence_in_memory.InMemoryTeamsRepository;
-import ch.resrc.tichu.adapters.persistence_in_memory.InMemoryUserRepository;
+import ch.resrc.tichu.adapters.persistence_in_memory.InMemoryUsersRepository;
 import ch.resrc.tichu.adapters.persistence_micro_stream.MicroStreamGamesRepository;
 import ch.resrc.tichu.adapters.persistence_micro_stream.MicroStreamPlayersRepository;
 import ch.resrc.tichu.adapters.persistence_micro_stream.MicroStreamTeamsRepository;
@@ -21,7 +21,7 @@ import ch.resrc.tichu.domain.operations.GetAllUsers;
 import ch.resrc.tichu.domain.operations.UpdateGame;
 import ch.resrc.tichu.domain.operations.UpdatePlayer;
 import ch.resrc.tichu.domain.operations.UpdateTeam;
-import ch.resrc.tichu.use_cases.ports.output_boundary.OutputBoundary;
+import ch.resrc.tichu.use_cases.OutputBoundary;
 import software.amazon.awssdk.services.s3.S3Client;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -60,7 +60,7 @@ public class PersistenceFactory {
   public AddUser produceAddUserOperation(Environment environment, S3Client s3Client, String bucketName) {
     switch (environment) {
       case TEST -> {
-        return new InMemoryUserRepository();
+        return new InMemoryUsersRepository();
       }
       case DEV, PROD -> {
         return getOrCreateRepository(MicroStreamUsersRepository.class, s3Client, bucketName);
@@ -72,7 +72,7 @@ public class PersistenceFactory {
   public GetAllUsers produceGetAllUsersOperation(Environment environment, S3Client s3Client, String bucketName) {
     switch (environment) {
       case TEST -> {
-        return new InMemoryUserRepository();
+        return new InMemoryUsersRepository();
       }
       case DEV, PROD -> {
         return getOrCreateRepository(MicroStreamUsersRepository.class, s3Client, bucketName);

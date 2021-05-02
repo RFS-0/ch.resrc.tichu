@@ -3,17 +3,17 @@ package ch.resrc.tichu.use_cases.create_a_game;
 import ch.resrc.tichu.adapters.persistence_in_memory.InMemoryGamesRepository;
 import ch.resrc.tichu.adapters.persistence_in_memory.InMemoryPlayersRepository;
 import ch.resrc.tichu.adapters.persistence_in_memory.InMemoryTeamsRepository;
-import ch.resrc.tichu.adapters.persistence_in_memory.InMemoryUserRepository;
+import ch.resrc.tichu.adapters.persistence_in_memory.InMemoryUsersRepository;
 import ch.resrc.tichu.domain.entities.User;
 import ch.resrc.tichu.domain.value_objects.Email;
 import ch.resrc.tichu.domain.value_objects.Id;
 import ch.resrc.tichu.domain.value_objects.Name;
+import ch.resrc.tichu.use_cases.common_ports.output.PlayerDocument;
+import ch.resrc.tichu.use_cases.common_ports.output.TeamDocument;
 import ch.resrc.tichu.use_cases.create_a_game.ports.input.CreateGameInput;
 import ch.resrc.tichu.use_cases.create_a_game.ports.output.CreateGameOutput;
 import ch.resrc.tichu.use_cases.create_a_game.ports.output.GameDocument;
 import ch.resrc.tichu.use_cases.find_or_create_user.ports.output.UserDocument;
-import ch.resrc.tichu.use_cases.ports.documents.PlayerDocument;
-import ch.resrc.tichu.use_cases.teams.ports.output.TeamDocument;
 import io.vavr.collection.HashSet;
 import org.junit.jupiter.api.Test;
 
@@ -38,7 +38,7 @@ class CreateGameUseCaseTest {
 
     InMemoryGamesRepository gamesRepository = new InMemoryGamesRepository();
     InMemoryTeamsRepository teamsRepository = new InMemoryTeamsRepository();
-    InMemoryUserRepository userRepository = new InMemoryUserRepository();
+    InMemoryUsersRepository userRepository = new InMemoryUsersRepository();
     userRepository.add(HashSet.empty(), existingUser);
     InMemoryPlayersRepository playersRepository = new InMemoryPlayersRepository();
 

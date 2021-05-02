@@ -2,7 +2,7 @@ package ch.resrc.tichu.use_cases.capabilities.events;
 
 
 import ch.resrc.tichu.capabilities.events.Event;
-import ch.resrc.tichu.use_cases.ports.input_boundary.InputBoundary;
+import ch.resrc.tichu.use_cases.InputBoundary;
 
 public class UseCaseStarted extends Event {
 

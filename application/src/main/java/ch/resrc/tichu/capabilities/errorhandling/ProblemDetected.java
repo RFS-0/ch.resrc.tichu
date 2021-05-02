@@ -1,7 +1,7 @@
 package ch.resrc.tichu.capabilities.errorhandling;
 
-import static ch.resrc.tichu.capabilities.errorhandling.ProblemDiagnosis.aProblemDiagnosis;
-import static java.util.Objects.requireNonNull;
+import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.apache.commons.lang3.text.StrSubstitutor;
 
 import java.time.Instant;
 import java.time.OffsetDateTime;
@@ -14,8 +14,9 @@ import java.util.UUID;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import org.apache.commons.lang3.exception.ExceptionUtils;
-import org.apache.commons.lang3.text.StrSubstitutor;
+
+import static ch.resrc.tichu.capabilities.errorhandling.ProblemDiagnosis.aProblemDiagnosis;
+import static java.util.Objects.requireNonNull;
 
 /**
  * Signals that a {@link Problem} was detected by the system. A {@link ProblemDiagnosis} describes the details of the problem.
@@ -57,9 +58,13 @@ public class ProblemDetected extends RuntimeException implements IdentifiablePro
     return new ProblemDetected(reported);
   }
 
+  public static void throwProblem(Problem diagnosis, Problem message) {
+    throw ProblemDetected.of(ProblemDiagnosis.of(diagnosis).withContext("message", message));
+  }
+
   @SuppressWarnings("unchecked")
   public static <D extends ProblemDetected> D revised(D originalProblemDetected,
-    Function<ProblemDiagnosis, ProblemDiagnosis> changeOfDiagnosis) {
+                                                      Function<ProblemDiagnosis, ProblemDiagnosis> changeOfDiagnosis) {
     var revised = originalProblemDetected.getClass()
       .cast(originalProblemDetected.copy()); // Fail fast if subtype did not override copy();
     revised.diagnosed = changeOfDiagnosis.apply(originalProblemDetected.diagnosed());

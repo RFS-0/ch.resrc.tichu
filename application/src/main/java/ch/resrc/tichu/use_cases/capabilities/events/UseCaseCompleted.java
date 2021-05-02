@@ -1,9 +1,8 @@
 package ch.resrc.tichu.use_cases.capabilities.events;
 
-
 import ch.resrc.tichu.capabilities.events.Event;
+import ch.resrc.tichu.use_cases.InputBoundary;
 import ch.resrc.tichu.use_cases.capabilities.results.UseCaseResult;
-import ch.resrc.tichu.use_cases.ports.input_boundary.InputBoundary;
 
 public class UseCaseCompleted extends Event {
 

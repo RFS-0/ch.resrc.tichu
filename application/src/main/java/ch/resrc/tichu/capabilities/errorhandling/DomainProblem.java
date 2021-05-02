@@ -24,11 +24,15 @@ public enum DomainProblem implements Problem {
 
   PLAYER_NOT_SAVED("Player with id=<${id}> could not be saved."),
 
+  PLAYER_NOT_UPDATED("Player with id=<${id}> could not be updated."),
+
   PLAYERS_NOT_FOUND("Could not load existing players."),
 
   GAME_NOT_FOUND("Game with id=<${id}> does not exist."),
 
   GAME_NOT_SAVED("Game with id=<${id}> could not be saved."),
+
+  GAME_NOT_UPDATED("Game with id=<${id}> could not be updated."),
 
   GAMES_NOT_FOUND("Could not load existing games."),
 
