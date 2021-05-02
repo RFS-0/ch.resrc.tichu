@@ -1,12 +1,15 @@
 package ch.resrc.tichu.adapters.persistence_micro_stream;
 
+import ch.resrc.tichu.capabilities.errorhandling.PersistenceProblem;
 import ch.resrc.tichu.capabilities.errorhandling.Problem;
 import ch.resrc.tichu.domain.entities.Player;
 import ch.resrc.tichu.domain.operations.AddPlayer;
 import ch.resrc.tichu.domain.operations.GetAllPlayers;
+import ch.resrc.tichu.domain.operations.UpdatePlayer;
 import io.vavr.collection.HashSet;
 import io.vavr.collection.Set;
 import io.vavr.control.Either;
+import io.vavr.control.Option;
 import one.microstream.afs.aws.s3.S3Connector;
 import one.microstream.afs.blobstore.BlobStoreFileSystem;
 import one.microstream.reflect.ClassLoaderProvider;
@@ -16,7 +19,7 @@ import software.amazon.awssdk.services.s3.S3Client;
 
 import javax.annotation.PreDestroy;
 
-public class MicroStreamPlayersRepository implements AddPlayer, GetAllPlayers {
+public class MicroStreamPlayersRepository implements AddPlayer, GetAllPlayers, UpdatePlayer {
 
   private final PlayersRoot playersRoot;
   private final EmbeddedStorageManager storage;
@@ -43,5 +46,19 @@ public class MicroStreamPlayersRepository implements AddPlayer, GetAllPlayers {
   @Override
   public Either<? extends Problem, Set<Player>> getAll() {
     return Either.right(HashSet.ofAll(playersRoot.players()));
+  }
+
+  @Override
+  public Either<? extends Problem, Set<Player>> update(Set<Player> existing, Player updatedPlayer) {
+    Option<Player> maybeToBeUpdated = existing.find(team -> team.id().equals(updatedPlayer.id()));
+    if (!maybeToBeUpdated.isDefined()) {
+      return Either.left(PersistenceProblem.UPDATE_FAILED_DUE_TO_MISSING_ENTITY);
+    }
+
+    Player teamToUpdate = maybeToBeUpdated.get();
+
+    playersRoot.update(existing.remove(teamToUpdate).add(updatedPlayer));
+
+    return Either.right(playersRoot.players());
   }
 }

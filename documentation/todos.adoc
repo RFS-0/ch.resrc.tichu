@@ -4,7 +4,7 @@
 
 * Provide Implementation of Implement AddFirstPlayerToTeamFake
 
-** Implement Domain Operation in Repository
+
 ** Implement Use Case Input
 ** Implement Use Case Output
 ** Implement Use Case

@@ -9,6 +9,7 @@ import ch.resrc.tichu.domain.operations.GetAllPlayers;
 import ch.resrc.tichu.domain.operations.GetAllTeams;
 import ch.resrc.tichu.domain.operations.GetAllUsers;
 import ch.resrc.tichu.domain.operations.UpdateGame;
+import ch.resrc.tichu.domain.operations.UpdatePlayer;
 import ch.resrc.tichu.domain.operations.UpdateTeam;
 import io.quarkus.runtime.configuration.ProfileManager;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
@@ -142,6 +143,18 @@ public class PersistenceConfiguration {
       ProfileManager.getActiveProfile()
     );
     return persistenceFactory.produceGetAllPlayersOperation(
+      environment,
+      s3Client,
+      playersBucketName.orElse("players.tichu.resrc.ch")
+    );
+  }
+
+  @ApplicationScoped
+  public UpdatePlayer updatePlayer(PersistenceFactory persistenceFactory, S3Client s3Client) {
+    PersistenceFactory.Environment environment = PersistenceFactory.Environment.forProfile(
+      ProfileManager.getActiveProfile()
+    );
+    return persistenceFactory.produceUpdatePlayerOperation(
       environment,
       s3Client,
       playersBucketName.orElse("players.tichu.resrc.ch")
