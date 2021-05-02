@@ -3,7 +3,7 @@
     <div v-if="!showInput"
          class="button-sm text--md"
          @click="onChangeTeamName">
-      {{team.name || "click to specify name"}}
+      {{ team.name || "click to specify name" }}
     </div>
     <div v-else :class="{'input-container--left': isLeftTeam, 'input-container--right': !isLeftTeam}">
       <input type="text"
@@ -30,21 +30,21 @@ import { mapGetters, mapMutations } from 'vuex';
 
 @Component({
   computed: {
-    ...mapGetters("gameState", {
-      game: "game",
+    ...mapGetters('gameState', {
+      game: 'game',
     }),
   },
   methods: {
-    ...mapMutations("gameState", {
-      updateGame: "updateGame",
+    ...mapMutations('gameState', {
+      updateGame: 'updateGame',
     }),
   },
 })
 export default class ConfigureTeamName extends Vue {
-  @Inject("endpoints")
+  @Inject('endpoints')
   private endpoints!: EndpointRegistry;
 
-  @Ref("input") input!: HTMLInputElement;
+  @Ref('input') input!: HTMLInputElement;
 
   @Prop() teamId!: string;
 
@@ -52,7 +52,7 @@ export default class ConfigureTeamName extends Vue {
   updateGame!: (game: Game) => void;
 
   private showInput = false;
-  private teamNameInput = "";
+  private teamNameInput = '';
 
   get team(): Team {
     return this.game.value.teamById(this.teamId);
@@ -69,9 +69,9 @@ export default class ConfigureTeamName extends Vue {
 
   onConfirm() {
     this.showInput = false;
-    this.endpoints.updateTeamName.send(UpdateTeamNameEvent.of(this.team.id, this.teamNameInput)).subscribe(
-      updatedGame => this.updateGame(updatedGame),
-    );
+    this.endpoints.updateTeamName.send(
+      UpdateTeamNameEvent.of(this.game.value.id, this.team.id, this.teamNameInput))
+      .subscribe(updatedGame => this.updateGame(updatedGame));
   }
 };
 </script>

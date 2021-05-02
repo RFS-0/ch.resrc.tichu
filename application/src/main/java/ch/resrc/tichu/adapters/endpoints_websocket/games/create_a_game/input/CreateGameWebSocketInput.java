@@ -1,6 +1,6 @@
-package ch.resrc.tichu.adapters.endpoints_websocket.games.create_game.input;
+package ch.resrc.tichu.adapters.endpoints_websocket.games.create_a_game.input;
 
-import ch.resrc.tichu.adapters.endpoints_websocket.games.create_game.IntendedGameDto;
+import ch.resrc.tichu.adapters.endpoints_websocket.games.create_a_game.dto.IntendedGameDto;
 import ch.resrc.tichu.capabilities.json.Json;
 import ch.resrc.tichu.capabilities.validation.InvalidInputDetected;
 import ch.resrc.tichu.capabilities.validation.ValidationError;
@@ -15,11 +15,9 @@ import static ch.resrc.tichu.use_cases.games.create_a_game.ports.input.IntendedG
 
 public class CreateGameWebSocketInput {
 
-  private final Json json;
   private final IntendedGame intendedGame;
 
   public CreateGameWebSocketInput(Json json, String message) {
-    this.json = json;
     IntendedGameDto intent = json.parse(message, IntendedGameDto.class);
     this.intendedGame = validatedIntendedGame(intent).getOrElseThrow(InvalidInputDetected::of);
   }

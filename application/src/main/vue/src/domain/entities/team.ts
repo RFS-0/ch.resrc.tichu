@@ -102,11 +102,12 @@ export interface TeamDto {
 }
 
 export class UpdateTeamNameEvent {
-  private constructor(public teamId: string, public teamName: string) {
+  private constructor(public gameId: string, public teamId: string, public teamName: string) {
   }
 
-  static of(teamId: string, teamName: string): UpdateTeamNameEvent {
+  static of(gameId: string, teamId: string, teamName: string): UpdateTeamNameEvent {
     return new UpdateTeamNameEvent(
+      gameId,
       teamId,
       teamName,
     );

@@ -1,6 +1,6 @@
-package ch.resrc.tichu.adapters.endpoints_websocket.games.create_game.output;
+package ch.resrc.tichu.adapters.endpoints_websocket.games.create_a_game.output;
 
-import ch.resrc.tichu.adapters.endpoints_websocket.games.create_game.dto.GameDto;
+import ch.resrc.tichu.adapters.endpoints_websocket.games.create_a_game.dto.GameDto;
 import ch.resrc.tichu.capabilities.json.Json;
 import ch.resrc.tichu.capabilities.validation.ValidationError;
 import ch.resrc.tichu.domain.value_objects.Id;

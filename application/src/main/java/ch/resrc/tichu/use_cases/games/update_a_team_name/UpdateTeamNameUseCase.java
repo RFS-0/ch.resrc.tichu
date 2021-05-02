@@ -1,4 +1,4 @@
-package ch.resrc.tichu.use_cases.teams.update_team_name.ports;
+package ch.resrc.tichu.use_cases.games.update_a_team_name;
 
 import ch.resrc.tichu.domain.entities.Game;
 import ch.resrc.tichu.domain.entities.Team;
@@ -7,9 +7,9 @@ import ch.resrc.tichu.domain.operations.GetAllTeams;
 import ch.resrc.tichu.domain.operations.UpdateGame;
 import ch.resrc.tichu.domain.operations.UpdateTeam;
 import ch.resrc.tichu.use_cases.games.create_a_game.ports.output.GameDocument;
-import ch.resrc.tichu.use_cases.teams.update_team_name.ports.input.IntendedTeamName;
-import ch.resrc.tichu.use_cases.teams.update_team_name.ports.input.UpdateTeamNameInput;
-import ch.resrc.tichu.use_cases.teams.update_team_name.ports.output.UpdateTeamNameOutput;
+import ch.resrc.tichu.use_cases.games.update_a_team_name.ports.input.IntendedTeamName;
+import ch.resrc.tichu.use_cases.games.update_a_team_name.ports.input.UpdateTeamNameInput;
+import ch.resrc.tichu.use_cases.games.update_a_team_name.ports.output.UpdateTeamNameOutput;
 import io.vavr.collection.Set;
 
 import static ch.resrc.tichu.capabilities.errorhandling.DomainProblem.GAMES_NOT_FOUND;

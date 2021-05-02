@@ -1,7 +1,7 @@
-package ch.resrc.tichu.adapters.endpoints_websocket.games.create_game;
+package ch.resrc.tichu.adapters.endpoints_websocket.games.update_a_team_name;
 
-import ch.resrc.tichu.adapters.endpoints_websocket.WebSocketAddresses.Games;
-import ch.resrc.tichu.adapters.endpoints_websocket.games.create_game.output.CreatedGameWebSocketOutput;
+import ch.resrc.tichu.adapters.endpoints_websocket.WebSocketAddresses;
+import ch.resrc.tichu.adapters.endpoints_websocket.games.update_a_team_name.output.UpdateTeamNameWebSocketOutput;
 import ch.resrc.tichu.capabilities.validation.InvalidInputDetected;
 import ch.resrc.tichu.domain.value_objects.Id;
 import io.vavr.collection.HashMap;
@@ -17,14 +17,14 @@ import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 import java.util.concurrent.atomic.AtomicReference;
 
-@ServerEndpoint(Games.CREATED)
-public class CreatedGameWebSocket {
+@ServerEndpoint(WebSocketAddresses.Games.UPDATED_TEAM_NAME)
+public class UpdatedTeamNameWS {
 
   private static final AtomicReference<Map<Id, Set<Session>>> ID_TO_SESSIONS_REF = new AtomicReference<>(HashMap.empty());
 
   @OnOpen
-  public void onOpen(Session session, @PathParam("userId") String userId) {
-    Id receiver = Id.resultOf(userId).getOrElseThrow(InvalidInputDetected::of);
+  public void onOpen(Session session, @PathParam("receiverId") String receiverId) {
+    Id receiver = Id.resultOf(receiverId).getOrElseThrow(InvalidInputDetected::of);
     ID_TO_SESSIONS_REF.updateAndGet(
       sessions -> sessions.computeIfAbsent(receiver, key -> HashSet.empty())._2
     );
@@ -34,8 +34,8 @@ public class CreatedGameWebSocket {
   }
 
   @OnClose
-  public void onClose(Session session, @PathParam("userId") String userId) {
-    Id receiver = Id.resultOf(userId).getOrElseThrow(InvalidInputDetected::of);
+  public void onClose(Session session, @PathParam("receiverId") String receiverId) {
+    Id receiver = Id.resultOf(receiverId).getOrElseThrow(InvalidInputDetected::of);
     ID_TO_SESSIONS_REF.updateAndGet(sessions -> {
       Set<Session> closedSessionRemoved = sessions.get(receiver).get().remove(session);
       return sessions.put(receiver, closedSessionRemoved);
@@ -43,18 +43,21 @@ public class CreatedGameWebSocket {
   }
 
   @OnError
-  public void onError(Session session, @PathParam("userId") String userId, Throwable throwable) {
-    Id receiver = Id.resultOf(userId).getOrElseThrow(InvalidInputDetected::of);
+  public void onError(Session session, @PathParam("receiverId") String receiverId, Throwable throwable) {
+    Id receiver = Id.resultOf(receiverId).getOrElseThrow(InvalidInputDetected::of);
     ID_TO_SESSIONS_REF.updateAndGet(sessions -> {
       Set<Session> closedSessionRemoved = sessions.get(receiver).get().remove(session);
       return sessions.put(receiver, closedSessionRemoved);
     });
   }
 
-  public String send(CreatedGameWebSocketOutput output) {
+  public String send(UpdateTeamNameWebSocketOutput output) {
     Map<Id, Set<Session>> idToSessions = ID_TO_SESSIONS_REF.get();
-    idToSessions.get(output.receiver())
-      .forEach(sessions -> sessions.forEach(session -> session.getAsyncRemote().sendText(output.response())));
+    for (Set<Session> sessions : idToSessions.get(output.receiver())) {
+      for (Session session : sessions) {
+        session.getAsyncRemote().sendText(output.response());
+      }
+    }
     return output.response();
   }
 }

@@ -1,8 +1,9 @@
-package ch.resrc.tichu.adapters.endpoints_websocket.games.create_game;
+package ch.resrc.tichu.adapters.endpoints_websocket.games.create_a_game;
 
 import ch.resrc.tichu.adapters.endpoints_websocket.WebSocketAddresses;
 import ch.resrc.tichu.adapters.endpoints_websocket.WebSocketClient;
-import ch.resrc.tichu.adapters.endpoints_websocket.games.create_game.dto.GameDto;
+import ch.resrc.tichu.adapters.endpoints_websocket.games.create_a_game.dto.GameDto;
+import ch.resrc.tichu.adapters.endpoints_websocket.games.create_a_game.dto.IntendedGameDto;
 import ch.resrc.tichu.capabilities.errorhandling.Problem;
 import ch.resrc.tichu.capabilities.json.Json;
 import ch.resrc.tichu.domain.entities.User;
@@ -32,22 +33,24 @@ import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 import static org.awaitility.Awaitility.await;
 
 @QuarkusTest
-class CreateGameWebSocketTest {
+class CreateGameWSTest {
 
-  @TestHTTPResource(WebSocketAddresses.Games.CREATE)
-  URI create;
-  @TestHTTPResource("/events/games/created/07fa58f3-5026-4bfd-92e7-adf2bd6b8c8f")
-  URI created;
+  private static final String CREATED_BY_ID = "07fa58f3-5026-4bfd-92e7-adf2bd6b8c8f";
 
   private final Json json;
 
-  public CreateGameWebSocketTest(Json json) {
+  @TestHTTPResource(WebSocketAddresses.Games.CREATE)
+  URI create;
+  @TestHTTPResource("/events/games/created/" + CREATED_BY_ID)
+  URI created;
+
+  public CreateGameWSTest(Json json) {
     this.json = json;
   }
 
   @BeforeAll
   public static void setup() {
-    GetAllUsers allUsersMock = CreateGameWebSocketTest::createUsers;
+    GetAllUsers allUsersMock = CreateGameWSTest::existingUsers;
     QuarkusMock.installMockForType(allUsersMock, GetAllUsers.class);
   }
 
@@ -60,17 +63,16 @@ class CreateGameWebSocketTest {
     // when
     try (Session create = webSocketContainer.connectToServer(WebSocketClient.class, this.create);
          Session created = webSocketContainer.connectToServer(createdClient, this.created)) {
-      IntendedGameDto intendedGameDto = new IntendedGameDto("07fa58f3-5026-4bfd-92e7-adf2bd6b8c8f");
+      IntendedGameDto intendedGameDto = new IntendedGameDto(CREATED_BY_ID);
       RemoteEndpoint.Basic basicRemote = create.getBasicRemote();
       basicRemote.sendText(json.toJsonString(intendedGameDto));
-
 
       // then
       await().atMost(3, TimeUnit.SECONDS).until(createdMessageReceived(createdClient));
 
       String sentMessage = createdClient.getMessages().get(0);
       GameDto createdGame = json.parse(sentMessage, GameDto.class);
-      assertThat(createdGame.createdBy.id).isEqualTo("07fa58f3-5026-4bfd-92e7-adf2bd6b8c8f");
+      assertThat(createdGame.createdBy.id).isEqualTo(CREATED_BY_ID);
     }
   }
 
@@ -78,14 +80,13 @@ class CreateGameWebSocketTest {
     return () -> createdClient.getMessages().size() > 0;
   }
 
-  private static Either<? extends Problem, Set<User>> createUsers() {
-    Id createdByUser = Id.resultOf("07fa58f3-5026-4bfd-92e7-adf2bd6b8c8f").get();
+  private static Either<? extends Problem, Set<User>> existingUsers() {
+    Id createdByUser = Id.resultOf(CREATED_BY_ID).get();
     Name stickyMickey = Name.resultOf("Sticky Mickey").get();
     Email email = Email.resultOf("sticky@mickey.com").get();
     Instant createdAt = Instant.now();
     User existingUser = User.create(createdByUser, stickyMickey, email, createdAt).get();
 
-    return Either.right(HashSet.of(existingUser)
-    );
+    return Either.right(HashSet.of(existingUser));
   }
 }

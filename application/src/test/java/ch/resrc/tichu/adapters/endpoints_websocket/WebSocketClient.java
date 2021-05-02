@@ -1,8 +1,6 @@
 package ch.resrc.tichu.adapters.endpoints_websocket;
 
 import io.vavr.collection.List;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.websocket.ClientEndpoint;
 import javax.websocket.OnClose;
@@ -13,8 +11,6 @@ import javax.websocket.Session;
 
 @ClientEndpoint
 public class WebSocketClient {
-
-  private static final Logger LOG = LoggerFactory.getLogger(WebSocketClient.class);
 
   private List<Session> sessions = List.empty();
   private List<String> messages = List.empty();

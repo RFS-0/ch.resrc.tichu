@@ -1,4 +1,4 @@
-package ch.resrc.tichu.adapters.endpoints_websocket.teams.update_team_name.dto;
+package ch.resrc.tichu.adapters.endpoints_websocket.games.update_a_team_name.dto;
 
 public class IntendedTeamNameDto {
 

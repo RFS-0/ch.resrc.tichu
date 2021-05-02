@@ -12,6 +12,7 @@ import ch.resrc.tichu.domain.operations.UpdateGame;
 import ch.resrc.tichu.domain.operations.UpdateTeam;
 import ch.resrc.tichu.use_cases.find_or_create_user.FindOrCreateUserUseCase;
 import ch.resrc.tichu.use_cases.games.create_a_game.CreateGameUseCase;
+import ch.resrc.tichu.use_cases.games.update_a_team_name.UpdateTeamNameUseCase;
 import ch.resrc.tichu.use_cases.teams.add_player.add_first_player.AddFirstPlayerToTeamUseCase;
 import ch.resrc.tichu.use_cases.teams.add_player.add_first_player.ports.inbound.AddFirstPlayerToTeam;
 import ch.resrc.tichu.use_cases.teams.add_player.add_second_player.AddSecondPlayerToTeamUseCae;
@@ -22,7 +23,6 @@ import ch.resrc.tichu.use_cases.teams.remove_player.remove_first_player_from_tea
 import ch.resrc.tichu.use_cases.teams.remove_player.remove_first_player_from_team.ports.inbound.RemoveFirstPlayerFromTeam;
 import ch.resrc.tichu.use_cases.teams.remove_player.remove_second_player_from_team.RemoveSecondPlayerFromTeamUseCase;
 import ch.resrc.tichu.use_cases.teams.remove_player.remove_second_player_from_team.ports.inbound.RemoveSecondPlayerFromTeam;
-import ch.resrc.tichu.use_cases.teams.update_team_name.ports.UpdateTeamNameUseCase;
 
 import javax.enterprise.context.ApplicationScoped;
 

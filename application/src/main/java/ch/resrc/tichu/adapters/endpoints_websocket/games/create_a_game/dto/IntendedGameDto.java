@@ -1,4 +1,4 @@
-package ch.resrc.tichu.adapters.endpoints_websocket.games.create_game;
+package ch.resrc.tichu.adapters.endpoints_websocket.games.create_a_game.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 

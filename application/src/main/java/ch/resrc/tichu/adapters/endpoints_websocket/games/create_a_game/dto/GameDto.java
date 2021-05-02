@@ -1,4 +1,4 @@
-package ch.resrc.tichu.adapters.endpoints_websocket.games.create_game.dto;
+package ch.resrc.tichu.adapters.endpoints_websocket.games.create_a_game.dto;
 
 import ch.resrc.tichu.adapters.endpoints_rest.users.dto.UserDto;
 import ch.resrc.tichu.adapters.endpoints_websocket.dto.TeamDto;

@@ -27,21 +27,21 @@ public class FoundTeamWebSocket {
   }
 
   @OnOpen
-  public void onOpen(Session session, @PathParam("teamId") String teamId) {
-    final var theId = Id.resultOf(teamId).getOrElseThrow(InvalidInputDetected::of);
+  public void onOpen(Session session, @PathParam("receiverId") String receiverId) {
+    final var theId = Id.resultOf(receiverId).getOrElseThrow(InvalidInputDetected::of);
     SESSIONS.computeIfAbsent(theId, k -> new HashSet<>());
     SESSIONS.get(theId).add(session);
   }
 
   @OnClose
-  public void onClose(Session session, @PathParam("teamId") String teamId) {
-    final var theId = Id.resultOf(teamId).getOrElseThrow(InvalidInputDetected::of);
+  public void onClose(Session session, @PathParam("receiverId") String receiverId) {
+    final var theId = Id.resultOf(receiverId).getOrElseThrow(InvalidInputDetected::of);
     SESSIONS.get(theId).remove(session);
   }
 
   @OnError
-  public void onError(Session session, @PathParam("teamId") String teamId, Throwable throwable) {
-    final var theId = Id.resultOf(teamId).getOrElseThrow(InvalidInputDetected::of);
+  public void onError(Session session, @PathParam("receiverId") String receiverId, Throwable throwable) {
+    final var theId = Id.resultOf(receiverId).getOrElseThrow(InvalidInputDetected::of);
     SESSIONS.get(theId).remove(session);
   }
 }

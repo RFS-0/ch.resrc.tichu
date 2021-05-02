@@ -1,5 +1,6 @@
 package ch.resrc.tichu.adapters.endpoints_rest.users;
 
+import ch.resrc.tichu.adapters.endpoints_rest.RestPaths;
 import ch.resrc.tichu.adapters.endpoints_rest.RestPaths.Users;
 import ch.resrc.tichu.adapters.endpoints_rest.users.dto.IntendedUserDto;
 import ch.resrc.tichu.adapters.endpoints_rest.users.input.FindOrCreateUserRestInput;
@@ -14,7 +15,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-@Path(Users.USERS)
+@Path(RestPaths.Users.USERS)
 @Produces(MediaType.APPLICATION_JSON)
 @RequestScoped
 public class UsersResource {
