@@ -5,8 +5,7 @@
 * Provide Implementation of Implement AddFirstPlayerToTeamFake
 
 
-** Implement Use Case Input
-** Implement Use Case Output
+
 ** Implement Use Case
 ** Implement Endpoint Input
 ** Implement Endpoint Output
