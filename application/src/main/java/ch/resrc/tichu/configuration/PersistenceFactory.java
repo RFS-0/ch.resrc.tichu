@@ -198,17 +198,17 @@ public class PersistenceFactory {
         microStreamUsersRepository = new MicroStreamUsersRepository(s3Client, bucketName);
       }
       return (O) microStreamUsersRepository;
-    } else if (repositoryClass.isAssignableFrom(InMemoryGamesRepository.class)) {
+    } else if (repositoryClass.isAssignableFrom(MicroStreamGamesRepository.class)) {
       if (microStreamGamesRepository == null) {
         microStreamGamesRepository = new MicroStreamGamesRepository(s3Client, bucketName);
       }
       return (O) microStreamGamesRepository;
-    } else if (repositoryClass.isAssignableFrom(InMemoryTeamsRepository.class)) {
+    } else if (repositoryClass.isAssignableFrom(MicroStreamTeamsRepository.class)) {
       if (microStreamTeamsRepository == null) {
         microStreamTeamsRepository = new MicroStreamTeamsRepository(s3Client, bucketName);
       }
       return (O) microStreamTeamsRepository;
-    } else if (repositoryClass.isAssignableFrom(InMemoryPlayersRepository.class)) {
+    } else if (repositoryClass.isAssignableFrom(MicroStreamPlayersRepository.class)) {
       if (microStreamPlayersRepository == null) {
         microStreamPlayersRepository = new MicroStreamPlayersRepository(s3Client, bucketName);
       }
