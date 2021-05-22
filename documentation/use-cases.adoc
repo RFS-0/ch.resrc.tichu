@@ -25,6 +25,7 @@ Uses domain operations to execute some useful functionality.
 ** Use case output -> specifies the output produced by the use case
 * Entity -> defines the application's data structures and the validation rules which ensure only valid instances of entities can be instantiated
 * Domain operation -> defines the operations which can be applied to the application's data structures
+* Domain operation -> defines the operations which can be applied to the application's data structures
 * Repository -> an adapter for the domain operations which ensures that changes of domain operations to the application's data structures is persisted in some form
 
 The following diagrams how these abstractions collaborate in order to execute a client's request resp. a use case:
@@ -39,7 +40,7 @@ actor Client
 boundary "Use Case Input"
 boundary "Domain Operations"
 
-box "Endpoint" #99b1ff
+box "Endpoint Adapter (REST, WebSocket)" #99b1ff
     participant Endpoint
     participant "Endpoint Input"
 end box
@@ -85,9 +86,9 @@ note right: Use case logic
 
 "Use Case" -> "Domain Operations": execute
 
-"Domain Operations" -> "Repositories": execute
+"Domain Operations" -> "Repositories": execute some persistence related side-effect
 activate Repositories
-return Entity
+return Operation result Either<Problem, Set<Entity>
 
 "Domain Operations" -> "Use Case": execute
 
