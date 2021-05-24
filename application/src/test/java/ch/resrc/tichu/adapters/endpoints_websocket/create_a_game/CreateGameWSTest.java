@@ -39,7 +39,7 @@ class CreateGameWSTest {
 
   private final Json json;
 
-  @TestHTTPResource(WebSocketAddresses.Games.CREATE)
+  @TestHTTPResource(WebSocketAddresses.UseCases.Input.CREATE_A_GAME)
   URI create;
   @TestHTTPResource("/events/games/created/" + CREATED_BY_ID)
   URI created;

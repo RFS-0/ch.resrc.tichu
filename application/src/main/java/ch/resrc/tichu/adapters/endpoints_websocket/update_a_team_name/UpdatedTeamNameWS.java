@@ -17,7 +17,7 @@ import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 import java.util.concurrent.atomic.AtomicReference;
 
-@ServerEndpoint(WebSocketAddresses.Games.UPDATED_TEAM_NAME)
+@ServerEndpoint(WebSocketAddresses.UseCases.Output.UPDATE_TEAM_NAME)
 public class UpdatedTeamNameWS {
 
   private static final AtomicReference<Map<Id, Set<Session>>> ID_TO_SESSIONS_REF = new AtomicReference<>(HashMap.empty());

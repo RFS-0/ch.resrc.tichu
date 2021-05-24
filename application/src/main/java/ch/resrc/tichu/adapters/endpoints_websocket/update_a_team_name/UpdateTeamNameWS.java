@@ -17,7 +17,7 @@ import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
 import java.util.concurrent.atomic.AtomicReference;
 
-@ServerEndpoint(WebSocketAddresses.Games.UPDATE_TEAM_NAME)
+@ServerEndpoint(WebSocketAddresses.UseCases.Input.UPDATE_TEAM_NAME)
 public class UpdateTeamNameWS {
 
   private static final AtomicReference<Set<Session>> SESSIONS_REF = new AtomicReference<>(HashSet.empty());

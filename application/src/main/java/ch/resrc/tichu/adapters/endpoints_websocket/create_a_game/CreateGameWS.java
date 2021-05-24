@@ -17,7 +17,7 @@ import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
 import java.util.concurrent.atomic.AtomicReference;
 
-@ServerEndpoint(WebSocketAddresses.Games.CREATE)
+@ServerEndpoint(WebSocketAddresses.UseCases.Input.CREATE_A_GAME)
 public class CreateGameWS {
 
   private static final AtomicReference<Set<Session>> SESSIONS_REF = new AtomicReference<>(HashSet.empty());

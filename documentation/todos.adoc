@@ -7,8 +7,6 @@
 
 
 
-** Implement Endpoint Input
-** Implement Endpoint Output
 ** Implement Endpoint(s)
 
 === Open
