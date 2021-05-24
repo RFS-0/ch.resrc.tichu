@@ -1,7 +1,7 @@
 package ch.resrc.tichu.adapters.endpoints_websocket.update_a_team_name;
 
 import ch.resrc.tichu.adapters.endpoints_websocket.WebSocketClient;
-import ch.resrc.tichu.adapters.endpoints_websocket.create_a_game.dto.GameDto;
+import ch.resrc.tichu.adapters.endpoints_websocket.common.dto.GameDto;
 import ch.resrc.tichu.adapters.endpoints_websocket.update_a_team_name.dto.IntendedTeamNameDto;
 import ch.resrc.tichu.capabilities.errorhandling.Problem;
 import ch.resrc.tichu.capabilities.json.Json;

@@ -71,11 +71,15 @@ export default class AddPlayer extends Vue {
   onConfirm() {
     this.showInput = false;
     if (this.playerId === "add-first-player") {
-      this.endpoints.addFirstPlayerToTeam.send(AddPlayerEvent.ofPlayer(this.teamId, this.playerNameInput)).subscribe(
+      this.endpoints.addFirstPlayerToTeam.send(
+        AddPlayerEvent.ofPlayer(this.game.value.id, this.teamId, this.playerNameInput),
+      ).subscribe(
         updatedGame => this.updateGame(updatedGame),
       );
     } else if (this.playerId === "add-second-player") {
-      this.endpoints.addSecondPlayerToTeam.send(AddPlayerEvent.ofPlayer(this.teamId, this.playerNameInput)).subscribe(
+      this.endpoints.addSecondPlayerToTeam.send(
+        AddPlayerEvent.ofPlayer(this.game.value.id, this.teamId, this.playerNameInput),
+      ).subscribe(
         updatedGame => this.updateGame(updatedGame),
       );
     } else {

@@ -1,7 +1,6 @@
-package ch.resrc.tichu.adapters.endpoints_websocket.create_a_game.dto;
+package ch.resrc.tichu.adapters.endpoints_websocket.common.dto;
 
 import ch.resrc.tichu.adapters.endpoints_rest.users.dto.UserDto;
-import ch.resrc.tichu.adapters.endpoints_websocket.common.dto.TeamDto;
 import ch.resrc.tichu.use_cases.create_a_game.ports.output.GameDocument;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.vavr.collection.Set;

@@ -1,4 +1,4 @@
-package ch.resrc.tichu.adapters.endpoints_websocket.create_a_game.dto;
+package ch.resrc.tichu.adapters.endpoints_websocket.common.dto;
 
 import ch.resrc.tichu.domain.value_objects.Id;
 import ch.resrc.tichu.domain.value_objects.Round;

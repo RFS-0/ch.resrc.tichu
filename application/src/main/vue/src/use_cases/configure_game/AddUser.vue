@@ -55,11 +55,15 @@ export default class AddUser extends Vue {
     const userId = this.user.value.id;
     const userName = this.user.value.name.toUpperCase();
     if (this.position === "add-first-player") {
-      this.endpoints.addFirstPlayerToTeam.send(AddPlayerEvent.ofUser(this.teamId, userId, userName)).subscribe(
+      this.endpoints.addFirstPlayerToTeam.send(
+        AddPlayerEvent.ofUser(this.game.value.id, this.teamId, userId, userName),
+      ).subscribe(
         updatedGame => this.updateGame(updatedGame),
       );
     } else if (this.position === "add-second-player") {
-      this.endpoints.addSecondPlayerToTeam.send(AddPlayerEvent.ofUser(this.teamId, userId, userName)).subscribe(
+      this.endpoints.addSecondPlayerToTeam.send(
+        AddPlayerEvent.ofUser(this.game.value.id, this.teamId, userId, userName),
+      ).subscribe(
         updatedGame => this.updateGame(updatedGame),
       );
     } else {

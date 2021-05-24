@@ -116,22 +116,25 @@ export class UpdateTeamNameEvent {
 
 export class AddPlayerEvent {
   private constructor(
+    public gameId: string,
     public teamId: string,
     public userId: string | null,
     public playerName: string,
   ) {
   }
 
-  static ofUser(teamId: string, userId: string, playerName: string): AddPlayerEvent {
+  static ofUser(gameId: string, teamId: string, userId: string, playerName: string): AddPlayerEvent {
     return new AddPlayerEvent(
+      gameId,
       teamId,
       userId,
       playerName,
     );
   }
 
-  static ofPlayer(teamId: string, playerName: string): AddPlayerEvent {
+  static ofPlayer(gameId: string, teamId: string, playerName: string): AddPlayerEvent {
     return new AddPlayerEvent(
+      gameId,
       teamId,
       null,
       playerName,
