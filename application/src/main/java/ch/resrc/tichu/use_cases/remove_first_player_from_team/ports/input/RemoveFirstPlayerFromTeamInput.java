@@ -2,11 +2,12 @@ package ch.resrc.tichu.use_cases.remove_first_player_from_team.ports.input;
 
 import ch.resrc.tichu.use_cases.UseCaseInput;
 import ch.resrc.tichu.use_cases.common_ports.input.IntendedPlayerRemoval;
+import ch.resrc.tichu.use_cases.remove_first_player_from_team.ports.output.RemoveFirstPlayerFromTeamOutput;
 
 @FunctionalInterface
 public interface RemoveFirstPlayerFromTeamInput {
 
-  void apply(Request requested);
+  RemoveFirstPlayerFromTeamOutput.Response apply(Request requested);
 
   class Request implements UseCaseInput {
 

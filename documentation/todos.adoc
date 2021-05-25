@@ -4,7 +4,7 @@
 
 * Provide Implementation of RemoveFirstPlayerFromTeamFake
 
-** Implement Use Case Output
+
 ** Implement Use Case
 ** Implement Endpoint Input
 ** Implement Endpoint Output
