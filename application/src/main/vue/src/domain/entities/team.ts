@@ -140,6 +140,10 @@ export class AddPlayerEvent {
       playerName,
     );
   }
+
+  toDto(): string {
+    return JSON.stringify(this);
+  }
 }
 
 export class RemoveFirstPlayerEvent {

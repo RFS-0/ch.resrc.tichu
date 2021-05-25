@@ -1,14 +1,16 @@
-import { CreateGameEvent, Game } from '@/domain/entities/game';
-import { CreateGame } from '@/endpoints/endpoints';
+import { AddFirstPlayerToTeam } from '@/endpoints/endpoints';
+import { Game } from '@/domain/entities/game';
 import { Observable, Subject } from 'rxjs';
+import { AddPlayerEvent } from '@/domain/entities/team';
 
-export class CreateGameWebSocket implements CreateGame {
-  constructor(private requestUrl: string, private responseUrl: string) {}
+export class AddFirstPlayerToTeamWebSocket implements AddFirstPlayerToTeam {
+  constructor(private requestUrl: string, private responseUrl: string) {
+  }
 
-  send(intent: CreateGameEvent): Observable<Game> {
+  send(intent: AddPlayerEvent): Observable<Game> {
     const response = new Subject<Game>();
     const requestSocket = new WebSocket(this.requestUrl);
-    const responseSocket = new WebSocket(`${this.responseUrl}/${intent.createdBy}`);
+    const responseSocket = new WebSocket(`${this.responseUrl}/${intent.gameId}`);
     requestSocket.onopen = (event: Event) => {
       requestSocket.send(intent.toDto());
       requestSocket.close();

@@ -30,6 +30,7 @@ import {
   UpdateRound,
   UpdateTeamName,
 } from '@/endpoints/endpoints';
+import { AddFirstPlayerToTeamWebSocket } from '@/adapters/endpoints/websocket/add-first-player-to-team-web-socket';
 
 export interface EndpointRegistry {
   findOrCreateUser: FindOrCreateUser;
@@ -63,6 +64,7 @@ export enum Endpoints {
 }
 
 export interface WebSocketAddresses {
+  useCases: UseCases
   games: GameSockets
   teams: TeamSockets
 }
@@ -75,6 +77,21 @@ export interface UserPaths {
   users: string;
   findOrCreate: string;
   me: string
+}
+
+export interface UseCases {
+  input: UseCaseInputs
+  output: UseCaseOutputs
+}
+
+export interface UseCaseInputs {
+  createAGame: string
+  addFirstPlayerToTeam: string
+}
+
+export interface UseCaseOutputs {
+  createAGame: string
+  addFirstPlayerToTeam: string
 }
 
 export interface GameSockets {
@@ -98,23 +115,33 @@ export interface TeamSockets {
 }
 
 const WEB_SOCKET_ADDRESSES: WebSocketAddresses = {
+  useCases: {
+    input: {
+      createAGame: '/events/games/create',
+      addFirstPlayerToTeam: '/events/teams/add-first-player-to-team',
+    },
+    output: {
+      createAGame: '/events/games/created',
+      addFirstPlayerToTeam: '/events/teams/added-first-player-to-team/{teamId}',
+    },
+  },
   games: {
-    create: "/events/games/create",
-    created: "/events/games/created",
+    create: '/events/games/create',
+    created: '/events/games/created',
   },
   teams: {
-    findById: "/events/teams/find-by-id",
-    foundById: "/events/teams/found/{teamId}",
-    updateTeamName: "/events/teams/update-team-name",
-    updatedTeamName: "/events/teams/updated-team-name/{teamId}",
-    addFirstPlayerToTeam: "/events/teams/add-first-player-to-team",
-    addedFirstPlayerToTeam: "/events/teams/added-first-player-to-team/{teamId}",
-    addSecondPlayerToTeam: "/events/teams/add-second-player-to-team",
-    addedSecondPlayerToTeam: "/events/teams/added-second-player-to-team/{teamId}",
-    removeFirstPlayerFromTeam: "/events/teams/remove-first-player-from-team",
-    removedFirstPlayerFromTeam: "/events/teams/removed-first-player-from-team/{teamId}",
-    removeSecondPlayerFromTeam: "/events/teams/remove-second-player-from-team",
-    removedSecondPlayerFromTeam: "/events/teams/removed-second-player-from-team/{teamId}",
+    findById: '/events/teams/find-by-id',
+    foundById: '/events/teams/found/{teamId}',
+    updateTeamName: '/events/teams/update-team-name',
+    updatedTeamName: '/events/teams/updated-team-name/{teamId}',
+    addFirstPlayerToTeam: '/events/teams/add-first-player-to-team',
+    addedFirstPlayerToTeam: '/events/teams/added-first-player-to-team/{teamId}',
+    addSecondPlayerToTeam: '/events/teams/add-second-player-to-team',
+    addedSecondPlayerToTeam: '/events/teams/added-second-player-to-team/{teamId}',
+    removeFirstPlayerFromTeam: '/events/teams/remove-first-player-from-team',
+    removedFirstPlayerFromTeam: '/events/teams/removed-first-player-from-team/{teamId}',
+    removeSecondPlayerFromTeam: '/events/teams/remove-second-player-from-team',
+    removedSecondPlayerFromTeam: '/events/teams/removed-second-player-from-team/{teamId}',
   },
 };
 
@@ -145,11 +172,14 @@ export const FAKED_ENDPOINT_REGISTRY: EndpointRegistry = {
 export const LOCAL_HOST_ENDPOINT_REGISTRY: EndpointRegistry = {
   findOrCreateUser: new FindOrCreateUserRest(REST_PATHS.user.findOrCreate),
   createGame: new CreateGameWebSocket(
-    "ws://" + process.env.VUE_APP_API_HOST + WEB_SOCKET_ADDRESSES.games.create,
-    "ws://" + process.env.VUE_APP_API_HOST + WEB_SOCKET_ADDRESSES.games.created,
+    'ws://' + process.env.VUE_APP_API_HOST + WEB_SOCKET_ADDRESSES.useCases.input.createAGame,
+    'ws://' + process.env.VUE_APP_API_HOST + WEB_SOCKET_ADDRESSES.useCases.output.createAGame,
   ),
   updateTeamName: new UpdateTeamNameFake(),
-  addFirstPlayerToTeam: new AddFirstPlayerToTeamFake(),
+  addFirstPlayerToTeam: new AddFirstPlayerToTeamWebSocket(
+    'ws://' + process.env.VUE_APP_API_HOST + WEB_SOCKET_ADDRESSES.useCases.input.addFirstPlayerToTeam,
+    'ws://' + process.env.VUE_APP_API_HOST + WEB_SOCKET_ADDRESSES.useCases.output.addFirstPlayerToTeam,
+  ),
   removeFirstPlayerFromTeam: new RemoveFirstPlayerFromTeamFake(),
   addSecondPlayerToTeam: new AddSecondPlayerToTeamFake(),
   removeSecondPlayerFromTeam: new RemoveSecondPlayerFromTeamFake(),

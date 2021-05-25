@@ -57,10 +57,15 @@ public class PersistenceFactory {
   MicroStreamTeamsRepository microStreamTeamsRepository;
   MicroStreamPlayersRepository microStreamPlayersRepository;
 
+  InMemoryUsersRepository inMemoryUsersRepository;
+  InMemoryGamesRepository inMemoryGamesRepository;
+  InMemoryTeamsRepository inMemoryTeamsRepository;
+  InMemoryPlayersRepository inMemoryPlayersRepository;
+
   public AddUser produceAddUserOperation(Environment environment, S3Client s3Client, String bucketName) {
     switch (environment) {
       case TEST -> {
-        return new InMemoryUsersRepository();
+        return getOrCreateTestRepository(InMemoryUsersRepository.class);
       }
       case DEV, PROD -> {
         return getOrCreateRepository(MicroStreamUsersRepository.class, s3Client, bucketName);
@@ -72,7 +77,7 @@ public class PersistenceFactory {
   public GetAllUsers produceGetAllUsersOperation(Environment environment, S3Client s3Client, String bucketName) {
     switch (environment) {
       case TEST -> {
-        return new InMemoryUsersRepository();
+        return getOrCreateTestRepository(InMemoryUsersRepository.class);
       }
       case DEV, PROD -> {
         return getOrCreateRepository(MicroStreamUsersRepository.class, s3Client, bucketName);
@@ -84,7 +89,7 @@ public class PersistenceFactory {
   public AddGame produceAddGameOperation(Environment environment, S3Client s3Client, String bucketName) {
     switch (environment) {
       case TEST -> {
-        return new InMemoryGamesRepository();
+        return getOrCreateTestRepository(InMemoryGamesRepository.class);
       }
       case DEV, PROD -> {
         return getOrCreateRepository(MicroStreamGamesRepository.class, s3Client, bucketName);
@@ -96,7 +101,7 @@ public class PersistenceFactory {
   public GetAllGames produceGetAllGamesOperation(Environment environment, S3Client s3Client, String bucketName) {
     switch (environment) {
       case TEST -> {
-        return new InMemoryGamesRepository();
+        return getOrCreateTestRepository(InMemoryGamesRepository.class);
       }
       case DEV, PROD -> {
         return getOrCreateRepository(MicroStreamGamesRepository.class, s3Client, bucketName);
@@ -108,7 +113,7 @@ public class PersistenceFactory {
   public UpdateGame produceUpdateGameOperation(Environment environment, S3Client s3Client, String bucketName) {
     switch (environment) {
       case TEST -> {
-        return new InMemoryGamesRepository();
+        return getOrCreateTestRepository(InMemoryGamesRepository.class);
       }
       case DEV, PROD -> {
         return getOrCreateRepository(MicroStreamGamesRepository.class, s3Client, bucketName);
@@ -120,7 +125,7 @@ public class PersistenceFactory {
   public AddTeam produceAddTeamOperation(Environment environment, S3Client s3Client, String bucketName) {
     switch (environment) {
       case TEST -> {
-        return new InMemoryTeamsRepository();
+        return getOrCreateTestRepository(InMemoryTeamsRepository.class);
       }
       case DEV, PROD -> {
         return getOrCreateRepository(MicroStreamTeamsRepository.class, s3Client, bucketName);
@@ -132,7 +137,7 @@ public class PersistenceFactory {
   public GetAllTeams produceGetAllTeamsOperation(Environment environment, S3Client s3Client, String bucketName) {
     switch (environment) {
       case TEST -> {
-        return new InMemoryTeamsRepository();
+        return getOrCreateTestRepository(InMemoryTeamsRepository.class);
       }
       case DEV, PROD -> {
         return getOrCreateRepository(MicroStreamTeamsRepository.class, s3Client, bucketName);
@@ -144,7 +149,7 @@ public class PersistenceFactory {
   public UpdateTeam produceUpdateTeamOperation(Environment environment, S3Client s3Client, String bucketName) {
     switch (environment) {
       case TEST -> {
-        return new InMemoryTeamsRepository();
+        return getOrCreateTestRepository(InMemoryTeamsRepository.class);
       }
       case DEV, PROD -> {
         return getOrCreateRepository(MicroStreamTeamsRepository.class, s3Client, bucketName);
@@ -156,7 +161,7 @@ public class PersistenceFactory {
   public AddPlayer produceAddPlayerOperation(Environment environment, S3Client s3Client, String bucketName) {
     switch (environment) {
       case TEST -> {
-        return new InMemoryPlayersRepository();
+        return getOrCreateTestRepository(InMemoryPlayersRepository.class);
       }
       case DEV, PROD -> {
         return getOrCreateRepository(MicroStreamPlayersRepository.class, s3Client, bucketName);
@@ -168,7 +173,7 @@ public class PersistenceFactory {
   public GetAllPlayers produceGetAllPlayersOperation(Environment environment, S3Client s3Client, String bucketName) {
     switch (environment) {
       case TEST -> {
-        return new InMemoryPlayersRepository();
+        return getOrCreateTestRepository(InMemoryPlayersRepository.class);
       }
       case DEV, PROD -> {
         return getOrCreateRepository(MicroStreamPlayersRepository.class, s3Client, bucketName);
@@ -180,7 +185,7 @@ public class PersistenceFactory {
   public UpdatePlayer produceUpdatePlayerOperation(Environment environment, S3Client s3Client, String bucketName) {
     switch (environment) {
       case TEST -> {
-        return new InMemoryPlayersRepository();
+        return getOrCreateTestRepository(InMemoryPlayersRepository.class);
       }
       case DEV, PROD -> {
         return getOrCreateRepository(MicroStreamPlayersRepository.class, s3Client, bucketName);
@@ -213,6 +218,33 @@ public class PersistenceFactory {
         microStreamPlayersRepository = new MicroStreamPlayersRepository(s3Client, bucketName);
       }
       return (O) microStreamPlayersRepository;
+    } else {
+      throw Defect.of(ProblemDiagnosis.of(INVALID_ENVIRONMENT));
+    }
+  }
+
+  @SuppressWarnings("unchecked")
+  private <O extends OutputBoundary> O getOrCreateTestRepository(Class<? extends OutputBoundary> repositoryClass) {
+    if (repositoryClass.isAssignableFrom(InMemoryUsersRepository.class)) {
+      if (inMemoryUsersRepository == null) {
+        inMemoryUsersRepository = new InMemoryUsersRepository();
+      }
+      return (O) inMemoryUsersRepository;
+    } else if (repositoryClass.isAssignableFrom(InMemoryGamesRepository.class)) {
+      if (inMemoryGamesRepository == null) {
+        inMemoryGamesRepository = new InMemoryGamesRepository();
+      }
+      return (O) inMemoryGamesRepository;
+    } else if (repositoryClass.isAssignableFrom(InMemoryTeamsRepository.class)) {
+      if (inMemoryTeamsRepository == null) {
+        inMemoryTeamsRepository = new InMemoryTeamsRepository();
+      }
+      return (O) inMemoryTeamsRepository;
+    } else if (repositoryClass.isAssignableFrom(InMemoryPlayersRepository.class)) {
+      if (inMemoryPlayersRepository == null) {
+        inMemoryPlayersRepository = new InMemoryPlayersRepository();
+      }
+      return (O) inMemoryPlayersRepository;
     } else {
       throw Defect.of(ProblemDiagnosis.of(INVALID_ENVIRONMENT));
     }

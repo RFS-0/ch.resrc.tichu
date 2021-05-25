@@ -24,7 +24,6 @@ public class CreateGameWS {
 
   private final CreateGameInput createGame;
   private final CreatedGameWS created;
-
   private final Json json;
 
   public CreateGameWS(CreateGameInput createGame,
