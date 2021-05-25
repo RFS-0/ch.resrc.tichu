@@ -14,6 +14,8 @@ import ch.resrc.tichu.use_cases.add_first_player_to_team.AddFirstPlayerToTeamUse
 import ch.resrc.tichu.use_cases.add_first_player_to_team.ports.input.AddFirstPlayerToTeamInput;
 import ch.resrc.tichu.use_cases.create_a_game.CreateGameUseCase;
 import ch.resrc.tichu.use_cases.find_or_create_user.FindOrCreateUserUseCase;
+import ch.resrc.tichu.use_cases.remove_first_player_from_team.ports.RemoveFirstPlayerFromTeamUseCase;
+import ch.resrc.tichu.use_cases.remove_first_player_from_team.ports.input.RemoveFirstPlayerFromTeamInput;
 import ch.resrc.tichu.use_cases.update_a_team_name.UpdateTeamNameUseCase;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -79,6 +81,19 @@ public final class UseCasePortsConfiguration {
       updateTeam,
       getAllPlayers,
       addPlayer
+    );
+  }
+
+  @ApplicationScoped
+  public RemoveFirstPlayerFromTeamInput addFirstPlayerToTeam(GetAllGames getAllGames,
+                                                             UpdateGame updateGame,
+                                                             GetAllTeams getAllTeams,
+                                                             UpdateTeam updateTeam) {
+    return new RemoveFirstPlayerFromTeamUseCase(
+      getAllGames,
+      updateGame,
+      getAllTeams,
+      updateTeam
     );
   }
 }

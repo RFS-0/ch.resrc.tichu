@@ -54,6 +54,22 @@ public class IntendedPlayerRemoval {
     );
   }
 
+  public Id gameId() {
+    return gameId;
+  }
+
+  public Id teamId() {
+    return teamId;
+  }
+
+  public Id userId() {
+    return userId;
+  }
+
+  public Name playerName() {
+    return playerName;
+  }
+
   public static class Builder {
 
     private final IntendedPlayerRemoval workpiece;
