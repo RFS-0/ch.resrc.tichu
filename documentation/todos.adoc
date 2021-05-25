@@ -3,9 +3,7 @@
 === Current task
 
 * Provide Implementation of RemoveFirstPlayerFromTeamFake
-** Implement Domain Operation
-** Implement Domain Operation in Repository
-** Implement Use Case Input
+
 ** Implement Use Case Output
 ** Implement Use Case
 ** Implement Endpoint Input

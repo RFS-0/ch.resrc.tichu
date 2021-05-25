@@ -9,7 +9,6 @@ import io.vavr.collection.Seq;
 import io.vavr.control.Either;
 
 import java.util.function.Consumer;
-import java.util.function.Supplier;
 
 import static ch.resrc.tichu.capabilities.validation.Validations.attribute;
 import static ch.resrc.tichu.capabilities.validation.Validations.isTrueOrError;
@@ -17,34 +16,34 @@ import static ch.resrc.tichu.capabilities.validation.Validations.notNull;
 import static ch.resrc.tichu.use_cases.common_ports.input.IntendedPlayerAdditionValidationErrors.MUST_HAVE_EITHER_USER_ID_OR_PLAYER_ID;
 import static ch.resrc.tichu.use_cases.common_ports.input.IntendedPlayerAdditionValidationErrors.MUST_NOT_BE_NULL;
 
-public class IntendedPlayerAddition {
+public class IntendedPlayerRemoval {
 
   private Id gameId;
   private Id teamId;
   private Id userId;
   private Name playerName;
 
-  private IntendedPlayerAddition() {
+  public IntendedPlayerRemoval() {
   }
 
-  private IntendedPlayerAddition(IntendedPlayerAddition other) {
+  public IntendedPlayerRemoval(IntendedPlayerRemoval other) {
     this.gameId = other.gameId;
     this.teamId = other.teamId;
     this.userId = other.userId;
     this.playerName = other.playerName;
   }
 
-  private IntendedPlayerAddition copied(Consumer<IntendedPlayerAddition> modification) {
-    var theCopy = new IntendedPlayerAddition(this);
+  private IntendedPlayerRemoval copied(Consumer<IntendedPlayerRemoval> modification) {
+    var theCopy = new IntendedPlayerRemoval(this);
     modification.accept(theCopy);
     return theCopy;
   }
 
-  public static Builder anIntendedPlayerAddition() {
+  public static Builder anIntendedPlayerRemoval() {
     return new Builder();
   }
 
-  private static Validation<Seq<ValidationError>, IntendedPlayerAddition> validation() {
+  private static Validation<Seq<ValidationError>, IntendedPlayerRemoval> validation() {
     return Validations.allOf(
       attribute(x -> x.gameId, notNull(MUST_NOT_BE_NULL)),
       attribute(x -> x.teamId, notNull(MUST_NOT_BE_NULL)),
@@ -55,31 +54,15 @@ public class IntendedPlayerAddition {
     );
   }
 
-  public Id gameId() {
-    return gameId;
-  }
-
-  public Id teamId() {
-    return teamId;
-  }
-
-  public Id userId() {
-    return userId;
-  }
-
-  public Name playerName() {
-    return playerName;
-  }
-
   public static class Builder {
 
-    private final IntendedPlayerAddition workpiece;
+    private final IntendedPlayerRemoval workpiece;
 
     private Builder() {
-      this.workpiece = new IntendedPlayerAddition();
+      this.workpiece = new IntendedPlayerRemoval();
     }
 
-    public Builder(IntendedPlayerAddition workpiece) {
+    public Builder(IntendedPlayerRemoval workpiece) {
       this.workpiece = workpiece;
     }
 
@@ -99,19 +82,8 @@ public class IntendedPlayerAddition {
       return new Builder(workpiece.copied(but -> but.playerName = playerName));
     }
 
-    public Either<Seq<ValidationError>, IntendedPlayerAddition> buildResult() {
+    public Either<Seq<ValidationError>, IntendedPlayerRemoval> buildResult() {
       return validation().applyTo(workpiece);
     }
   }
-}
-
-class IntendedPlayerAdditionValidationErrors {
-
-  static final Supplier<ValidationError> MUST_NOT_BE_NULL = () -> ValidationError.of(
-    IntendedPlayerAddition.class.getName(), "must not be null"
-  );
-
-  static final Supplier<ValidationError> MUST_HAVE_EITHER_USER_ID_OR_PLAYER_ID = () -> ValidationError.of(
-    IntendedPlayerAddition.class.getName(), "must have either user id or player id"
-  );
 }
