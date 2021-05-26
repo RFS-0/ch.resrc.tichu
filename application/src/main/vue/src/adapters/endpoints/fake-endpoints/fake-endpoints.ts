@@ -25,9 +25,9 @@ import {
   FinishRound,
   RemoveFirstPlayerFromTeam,
   RemoveSecondPlayerFromTeam,
-  ResetRank,
-  UpdateCardPoints,
-  UpdateRank,
+  ResetRankOfPlayer,
+  UpdateCardPointsOfRound,
+  UpdateRankOfPlayer,
   UpdateRound,
   UpdateTeamName,
 } from '@/endpoints/endpoints';
@@ -207,7 +207,7 @@ export class UpdateRoundFake implements UpdateRound {
   }
 }
 
-export class UpdateRankFake implements UpdateRank {
+export class UpdateRankOfPlayerFake implements UpdateRankOfPlayer {
   send(intent: UpdateRankEvent): Observable<Game> {
     if (isNone(gameState.game)) {
       throw Error('Invariant violated: cannot update team name of non existing game');
@@ -223,7 +223,7 @@ export class UpdateRankFake implements UpdateRank {
   }
 }
 
-export class ResetRankFake implements ResetRank {
+export class ResetRankOfPlayerFake implements ResetRankOfPlayer {
   send(intent: ResetRankEvent): Observable<Game> {
     if (isNone(gameState.game)) {
       throw Error('Invariant violated: cannot update team name of non existing game');
@@ -239,7 +239,7 @@ export class ResetRankFake implements ResetRank {
   }
 }
 
-export class UpdateCardPointsFake implements UpdateCardPoints {
+export class UpdateCardPointsOfRoundFake implements UpdateCardPointsOfRound {
   send(intent: UpdateCardPointsEvent): Observable<Game> {
     if (isNone(gameState.game)) {
       throw Error('Invariant violated: cannot update team name of non existing game');
@@ -250,10 +250,10 @@ export class UpdateCardPointsFake implements UpdateCardPoints {
     let sanitizedPointsOfLeftTeam;
     let sanitizedPointsOfRightTeam;
     if (gameState.game.value.isLeftTeam(intent.teamId)) {
-      sanitizedPointsOfLeftTeam = UpdateCardPointsFake.sanitizeCardPointValue(intent.cardPoints);
+      sanitizedPointsOfLeftTeam = UpdateCardPointsOfRoundFake.sanitizeCardPointValue(intent.cardPoints);
       sanitizedPointsOfRightTeam = 100 - sanitizedPointsOfLeftTeam;
     } else {
-      sanitizedPointsOfRightTeam = UpdateCardPointsFake.sanitizeCardPointValue(intent.cardPoints);
+      sanitizedPointsOfRightTeam = UpdateCardPointsOfRoundFake.sanitizeCardPointValue(intent.cardPoints);
       sanitizedPointsOfLeftTeam = 100 - sanitizedPointsOfRightTeam;
     }
     const updatedGame = gameState.game.value

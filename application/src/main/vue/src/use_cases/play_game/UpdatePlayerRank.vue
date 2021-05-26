@@ -60,7 +60,7 @@ export default class UpdatePlayerRank extends Vue {
   }
 
   finishRound() {
-    this.endpoints.updateRank.send(
+    this.endpoints.updateRankOfPlayer.send(
       UpdateRankEvent.of(
         this.gameId,
         this.playerId,
@@ -74,7 +74,7 @@ export default class UpdatePlayerRank extends Vue {
         throw new Error("Invariant violated: Player id cannot be null");
       }
       if (this.selectedRound.isMatch(firstPlayerId, secondPlayerId)) {
-        this.endpoints.updateCardPoints.send(UpdateCardPointsEvent.of(
+        this.endpoints.updateCardPointsOfRound.send(UpdateCardPointsEvent.of(
           this.gameId,
           this.teamId,
           this.selectedRound.roundNumber,
@@ -87,8 +87,8 @@ export default class UpdatePlayerRank extends Vue {
 
   resetRank() {
     merge(
-      this.endpoints.updateCardPoints.send(UpdateCardPointsEvent.of(this.gameId, this.teamId, this.selectedRound.roundNumber, 50)),
-      this.endpoints.resetRank.send(ResetRankEvent.of(this.gameId, this.playerId, this.selectedRound.roundNumber)),
+      this.endpoints.updateCardPointsOfRound.send(UpdateCardPointsEvent.of(this.gameId, this.teamId, this.selectedRound.roundNumber, 50)),
+      this.endpoints.resetRankOfPlayer.send(ResetRankEvent.of(this.gameId, this.playerId, this.selectedRound.roundNumber)),
     ).subscribe(game => this.updateGame(game));
   }
 };

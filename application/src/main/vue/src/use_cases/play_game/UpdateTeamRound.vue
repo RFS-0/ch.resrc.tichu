@@ -113,7 +113,7 @@ export default class UpdateTeamRound extends Vue {
   }
 
   updateCardPoints(teamId: string, cardPoints: number) {
-    this.endpoints.updateCardPoints.send(
+    this.endpoints.updateCardPointsOfRound.send(
       UpdateCardPointsEvent.of(
         this.game.value.id,
         teamId,

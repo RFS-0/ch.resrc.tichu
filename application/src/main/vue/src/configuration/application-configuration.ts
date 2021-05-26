@@ -7,9 +7,9 @@ import {
   FinishRoundFake,
   RemoveFirstPlayerFromTeamFake,
   RemoveSecondPlayerFromTeamFake,
-  ResetRankFake,
-  UpdateCardPointsFake,
-  UpdateRankFake,
+  ResetRankOfPlayerFake,
+  UpdateCardPointsOfRoundFake,
+  UpdateRankOfPlayerFake,
   UpdateRoundFake,
   UpdateTeamNameFake,
 } from '@/adapters/endpoints/fake-endpoints/fake-endpoints';
@@ -24,9 +24,9 @@ import {
   FinishRound,
   RemoveFirstPlayerFromTeam,
   RemoveSecondPlayerFromTeam,
-  ResetRank,
-  UpdateCardPoints,
-  UpdateRank,
+  ResetRankOfPlayer,
+  UpdateCardPointsOfRound,
+  UpdateRankOfPlayer,
   UpdateRound,
   UpdateTeamName,
 } from '@/endpoints/endpoints';
@@ -40,9 +40,9 @@ export interface EndpointRegistry {
   removeFirstPlayerFromTeam: RemoveFirstPlayerFromTeam;
   addSecondPlayerToTeam: AddSecondPlayerToTeam;
   removeSecondPlayerFromTeam: RemoveSecondPlayerFromTeam;
-  updateRank: UpdateRank;
-  resetRank: ResetRank;
-  updateCardPoints: UpdateCardPoints;
+  updateRankOfPlayer: UpdateRankOfPlayer;
+  resetRankOfPlayer: ResetRankOfPlayer;
+  updateCardPointsOfRound: UpdateCardPointsOfRound;
   finishRound: FinishRound;
   updateRound: UpdateRound;
   finishGame: FinishGame;
@@ -161,9 +161,9 @@ export const FAKED_ENDPOINT_REGISTRY: EndpointRegistry = {
   removeFirstPlayerFromTeam: new RemoveFirstPlayerFromTeamFake(),
   addSecondPlayerToTeam: new AddSecondPlayerToTeamFake(),
   removeSecondPlayerFromTeam: new RemoveSecondPlayerFromTeamFake(),
-  updateRank: new UpdateRankFake(),
-  resetRank: new ResetRankFake(),
-  updateCardPoints: new UpdateCardPointsFake(),
+  updateRankOfPlayer: new UpdateRankOfPlayerFake(),
+  resetRankOfPlayer: new ResetRankOfPlayerFake(),
+  updateCardPointsOfRound: new UpdateCardPointsOfRoundFake(),
   finishRound: new FinishRoundFake(),
   updateRound: new UpdateRoundFake(),
   finishGame: new FinishGameFake(),
@@ -183,9 +183,9 @@ export const LOCAL_HOST_ENDPOINT_REGISTRY: EndpointRegistry = {
   removeFirstPlayerFromTeam: new RemoveFirstPlayerFromTeamFake(),
   addSecondPlayerToTeam: new AddSecondPlayerToTeamFake(),
   removeSecondPlayerFromTeam: new RemoveSecondPlayerFromTeamFake(),
-  updateRank: new UpdateRankFake(),
-  resetRank: new ResetRankFake(),
-  updateCardPoints: new UpdateCardPointsFake(),
+  updateRankOfPlayer: new UpdateRankOfPlayerFake(),
+  resetRankOfPlayer: new ResetRankOfPlayerFake(),
+  updateCardPointsOfRound: new UpdateCardPointsOfRoundFake(),
   finishRound: new FinishRoundFake(),
   updateRound: new UpdateRoundFake(),
   finishGame: new FinishGameFake(),

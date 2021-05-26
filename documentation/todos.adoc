@@ -2,7 +2,7 @@
 
 === Current task
 
-* Provide Implementation of UpdateRankFake
+* Provide Implementation of UpdateRankOfPlayerFake
 ** Implement Domain Operation
 ** Implement Domain Operation in Repository
 ** Implement Use Case Input
@@ -14,7 +14,7 @@
 
 === Open
 
-* Provide Implementation of ResetRankFake
+* Provide Implementation of ResetRankOfPlayerFake
 ** Implement Domain Operation
 ** Implement Domain Operation in Repository
 ** Implement Use Case Input
@@ -23,7 +23,7 @@
 ** Implement Endpoint Input
 ** Implement Endpoint Output
 ** Implement Endpoint(s)
-* Provide Implementation of UpdateCardPointsFake
+* Provide Implementation of UpdateCardPointsOfRoundFake
 ** Implement Domain Operation
 ** Implement Domain Operation in Repository
 ** Implement Use Case Input

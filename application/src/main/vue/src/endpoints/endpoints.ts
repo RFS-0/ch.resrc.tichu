@@ -46,15 +46,15 @@ export interface RemoveSecondPlayerFromTeam {
   send: (intent: RemoveSecondPlayerEvent) => Observable<Game>
 }
 
-export interface UpdateRank {
+export interface UpdateRankOfPlayer {
   send: (intent: UpdateRankEvent) => Observable<Game>
 }
 
-export interface ResetRank {
+export interface ResetRankOfPlayer {
   send: (intent: ResetRankEvent) => Observable<Game>
 }
 
-export interface UpdateCardPoints {
+export interface UpdateCardPointsOfRound {
   send: (intent: UpdateCardPointsEvent) => Observable<Game>
 }
 
