@@ -1,4 +1,4 @@
-package ch.resrc.tichu.use_cases.remove_first_player_from_team.ports;
+package ch.resrc.tichu.use_cases.remove_first_player_from_team;
 
 import ch.resrc.tichu.domain.entities.Game;
 import ch.resrc.tichu.domain.entities.Team;
