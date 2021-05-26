@@ -2,16 +2,6 @@
 
 === Current task
 
-* Provide Implementation of AddSecondPlayerToTeamFake
-
-
-
-** Implement Endpoint Input
-** Implement Endpoint Output
-** Implement Endpoint(s)
-
-=== Open
-
 * Provide Implementation of RemoveSecondPlayerFromTeamFake
 ** Implement Domain Operation
 ** Implement Domain Operation in Repository
@@ -21,6 +11,9 @@
 ** Implement Endpoint Input
 ** Implement Endpoint Output
 ** Implement Endpoint(s)
+
+=== Open
+
 * Provide Implementation of UpdateRankFake
 ** Implement Domain Operation
 ** Implement Domain Operation in Repository

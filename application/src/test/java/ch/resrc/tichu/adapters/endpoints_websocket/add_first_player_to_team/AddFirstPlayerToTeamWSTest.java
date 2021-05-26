@@ -102,10 +102,10 @@ class AddFirstPlayerToTeamWSTest {
       Instant.now()
     ).get();
 
-    addPlayer.add(getAllPlayers.getAll().get(), existingPlayer);
-    addTeam.add(getAllTeams.getAll().get(), anExistingTeam);
+    addPlayer.add(HashSet.empty(), existingPlayer);
+    addTeam.add(HashSet.empty(), anExistingTeam);
     addTeam.add(getAllTeams.getAll().get(), anotherExistingTeam);
-    addGame.add(getAllGames.getAll().get(), existingGame);
+    addGame.add(HashSet.empty(), existingGame);
   }
 
   @Test

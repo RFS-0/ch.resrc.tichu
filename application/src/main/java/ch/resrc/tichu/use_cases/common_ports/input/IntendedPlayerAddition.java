@@ -17,6 +17,7 @@ import static ch.resrc.tichu.capabilities.validation.Validations.notNull;
 import static ch.resrc.tichu.use_cases.common_ports.input.IntendedPlayerAdditionValidationErrors.MUST_HAVE_EITHER_USER_ID_OR_PLAYER_ID;
 import static ch.resrc.tichu.use_cases.common_ports.input.IntendedPlayerAdditionValidationErrors.MUST_NOT_BE_NULL;
 
+// TODO: maybe split in two separate classes (first and second player) to be consistent
 public class IntendedPlayerAddition {
 
   private Id gameId;

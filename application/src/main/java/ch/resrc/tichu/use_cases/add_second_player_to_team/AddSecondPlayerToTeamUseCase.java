@@ -10,8 +10,8 @@ import ch.resrc.tichu.domain.operations.GetAllTeams;
 import ch.resrc.tichu.domain.operations.UpdateGame;
 import ch.resrc.tichu.domain.operations.UpdateTeam;
 import ch.resrc.tichu.domain.value_objects.Id;
-import ch.resrc.tichu.use_cases.add_first_player_to_team.ports.output.AddFirstPlayerToTeamOutput;
 import ch.resrc.tichu.use_cases.add_second_player_to_team.ports.input.AddSecondPlayerToTeamInput;
+import ch.resrc.tichu.use_cases.add_second_player_to_team.ports.output.AddSecondPlayerToTeamOutput;
 import ch.resrc.tichu.use_cases.common_ports.input.IntendedPlayerAddition;
 import ch.resrc.tichu.use_cases.create_a_game.ports.output.GameDocument;
 import io.vavr.collection.Set;
@@ -51,7 +51,7 @@ public class AddSecondPlayerToTeamUseCase implements AddSecondPlayerToTeamInput 
   }
 
   @Override
-  public AddFirstPlayerToTeamOutput.Response apply(Request requested) {
+  public AddSecondPlayerToTeamOutput.Response apply(Request requested) {
     IntendedPlayerAddition intent = requested.intent();
 
     Set<Player> existingPlayers = getAllPlayers.getAll().getOrElseThrow(supplierFor(READ_FAILED));
@@ -85,7 +85,7 @@ public class AddSecondPlayerToTeamUseCase implements AddSecondPlayerToTeamInput 
 
     updateGame.update(existingGames, updatedGame).getOrElseThrow(supplierFor(GAME_NOT_UPDATED));
 
-    return new AddFirstPlayerToTeamOutput.Response(
+    return new AddSecondPlayerToTeamOutput.Response(
       GameDocument.fromGame(updatedGame)
     );
   }

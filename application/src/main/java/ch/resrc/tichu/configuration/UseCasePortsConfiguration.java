@@ -12,6 +12,8 @@ import ch.resrc.tichu.domain.operations.UpdateGame;
 import ch.resrc.tichu.domain.operations.UpdateTeam;
 import ch.resrc.tichu.use_cases.add_first_player_to_team.AddFirstPlayerToTeamUseCase;
 import ch.resrc.tichu.use_cases.add_first_player_to_team.ports.input.AddFirstPlayerToTeamInput;
+import ch.resrc.tichu.use_cases.add_second_player_to_team.AddSecondPlayerToTeamUseCase;
+import ch.resrc.tichu.use_cases.add_second_player_to_team.ports.input.AddSecondPlayerToTeamInput;
 import ch.resrc.tichu.use_cases.create_a_game.CreateGameUseCase;
 import ch.resrc.tichu.use_cases.find_or_create_user.FindOrCreateUserUseCase;
 import ch.resrc.tichu.use_cases.remove_first_player_from_team.RemoveFirstPlayerFromTeamUseCase;
@@ -75,6 +77,23 @@ public final class UseCasePortsConfiguration {
                                                         GetAllPlayers getAllPlayers,
                                                         AddPlayer addPlayer) {
     return new AddFirstPlayerToTeamUseCase(
+      getAllGames,
+      updateGame,
+      getAllTeams,
+      updateTeam,
+      getAllPlayers,
+      addPlayer
+    );
+  }
+
+  @ApplicationScoped
+  public AddSecondPlayerToTeamInput addSecondPlayerToTeamInput(GetAllGames getAllGames,
+                                                               UpdateGame updateGame,
+                                                               GetAllTeams getAllTeams,
+                                                               UpdateTeam updateTeam,
+                                                               GetAllPlayers getAllPlayers,
+                                                               AddPlayer addPlayer) {
+    return new AddSecondPlayerToTeamUseCase(
       getAllGames,
       updateGame,
       getAllTeams,
