@@ -9,12 +9,13 @@ import io.vavr.collection.Seq;
 import io.vavr.control.Either;
 
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 import static ch.resrc.tichu.capabilities.validation.Validations.attribute;
 import static ch.resrc.tichu.capabilities.validation.Validations.isTrueOrError;
 import static ch.resrc.tichu.capabilities.validation.Validations.notNull;
-import static ch.resrc.tichu.use_cases.common_ports.input.IntendedPlayerAdditionValidationErrors.MUST_HAVE_EITHER_USER_ID_OR_PLAYER_ID;
-import static ch.resrc.tichu.use_cases.common_ports.input.IntendedPlayerAdditionValidationErrors.MUST_NOT_BE_NULL;
+import static ch.resrc.tichu.use_cases.common_ports.input.IntendedPlayerRemovalValidationErrors.MUST_HAVE_EITHER_USER_ID_OR_PLAYER_ID;
+import static ch.resrc.tichu.use_cases.common_ports.input.IntendedPlayerRemovalValidationErrors.MUST_NOT_BE_NULL;
 
 public class IntendedPlayerRemoval {
 
@@ -102,4 +103,15 @@ public class IntendedPlayerRemoval {
       return validation().applyTo(workpiece);
     }
   }
+}
+
+class IntendedPlayerRemovalValidationErrors {
+
+  static final Supplier<ValidationError> MUST_NOT_BE_NULL = () -> ValidationError.of(
+    IntendedPlayerRemoval.class.getName(), "must not be null"
+  );
+
+  static final Supplier<ValidationError> MUST_HAVE_EITHER_USER_ID_OR_PLAYER_ID = () -> ValidationError.of(
+    IntendedPlayerRemoval.class.getName(), "must have either user id or player id"
+  );
 }
