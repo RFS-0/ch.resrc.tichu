@@ -18,6 +18,8 @@ import ch.resrc.tichu.use_cases.create_a_game.CreateGameUseCase;
 import ch.resrc.tichu.use_cases.find_or_create_user.FindOrCreateUserUseCase;
 import ch.resrc.tichu.use_cases.remove_first_player_from_team.RemoveFirstPlayerFromTeamUseCase;
 import ch.resrc.tichu.use_cases.remove_first_player_from_team.ports.input.RemoveFirstPlayerFromTeamInput;
+import ch.resrc.tichu.use_cases.remove_second_player_from_team.RemoveSecondPlayerFromTeamUseCase;
+import ch.resrc.tichu.use_cases.remove_second_player_from_team.ports.input.RemoveSecondPlayerFromTeamInput;
 import ch.resrc.tichu.use_cases.update_a_team_name.UpdateTeamNameUseCase;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -70,12 +72,12 @@ public final class UseCasePortsConfiguration {
   }
 
   @ApplicationScoped
-  public AddFirstPlayerToTeamInput addFirstPlayerToTeam(GetAllGames getAllGames,
-                                                        UpdateGame updateGame,
-                                                        GetAllTeams getAllTeams,
-                                                        UpdateTeam updateTeam,
-                                                        GetAllPlayers getAllPlayers,
-                                                        AddPlayer addPlayer) {
+  public AddFirstPlayerToTeamInput removeFirstPlayerFromTeamInput(GetAllGames getAllGames,
+                                                                  UpdateGame updateGame,
+                                                                  GetAllTeams getAllTeams,
+                                                                  UpdateTeam updateTeam,
+                                                                  GetAllPlayers getAllPlayers,
+                                                                  AddPlayer addPlayer) {
     return new AddFirstPlayerToTeamUseCase(
       getAllGames,
       updateGame,
@@ -104,11 +106,24 @@ public final class UseCasePortsConfiguration {
   }
 
   @ApplicationScoped
-  public RemoveFirstPlayerFromTeamInput addFirstPlayerToTeam(GetAllGames getAllGames,
-                                                             UpdateGame updateGame,
-                                                             GetAllTeams getAllTeams,
-                                                             UpdateTeam updateTeam) {
+  public RemoveFirstPlayerFromTeamInput removeFirstPlayerFromTeamInput(GetAllGames getAllGames,
+                                                                       UpdateGame updateGame,
+                                                                       GetAllTeams getAllTeams,
+                                                                       UpdateTeam updateTeam) {
     return new RemoveFirstPlayerFromTeamUseCase(
+      getAllGames,
+      updateGame,
+      getAllTeams,
+      updateTeam
+    );
+  }
+
+  @ApplicationScoped
+  public RemoveSecondPlayerFromTeamInput removeSecondPlayerFromTeamInput(GetAllGames getAllGames,
+                                                                         UpdateGame updateGame,
+                                                                         GetAllTeams getAllTeams,
+                                                                         UpdateTeam updateTeam) {
+    return new RemoveSecondPlayerFromTeamUseCase(
       getAllGames,
       updateGame,
       getAllTeams,
