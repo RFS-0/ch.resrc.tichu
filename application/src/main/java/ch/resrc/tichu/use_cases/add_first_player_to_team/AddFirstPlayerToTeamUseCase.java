@@ -36,7 +36,12 @@ public class AddFirstPlayerToTeamUseCase implements AddFirstPlayerToTeamInput {
   private final GetAllPlayers getAllPlayers;
   private final AddPlayer addPlayer;
 
-  public AddFirstPlayerToTeamUseCase(GetAllGames getAllGames, UpdateGame updateGame, GetAllTeams getAllTeams, UpdateTeam updateTeam, GetAllPlayers getAllPlayers, AddPlayer addPlayer) {
+  public AddFirstPlayerToTeamUseCase(GetAllGames getAllGames,
+                                     UpdateGame updateGame,
+                                     GetAllTeams getAllTeams,
+                                     UpdateTeam updateTeam,
+                                     GetAllPlayers getAllPlayers,
+                                     AddPlayer addPlayer) {
     this.getAllGames = getAllGames;
     this.updateGame = updateGame;
     this.getAllTeams = getAllTeams;
