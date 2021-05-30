@@ -50,6 +50,10 @@ public class Ranks {
     return resultOf(values().put(playerId, values.values().max().get() + 1));
   }
 
+  public Either<Seq<ValidationError>, Ranks> resetRank(Id playerId) {
+    return resultOf(values().remove(playerId));
+  }
+
   public Map<Id, Integer> values() {
     return values;
   }

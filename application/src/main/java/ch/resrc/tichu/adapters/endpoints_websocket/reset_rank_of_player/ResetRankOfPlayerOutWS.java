@@ -1,7 +1,7 @@
-package ch.resrc.tichu.adapters.endpoints_websocket.update_rank_of_player;
+package ch.resrc.tichu.adapters.endpoints_websocket.reset_rank_of_player;
 
 import ch.resrc.tichu.adapters.endpoints_websocket.WebSocketAddresses;
-import ch.resrc.tichu.adapters.endpoints_websocket.update_rank_of_player.output.UpdateRankOfPlayerWebSocketOutput;
+import ch.resrc.tichu.adapters.endpoints_websocket.reset_rank_of_player.output.ResetRankOfPlayerWebSocketOutput;
 import ch.resrc.tichu.capabilities.validation.InvalidInputDetected;
 import ch.resrc.tichu.domain.value_objects.Id;
 import io.vavr.collection.HashMap;
@@ -17,12 +17,12 @@ import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 import java.util.concurrent.atomic.AtomicReference;
 
-@ServerEndpoint(WebSocketAddresses.UseCases.Output.UPDATE_RANK_OF_PLAYER)
-public class UpdatedRankOfPlayerWS {
+@ServerEndpoint(WebSocketAddresses.UseCases.Output.RESET_RANK_OF_PLAYER)
+public class ResetRankOfPlayerOutWS {
 
   private static final AtomicReference<Map<Id, Set<Session>>> ID_TO_SESSIONS_REF = new AtomicReference<>(HashMap.empty());
 
-  public UpdatedRankOfPlayerWS() {
+  public ResetRankOfPlayerOutWS() {
   }
 
   @OnOpen
@@ -54,7 +54,7 @@ public class UpdatedRankOfPlayerWS {
     });
   }
 
-  public String send(UpdateRankOfPlayerWebSocketOutput output) {
+  public String send(ResetRankOfPlayerWebSocketOutput output) {
     Map<Id, Set<Session>> idToSessions = ID_TO_SESSIONS_REF.get();
     for (Set<Session> sessions : idToSessions.get(output.receiver())) {
       for (Session session : sessions) {

@@ -20,6 +20,8 @@ import ch.resrc.tichu.use_cases.remove_first_player_from_team.RemoveFirstPlayerF
 import ch.resrc.tichu.use_cases.remove_first_player_from_team.ports.input.RemoveFirstPlayerFromTeamInput;
 import ch.resrc.tichu.use_cases.remove_second_player_from_team.RemoveSecondPlayerFromTeamUseCase;
 import ch.resrc.tichu.use_cases.remove_second_player_from_team.ports.input.RemoveSecondPlayerFromTeamInput;
+import ch.resrc.tichu.use_cases.reset_rank_of_player.ports.ResetRankOfPlayerUseCase;
+import ch.resrc.tichu.use_cases.reset_rank_of_player.ports.input.ResetRankOfPlayerInput;
 import ch.resrc.tichu.use_cases.update_a_team_name.UpdateTeamNameUseCase;
 import ch.resrc.tichu.use_cases.update_rank_of_player.UpdateRankOfPlayerUseCase;
 import ch.resrc.tichu.use_cases.update_rank_of_player.ports.input.UpdateRankOfPlayerInput;
@@ -137,6 +139,15 @@ public final class UseCasePortsConfiguration {
   public UpdateRankOfPlayerInput updateRankOfPlayerInput(GetAllGames getAllGames,
                                                          UpdateGame updateGame) {
     return new UpdateRankOfPlayerUseCase(
+      getAllGames,
+      updateGame
+    );
+  }
+
+  @ApplicationScoped
+  public ResetRankOfPlayerInput resetRankOfPlayerInput(GetAllGames getAllGames,
+                                                       UpdateGame updateGame) {
+    return new ResetRankOfPlayerUseCase(
       getAllGames,
       updateGame
     );
