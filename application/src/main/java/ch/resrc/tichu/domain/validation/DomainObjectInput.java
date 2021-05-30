@@ -10,6 +10,7 @@ import ch.resrc.tichu.domain.value_objects.Email;
 import ch.resrc.tichu.domain.value_objects.Id;
 import ch.resrc.tichu.domain.value_objects.Name;
 import ch.resrc.tichu.domain.value_objects.Picture;
+import ch.resrc.tichu.domain.value_objects.RoundNumber;
 import io.vavr.collection.HashMap;
 import io.vavr.collection.List;
 import io.vavr.collection.Map;
@@ -27,7 +28,8 @@ public class DomainObjectInput {
     Id.class, Id::resultOf,
     Email.class, Email::resultOf,
     Name.class, Name::resultOf,
-    Picture.class, Picture::resultOf
+    Picture.class, Picture::resultOf,
+    RoundNumber.class, RoundNumber::resultOf
   );
   private static final Map<Class<?>, InputParser<Map<String, String>, ?>> parserMapToType = HashMap.of(
     CardPoints.class, CardPoints::resultOf

@@ -24,7 +24,6 @@ public class UpdateTeamNameWS {
 
   private final UpdateTeamNameInput updateTeamName;
   private final UpdatedTeamNameWS updated;
-
   private final Json json;
 
   public UpdateTeamNameWS(UpdateTeamNameInput updateTeamName,

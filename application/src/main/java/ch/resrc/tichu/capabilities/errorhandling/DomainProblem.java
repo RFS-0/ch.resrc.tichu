@@ -36,6 +36,8 @@ public enum DomainProblem implements Problem {
 
   GAMES_NOT_FOUND("Could not load existing games."),
 
+  ROUND_NOT_FOUND("Round with roundNumber=<${roundNumber}> does not exist."),
+
   INVARIANT_VIOLATED("${message}");
 
   public static DomainProblem[] all() {

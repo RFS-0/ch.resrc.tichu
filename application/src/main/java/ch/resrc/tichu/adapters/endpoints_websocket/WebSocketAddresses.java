@@ -12,6 +12,7 @@ public final class WebSocketAddresses {
       public static final String ADD_SECOND_PLAYER_TO_TEAM = "/events/teams/add-second-player-to-team";
       public static final String REMOVE_FIRST_PLAYER_FROM_TEAM = "/events/teams/remove-first-player-from-team";
       public static final String REMOVE_SECOND_PLAYER_FROM_TEAM = "/events/teams/remove-second-player-from-team";
+      public static final String UPDATE_RANK_OF_PLAYER = "/events/games/update-rank-of-player/{receiverId}";
     }
 
     public static class Output {
@@ -22,6 +23,7 @@ public final class WebSocketAddresses {
       public static final String ADD_SECOND_PLAYER_TO_TEAM = "/events/teams/added-second-player-to-team/{receiverId}";
       public static final String REMOVE_FIRST_PLAYER_FROM_TEAM = "/events/teams/removed-first-player-from-team/{receiverId}";
       public static final String REMOVE_SECOND_PLAYER_FROM_TEAM = "/events/teams/removed-second-player-from-team/{receiverId}";
+      public static final String UPDATE_RANK_OF_PLAYER = "/events/games/updated-rank-of-player/{receiverId}";
     }
   }
 }

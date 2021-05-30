@@ -24,19 +24,9 @@ public class Game {
   private final User createdBy;
   private final JoinCode joinCode;
   private Set<Team> teams;
-  private final Set<Round> rounds;
+  private Set<Round> rounds;
   private final Instant createdAt;
   private Instant finishedAt;
-
-  private static Validation<Seq<ValidationError>, Game> validation() {
-    return allOf(
-      attribute(x -> x.id, notNull(MUST_NOT_BE_NULL)),
-      attribute(x -> x.createdBy, notNull(MUST_NOT_BE_NULL)),
-      attribute(x -> x.joinCode, notNull(MUST_NOT_BE_NULL)),
-      attribute(x -> x.teams, notNull(MUST_NOT_BE_NULL)),
-      attribute(x -> x.rounds, notNull(MUST_NOT_BE_NULL))
-    );
-  }
 
   private Game(Id id, User createdBy, JoinCode joinCode, Set<Team> teams, Set<Round> rounds, Instant createdAt) {
     this.id = id;
@@ -63,6 +53,16 @@ public class Game {
     return theCopy;
   }
 
+  private static Validation<Seq<ValidationError>, Game> validation() {
+    return allOf(
+      attribute(x -> x.id, notNull(MUST_NOT_BE_NULL)),
+      attribute(x -> x.createdBy, notNull(MUST_NOT_BE_NULL)),
+      attribute(x -> x.joinCode, notNull(MUST_NOT_BE_NULL)),
+      attribute(x -> x.teams, notNull(MUST_NOT_BE_NULL)),
+      attribute(x -> x.rounds, notNull(MUST_NOT_BE_NULL))
+    );
+  }
+
   public static Either<Seq<ValidationError>, Game> create(Id id, User createdBy, JoinCode joinCode, Set<Team> teams, Set<Round> rounds, Instant createdAt) {
     return validation().applyTo(new Game(id, createdBy, joinCode, teams, rounds, createdAt));
   }
@@ -85,6 +85,10 @@ public class Game {
 
   public Game butTeam(Team team) {
     return copied(game -> game.teams = game.teams.remove(team).add(team));
+  }
+
+  public Game butRound(Round round) {
+    return copied(game -> game.rounds = game.rounds.remove(round).add(round));
   }
 
   public Set<Round> rounds() {

@@ -5,6 +5,7 @@ import ch.resrc.tichu.capabilities.validation.ValidationError;
 import io.vavr.collection.Seq;
 import io.vavr.control.Either;
 
+import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 import static ch.resrc.tichu.capabilities.validation.Validations.allOf;
@@ -16,7 +17,7 @@ public class Round {
 
   private final RoundNumber roundNumber;
   private final CardPoints cardPoints;
-  private final Ranks ranks;
+  private Ranks ranks;
   private final Tichus tichus;
 
   private Round(RoundNumber roundNumber, CardPoints cardPoints, Ranks ranks, Tichus tichus) {
@@ -24,6 +25,19 @@ public class Round {
     this.cardPoints = cardPoints;
     this.ranks = ranks;
     this.tichus = tichus;
+  }
+
+  private Round(Round other) {
+    this.roundNumber = other.roundNumber;
+    this.cardPoints = other.cardPoints;
+    this.ranks = other.ranks;
+    this.tichus = other.tichus;
+  }
+
+  public Round copied(Consumer<Round> modification) {
+    var theCopy = new Round(this);
+    modification.accept(theCopy);
+    return theCopy;
   }
 
   private static Validation<Seq<ValidationError>, Round> validation() {
@@ -51,40 +65,27 @@ public class Round {
     return ranks;
   }
 
+  public Round butRanks(Ranks ranks) {
+    return copied(but -> but.ranks = ranks);
+  }
+
   public Tichus tichus() {
     return tichus;
   }
 
   @Override
   public boolean equals(Object o) {
-    if (this == o) {
-      return true;
-    }
-    if (o == null || getClass() != o.getClass()) {
-      return false;
-    }
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
 
     Round round = (Round) o;
 
-    if (!roundNumber.equals(round.roundNumber)) {
-      return false;
-    }
-    if (!cardPoints.equals(round.cardPoints)) {
-      return false;
-    }
-    if (!ranks.equals(round.ranks)) {
-      return false;
-    }
-    return tichus.equals(round.tichus);
+    return roundNumber.equals(round.roundNumber);
   }
 
   @Override
   public int hashCode() {
-    int result = roundNumber.hashCode();
-    result = 31 * result + cardPoints.hashCode();
-    result = 31 * result + ranks.hashCode();
-    result = 31 * result + tichus.hashCode();
-    return result;
+    return roundNumber.hashCode();
   }
 }
 

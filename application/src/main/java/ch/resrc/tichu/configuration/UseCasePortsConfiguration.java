@@ -21,6 +21,8 @@ import ch.resrc.tichu.use_cases.remove_first_player_from_team.ports.input.Remove
 import ch.resrc.tichu.use_cases.remove_second_player_from_team.RemoveSecondPlayerFromTeamUseCase;
 import ch.resrc.tichu.use_cases.remove_second_player_from_team.ports.input.RemoveSecondPlayerFromTeamInput;
 import ch.resrc.tichu.use_cases.update_a_team_name.UpdateTeamNameUseCase;
+import ch.resrc.tichu.use_cases.update_rank_of_player.UpdateRankOfPlayerUseCase;
+import ch.resrc.tichu.use_cases.update_rank_of_player.ports.input.UpdateRankOfPlayerInput;
 
 import javax.enterprise.context.ApplicationScoped;
 
@@ -128,6 +130,15 @@ public final class UseCasePortsConfiguration {
       updateGame,
       getAllTeams,
       updateTeam
+    );
+  }
+
+  @ApplicationScoped
+  public UpdateRankOfPlayerInput updateRankOfPlayerInput(GetAllGames getAllGames,
+                                                         UpdateGame updateGame) {
+    return new UpdateRankOfPlayerUseCase(
+      getAllGames,
+      updateGame
     );
   }
 }

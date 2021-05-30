@@ -15,7 +15,7 @@ public class RoundNumber {
 
   private final int value;
 
-  private RoundNumber(Integer value) {
+  private RoundNumber(int value) {
     this.value = value;
   }
 
@@ -27,6 +27,10 @@ public class RoundNumber {
 
   public static Either<Seq<ValidationError>, RoundNumber> resultOf(int value) {
     return validation().applyTo(value).map(RoundNumber::new);
+  }
+
+  public static Either<Seq<ValidationError>, RoundNumber> resultOf(String value) {
+    return validation().applyTo(Integer.parseInt(value)).map(RoundNumber::new);
   }
 
   public int value() {

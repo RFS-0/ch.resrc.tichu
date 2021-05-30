@@ -46,6 +46,10 @@ public class Ranks {
     return validation().applyTo(values).map(Ranks::new);
   }
 
+  public Either<Seq<ValidationError>, Ranks> nextRank(Id playerId) {
+    return resultOf(values().put(playerId, values.values().max().get() + 1));
+  }
+
   public Map<Id, Integer> values() {
     return values;
   }
