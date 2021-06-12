@@ -17,9 +17,6 @@ import io.vavr.collection.Map;
 import io.vavr.collection.Seq;
 import io.vavr.control.Either;
 
-import java.util.function.Supplier;
-
-import static ch.resrc.tichu.domain.validation.DomainObjectInputValidationErrors.MUST_BE_DEFINED;
 import static java.lang.String.format;
 
 public class DomainObjectInput {
@@ -50,7 +47,7 @@ public class DomainObjectInput {
 
   public static <T> Either<Seq<ValidationError>, T> parsingResult(Class<T> domainType, Input<?> input) {
     if (!input.isPresent()) {
-      return Either.left(List.of(MUST_BE_DEFINED.get()));
+      return Either.left(List.of(DomainValidationErrors.errorDetails("must be defined").apply(input)));
     }
 
     if (parseStringToType.get(domainType).isDefined()) {
@@ -69,11 +66,4 @@ public class DomainObjectInput {
       throw Defect.of(format("Cannot parse %s. Unsupported domain type.", domainType.getName()));
     }
   }
-}
-
-class DomainObjectInputValidationErrors {
-
-  static final Supplier<ValidationError> MUST_BE_DEFINED = () -> ValidationError.of(
-    DomainObjectInput.class.getName(), "must be defined"
-  );
 }

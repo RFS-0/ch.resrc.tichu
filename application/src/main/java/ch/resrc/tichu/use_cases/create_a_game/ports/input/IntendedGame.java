@@ -3,19 +3,17 @@ package ch.resrc.tichu.use_cases.create_a_game.ports.input;
 import ch.resrc.tichu.capabilities.validation.Validation;
 import ch.resrc.tichu.capabilities.validation.ValidationError;
 import ch.resrc.tichu.domain.value_objects.Id;
-import ch.resrc.tichu.use_cases.InputData;
 import io.vavr.collection.Seq;
 import io.vavr.control.Either;
 
 import java.util.function.Consumer;
-import java.util.function.Supplier;
 
 import static ch.resrc.tichu.capabilities.validation.Validations.allOf;
 import static ch.resrc.tichu.capabilities.validation.Validations.attribute;
 import static ch.resrc.tichu.capabilities.validation.Validations.notNull;
-import static ch.resrc.tichu.use_cases.create_a_game.ports.input.IntendedGameValidationErrors.MUST_NOT_BE_NULL;
+import static ch.resrc.tichu.domain.validation.DomainValidationErrors.mustNotBeNull;
 
-public class IntendedGame implements InputData {
+public class IntendedGame {
 
   private Id createdBy;
 
@@ -32,7 +30,7 @@ public class IntendedGame implements InputData {
 
   private static Validation<Seq<ValidationError>, IntendedGame> validation() {
     return allOf(
-      attribute(x -> x.createdBy, notNull(MUST_NOT_BE_NULL))
+      attribute(x -> x.createdBy, notNull(mustNotBeNull()))
     );
   }
 
@@ -66,11 +64,4 @@ public class IntendedGame implements InputData {
       return validation().applyTo(workpiece);
     }
   }
-}
-
-class IntendedGameValidationErrors {
-
-  static final Supplier<ValidationError> MUST_NOT_BE_NULL = () -> ValidationError.of(
-    IntendedGame.class.getName(), "must not be null"
-  );
 }

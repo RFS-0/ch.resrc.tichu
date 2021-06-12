@@ -10,6 +10,7 @@ import ch.resrc.tichu.adapters.persistence_micro_stream.MicroStreamTeamsReposito
 import ch.resrc.tichu.adapters.persistence_micro_stream.MicroStreamUsersRepository;
 import ch.resrc.tichu.capabilities.errorhandling.ProblemDiagnosis;
 import ch.resrc.tichu.capabilities.errorhandling.faults.Defect;
+import ch.resrc.tichu.domain.OutputBoundary;
 import ch.resrc.tichu.domain.operations.AddGame;
 import ch.resrc.tichu.domain.operations.AddPlayer;
 import ch.resrc.tichu.domain.operations.AddTeam;
@@ -21,7 +22,6 @@ import ch.resrc.tichu.domain.operations.GetAllUsers;
 import ch.resrc.tichu.domain.operations.UpdateGame;
 import ch.resrc.tichu.domain.operations.UpdatePlayer;
 import ch.resrc.tichu.domain.operations.UpdateTeam;
-import ch.resrc.tichu.use_cases.OutputBoundary;
 import software.amazon.awssdk.services.s3.S3Client;
 
 import javax.enterprise.context.ApplicationScoped;

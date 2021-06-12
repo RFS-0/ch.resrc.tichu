@@ -1,6 +1,7 @@
 package ch.resrc.tichu.domain.value_objects;
 
 import ch.resrc.tichu.capabilities.validation.ValidationError;
+import ch.resrc.tichu.domain.validation.DomainValidationErrors;
 import io.vavr.collection.Seq;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EmptySource;
@@ -15,7 +16,7 @@ import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 
 class JoinCodeTest {
 
-  @ParameterizedTest(name = "The [resultOf] the {index}. legal join code [{arguments}] is a valid join code")
+  @ParameterizedTest
   @ValueSource(
     strings = {
       "d0dbf509",
@@ -36,12 +37,13 @@ class JoinCodeTest {
     assertThat(joinCode.value()).isEqualTo(legalJoinCode);
   }
 
-  @ParameterizedTest(name = "The [resultOf] the {index}. blank join code [{arguments}] is the validation error [MUST_NOT_BE_BLANK]")
+  @ParameterizedTest
   @EmptySource
   @NullSource
   void aBlankJoinCode_resultOf_expectedError(String blankJoinCode) {
     // given:
-    ValidationError mustNotBeBlankError = JoinCodeValidationErrors.MUST_NOT_BE_BLANK.get();
+    ValidationError mustNotBeBlankError = DomainValidationErrors.errorDetails("value must not be blank")
+      .apply(blankJoinCode);
 
     // when:
     var errorOrJoinCode = JoinCode.resultOf(blankJoinCode);
@@ -52,7 +54,7 @@ class JoinCodeTest {
     assertThat(errors).contains(mustNotBeBlankError);
   }
 
-  @ParameterizedTest(name = "The [resultOf] the {index}. illegal join code [{arguments}] is the validation error [MUST_CONSIST_OF_EIGHT_ALPHANUMERIC_CHARACTERS]")
+  @ParameterizedTest
   @ValueSource(
     strings = {
       "1234567",
@@ -64,7 +66,8 @@ class JoinCodeTest {
   )
   void anIllegalUuid_resultOf_expectedError(String illegalUuid) {
     // given:
-    ValidationError mustConsistOfEightAlphanumericCharacters = JoinCodeValidationErrors.MUST_CONSIST_OF_EIGHT_ALPHANUMERIC_CHARACTERS.get();
+    ValidationError mustConsistOfEightAlphanumericCharacters = DomainValidationErrors.errorDetails("value must consist of eight alphanumeric characters")
+      .apply(illegalUuid);
 
     // when:
     var errorOrId = JoinCode.resultOf(illegalUuid);

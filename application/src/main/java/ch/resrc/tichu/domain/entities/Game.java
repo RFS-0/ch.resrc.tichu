@@ -11,12 +11,11 @@ import io.vavr.control.Either;
 
 import java.time.Instant;
 import java.util.function.Consumer;
-import java.util.function.Supplier;
 
 import static ch.resrc.tichu.capabilities.validation.Validations.allOf;
 import static ch.resrc.tichu.capabilities.validation.Validations.attribute;
 import static ch.resrc.tichu.capabilities.validation.Validations.notNull;
-import static ch.resrc.tichu.domain.entities.GameValidationErrors.MUST_NOT_BE_NULL;
+import static ch.resrc.tichu.domain.validation.DomainValidationErrors.mustNotBeNull;
 
 public class Game {
 
@@ -55,11 +54,11 @@ public class Game {
 
   private static Validation<Seq<ValidationError>, Game> validation() {
     return allOf(
-      attribute(x -> x.id, notNull(MUST_NOT_BE_NULL)),
-      attribute(x -> x.createdBy, notNull(MUST_NOT_BE_NULL)),
-      attribute(x -> x.joinCode, notNull(MUST_NOT_BE_NULL)),
-      attribute(x -> x.teams, notNull(MUST_NOT_BE_NULL)),
-      attribute(x -> x.rounds, notNull(MUST_NOT_BE_NULL))
+      attribute(x -> x.id, notNull(mustNotBeNull())),
+      attribute(x -> x.createdBy, notNull(mustNotBeNull())),
+      attribute(x -> x.joinCode, notNull(mustNotBeNull())),
+      attribute(x -> x.teams, notNull(mustNotBeNull())),
+      attribute(x -> x.rounds, notNull(mustNotBeNull()))
     );
   }
 
@@ -123,9 +122,3 @@ public class Game {
   }
 }
 
-class GameValidationErrors {
-
-  static final Supplier<ValidationError> MUST_NOT_BE_NULL = () -> ValidationError.of(
-    Game.class.getName(), "must not be null"
-  );
-}

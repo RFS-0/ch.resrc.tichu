@@ -1,8 +1,8 @@
 package ch.resrc.tichu.domain.value_objects;
 
 import ch.resrc.tichu.capabilities.validation.ValidationError;
+import ch.resrc.tichu.domain.validation.DomainValidationErrors;
 import io.vavr.collection.Seq;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -15,7 +15,7 @@ import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 
 class RoundNumberTest {
 
-  @ParameterizedTest(name = "The [resultOf] a legal round number [{arguments}] is a valid round number")
+  @ParameterizedTest
   @ValueSource(ints = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 100})
   void legalValues_resultOf_validRoundNumbers(int legalRoundNumber) {
     // when:
@@ -29,11 +29,11 @@ class RoundNumberTest {
   }
 
   @Test
-  @DisplayName("The [resultOf] a too small round number [0] is the validation error [MUST_NOT_BE_SMALLER_THAN_ONE]")
   void tooSmallValue_resultOf_expectedError() {
     // given:
     int tooSmallValue = 0;
-    ValidationError mustNotBeSmallerThanOneError = RoundNumberValidationErrors.MUST_NOT_BE_SMALLER_THAN_ONE.get();
+    ValidationError mustNotBeSmallerThanOneError = DomainValidationErrors.errorDetails("must not be smaller than one")
+      .apply(tooSmallValue);
 
 
     // when:

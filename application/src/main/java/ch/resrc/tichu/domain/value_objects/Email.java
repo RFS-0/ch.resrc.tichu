@@ -5,14 +5,12 @@ import ch.resrc.tichu.capabilities.validation.ValidationError;
 import io.vavr.collection.Seq;
 import io.vavr.control.Either;
 
-import java.util.function.Supplier;
 import java.util.regex.Pattern;
 
 import static ch.resrc.tichu.capabilities.validation.Validations.chained;
 import static ch.resrc.tichu.capabilities.validation.Validations.matches;
 import static ch.resrc.tichu.capabilities.validation.Validations.notBlank;
-import static ch.resrc.tichu.domain.value_objects.EmailValidationErrors.MUST_BE_VALID_EMAIL_ADDRESS;
-import static ch.resrc.tichu.domain.value_objects.EmailValidationErrors.MUST_NOT_BE_BLANK;
+import static ch.resrc.tichu.domain.validation.DomainValidationErrors.errorDetails;
 
 public class Email {
 
@@ -26,8 +24,8 @@ public class Email {
 
   private static Validation<Seq<ValidationError>, String> validation() {
     return chained(
-      notBlank(MUST_NOT_BE_BLANK),
-      matches(EMAIL_ADDRESS_PATTERN, Pattern.CASE_INSENSITIVE, MUST_BE_VALID_EMAIL_ADDRESS)
+      notBlank(errorDetails("value must not be blank")),
+      matches(EMAIL_ADDRESS_PATTERN, Pattern.CASE_INSENSITIVE, errorDetails("value must be a valid email address"))
     );
   }
 
@@ -57,12 +55,4 @@ public class Email {
   public int hashCode() {
     return value.hashCode();
   }
-}
-
-class EmailValidationErrors {
-
-  static final Supplier<ValidationError> MUST_NOT_BE_BLANK = () -> ValidationError
-    .of(Email.class.getName(), "value must not be blank");
-  static final Supplier<ValidationError> MUST_BE_VALID_EMAIL_ADDRESS = () -> ValidationError
-    .of(Email.class.getName(), "value must be a valid email address");
 }

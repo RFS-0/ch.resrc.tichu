@@ -8,12 +8,11 @@ import io.vavr.collection.Seq;
 import io.vavr.control.Either;
 
 import java.util.function.Consumer;
-import java.util.function.Supplier;
 
 import static ch.resrc.tichu.capabilities.validation.Validations.allOf;
 import static ch.resrc.tichu.capabilities.validation.Validations.attribute;
 import static ch.resrc.tichu.capabilities.validation.Validations.notNull;
-import static ch.resrc.tichu.domain.entities.TeamValidationErrors.MUST_NOT_BE_NULL;
+import static ch.resrc.tichu.domain.validation.DomainValidationErrors.mustNotBeNull;
 
 public class Team {
 
@@ -24,7 +23,7 @@ public class Team {
 
   private static Validation<Seq<ValidationError>, Team> validation() {
     return allOf(
-      attribute(x -> x.id, notNull(MUST_NOT_BE_NULL))
+      attribute(x -> x.id, notNull(mustNotBeNull()))
     );
   }
 
@@ -98,12 +97,4 @@ public class Team {
   public int hashCode() {
     return id.hashCode();
   }
-}
-
-class TeamValidationErrors {
-
-  static final Supplier<ValidationError> MUST_NOT_BE_NULL = () -> ValidationError.of(
-    Game.class.getName(), "must not be null"
-  );
-
 }

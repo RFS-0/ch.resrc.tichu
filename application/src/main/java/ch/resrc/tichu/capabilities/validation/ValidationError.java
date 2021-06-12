@@ -5,6 +5,7 @@ import io.vavr.collection.Set;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 import static java.lang.String.format;
 
@@ -43,8 +44,8 @@ public class ValidationError {
   }
 
   public enum Claim {
-    SAFE_VALUE,
-    UNINTERESTING_VALUE;
+    CAN_BE_DISPLAYED,
+    MUST_NOT_BE_DISPLAYED;
   }
 
   private ValidationError(Origin origin, String details, Object invalidValue, Set<Claim> claims) {
@@ -61,16 +62,16 @@ public class ValidationError {
     this.claims = HashSet.ofAll(other.claims);
   }
 
-  public static ValidationError of(String details, Object invalidValue) {
-    return new ValidationError(Origin.UNKNOWN, details, invalidValue, HashSet.of());
-  }
-
-  public static ValidationError of(String origin, String details) {
+  public static ValidationError of(String details) {
     return new ValidationError(Origin.UNKNOWN, details, null, HashSet.of());
   }
 
-  public static ValidationError of(Origin origin, String details, String invalidValue, Set<Claim> claims) {
+  public static ValidationError of(Origin origin, String details, Object invalidValue, Set<Claim> claims) {
     return new ValidationError(origin, details, invalidValue, claims);
+  }
+
+  public static <T> ValidationError of(Origin origin, String details, Supplier<T> invalidValueSupplier, Set<Claim> claims) {
+    return new ValidationError(origin, details, invalidValueSupplier.get(), claims);
   }
 
   private ValidationError copied(Consumer<ValidationError> modification) {
@@ -101,7 +102,7 @@ public class ValidationError {
   }
 
   private String invalidValuePart() {
-    if (isClaimed(Claim.UNINTERESTING_VALUE)) {
+    if (isClaimed(Claim.MUST_NOT_BE_DISPLAYED)) {
       return "";
     } else {
       return format(" - Invalid value: <%s>", displayableInvalidValue());
@@ -110,7 +111,7 @@ public class ValidationError {
 
   private Object displayableInvalidValue() {
 
-    return this.claims.contains(Claim.SAFE_VALUE) ? invalidValue() : "HIDDEN FOR SECURITY REASONS";
+    return this.claims.contains(Claim.CAN_BE_DISPLAYED) ? invalidValue() : "HIDDEN FOR SECURITY REASONS";
   }
 
   private boolean isClaimed(Claim claim) {
@@ -126,7 +127,7 @@ public class ValidationError {
   }
 
   private Object invalidValue() {
-    if (isClaimed(Claim.SAFE_VALUE)) {
+    if (isClaimed(Claim.CAN_BE_DISPLAYED)) {
       return invalidValue;
     }
 
@@ -135,9 +136,19 @@ public class ValidationError {
         "The invalid value is not safe to be used. It is possibly malicious. "
           + "To access it, you must first claim it to be safe with <%s.%s>",
         Claim.class.getSimpleName(),
-        Claim.SAFE_VALUE.name()
+        Claim.CAN_BE_DISPLAYED.name()
       )
     );
+  }
+
+  @Override
+  public String toString() {
+    return new ToStringBuilder(this)
+      .append("origin", origin)
+      .append("details", details)
+      .append("claims", claims)
+      .append("invalidValue", invalidValue)
+      .toString();
   }
 
   @Override
@@ -160,15 +171,5 @@ public class ValidationError {
     result = 31 * result + (claims != null ? claims.hashCode() : 0);
     result = 31 * result + (invalidValue != null ? invalidValue.hashCode() : 0);
     return result;
-  }
-
-  @Override
-  public String toString() {
-    return new ToStringBuilder(this)
-      .append("origin", origin)
-      .append("details", details)
-      .append("claims", claims)
-      .append("invalidValue", invalidValue)
-      .toString();
   }
 }

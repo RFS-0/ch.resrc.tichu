@@ -11,12 +11,11 @@ import io.vavr.collection.Set;
 import io.vavr.control.Either;
 
 import java.util.function.Consumer;
-import java.util.function.Supplier;
 
 import static ch.resrc.tichu.capabilities.validation.Validations.allOf;
 import static ch.resrc.tichu.capabilities.validation.Validations.attribute;
 import static ch.resrc.tichu.capabilities.validation.Validations.notNull;
-import static ch.resrc.tichu.use_cases.common_ports.output.TeamDocumentValidationError.MUST_NOT_BE_NULL;
+import static ch.resrc.tichu.domain.validation.DomainValidationErrors.errorDetails;
 
 public class TeamDocument {
 
@@ -33,7 +32,9 @@ public class TeamDocument {
     return name;
   }
 
-  public PlayerDocument firstPlayer() { return firstPlayer; }
+  public PlayerDocument firstPlayer() {
+    return firstPlayer;
+  }
 
   public PlayerDocument secondPlayer() {
     return secondPlayer;
@@ -79,7 +80,7 @@ public class TeamDocument {
 
   private static Validation<Seq<ValidationError>, TeamDocument> validation() {
     return allOf(
-      attribute(x -> x.id, notNull(MUST_NOT_BE_NULL))
+      attribute(x -> x.id, notNull(errorDetails("must not be null")))
     );
   }
 
@@ -119,12 +120,4 @@ public class TeamDocument {
       return buildResult().getOrElseThrow(InvalidInputDetected::of);
     }
   }
-}
-
-class TeamDocumentValidationError {
-
-  static final Supplier<ValidationError> MUST_NOT_BE_NULL = () -> ValidationError.of(
-    TeamDocument.class.getName(), "must not be null"
-  );
-
 }

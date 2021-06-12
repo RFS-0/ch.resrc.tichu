@@ -2,19 +2,17 @@ package ch.resrc.tichu.use_cases.find_or_create_user.ports.input;
 
 import ch.resrc.tichu.capabilities.validation.Validation;
 import ch.resrc.tichu.capabilities.validation.ValidationError;
-import ch.resrc.tichu.domain.entities.Game;
 import ch.resrc.tichu.domain.value_objects.Email;
 import ch.resrc.tichu.domain.value_objects.Name;
 import io.vavr.collection.Seq;
 import io.vavr.control.Either;
 
 import java.util.function.Consumer;
-import java.util.function.Supplier;
 
 import static ch.resrc.tichu.capabilities.validation.Validations.allOf;
 import static ch.resrc.tichu.capabilities.validation.Validations.attribute;
 import static ch.resrc.tichu.capabilities.validation.Validations.notNull;
-import static ch.resrc.tichu.use_cases.find_or_create_user.ports.input.IntendedUserValidationErrors.MUST_NOT_BE_NULL;
+import static ch.resrc.tichu.domain.validation.DomainValidationErrors.mustNotBeNull;
 
 public class IntendedUser {
 
@@ -41,8 +39,8 @@ public class IntendedUser {
 
   private static Validation<Seq<ValidationError>, IntendedUser> validation() {
     return allOf(
-      attribute(x -> x.email, notNull(MUST_NOT_BE_NULL)),
-      attribute(x -> x.name, notNull(MUST_NOT_BE_NULL))
+      attribute(x -> x.email, notNull(mustNotBeNull())),
+      attribute(x -> x.name, notNull(mustNotBeNull()))
     );
   }
 
@@ -80,9 +78,3 @@ public class IntendedUser {
   }
 }
 
-class IntendedUserValidationErrors {
-
-  static final Supplier<ValidationError> MUST_NOT_BE_NULL = () -> ValidationError.of(
-    Game.class.getName(), "must not be null"
-  );
-}

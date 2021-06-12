@@ -1,10 +1,10 @@
 package ch.resrc.tichu.domain.value_objects;
 
 import ch.resrc.tichu.capabilities.validation.ValidationError;
+import ch.resrc.tichu.domain.validation.DomainValidationErrors;
 import io.vavr.collection.HashMap;
 import io.vavr.collection.Map;
 import io.vavr.collection.Seq;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.NullSource;
@@ -18,7 +18,6 @@ import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 class TichusTest {
 
   @Test
-  @DisplayName("The [resultOf] legal tichu values [NONE, NONE, NONE, TICHU_CALLED] for four players are valid tichus")
   void legalValues_resultOf_validCardPoints() {
     // given:
     Id player1 = Id.next();
@@ -43,7 +42,6 @@ class TichusTest {
   }
 
   @Test
-  @DisplayName("The [resultOf] legal tichu values [NONE, NONE, NONE, NONE, TICHU_CALLED] for five players is the validation error [MUST_NOT_BE_DEFINED_MORE_THAN_ONCE_PER_PLAYER]")
   void legalValuesForFivePlayers_resultOf_expectedError() {
     // given:
     Id player1 = Id.next();
@@ -58,7 +56,8 @@ class TichusTest {
       player4, Tichu.NONE,
       player5, Tichu.TICHU_CALLED
     );
-    ValidationError mustNotBeDefinedMoreThanOncePerPlayerError = TichusValidationErrors.MUST_NOT_BE_DEFINED_MORE_THAN_ONCE_PER_PLAYER.get();
+    ValidationError mustNotBeDefinedMoreThanOncePerPlayerError = DomainValidationErrors.errorDetails("must not be defined more than once per player")
+      .apply(validValues.length());
 
     // when:
     var errorOrTichus = Tichus.resultOf(validValues);
@@ -70,11 +69,11 @@ class TichusTest {
     assertThat(errors).contains(mustNotBeDefinedMoreThanOncePerPlayerError);
   }
 
-  @ParameterizedTest(name = "The [resultOf] illegal input [{arguments}] is the validation error [MUST_NOT_BE_NULL]")
+  @ParameterizedTest
   @NullSource
   void null_resultOf_expectedError(Map<Id, Tichu> input) {
     // given:
-    ValidationError mustNotBeNullError = TichusValidationErrors.MUST_NOT_BE_NULL.get();
+    ValidationError mustNotBeNullError = DomainValidationErrors.mustNotBeNull().apply(null);
 
     // when:
     var errorOrTichus = Tichus.resultOf(input);
@@ -87,7 +86,6 @@ class TichusTest {
   }
 
   @Test
-  @DisplayName("The [resultOf] an illegal tichu value [null] for four players is the validation error [MUST_NOT_BE_NULL]")
   void nullValue_resultOf_expectedError() {
     // given:
     Id player1 = Id.next();
@@ -101,7 +99,7 @@ class TichusTest {
       player3, Tichu.NONE,
       player4, nullValue
     );
-    ValidationError mustNotBeNullError = TichusValidationErrors.MUST_NOT_BE_NULL.get();
+    ValidationError mustNotBeNullError = DomainValidationErrors.mustNotBeNull().apply(invalidValues);
 
     // when:
     var errorOrTichus = Tichus.resultOf(invalidValues);
@@ -114,7 +112,6 @@ class TichusTest {
   }
 
   @Test
-  @DisplayName("The [resultOf] legal tichu values [NONE, NONE, NONE, NONE] an one illegal player id [null] is the validation error [MUST_NOT_BE_NULL]")
   void nullKey_resultOf_expectedError() {
     // given:
     Id nullKey = null;
@@ -128,7 +125,8 @@ class TichusTest {
       player3, Tichu.NONE,
       player4, nullValue
     );
-    ValidationError mustNotBeNullError = TichusValidationErrors.MUST_NOT_BE_NULL.get();
+    ValidationError mustNotBeNullError = DomainValidationErrors.mustNotBeNull().apply(invalidValues);
+    ;
 
     // when:
     var errorOrTichus = Tichus.resultOf(invalidValues);

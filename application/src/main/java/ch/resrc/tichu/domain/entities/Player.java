@@ -10,11 +10,10 @@ import io.vavr.control.Either;
 
 import java.time.Instant;
 import java.util.function.Consumer;
-import java.util.function.Supplier;
 
 import static ch.resrc.tichu.capabilities.validation.Validations.attribute;
 import static ch.resrc.tichu.capabilities.validation.Validations.notNull;
-import static ch.resrc.tichu.domain.entities.PlayerValidationErrors.MUST_NOT_BE_NULL;
+import static ch.resrc.tichu.domain.validation.DomainValidationErrors.mustNotBeNull;
 
 public class Player {
 
@@ -24,9 +23,9 @@ public class Player {
 
   private static Validation<Seq<ValidationError>, Player> validation() {
     return Validations.allOf(
-      attribute(x -> x.id, notNull(MUST_NOT_BE_NULL)),
-      attribute(x -> x.name, notNull(MUST_NOT_BE_NULL)),
-      attribute(x -> x.createdAt, notNull(MUST_NOT_BE_NULL))
+      attribute(x -> x.id, notNull(mustNotBeNull())),
+      attribute(x -> x.name, notNull(mustNotBeNull())),
+      attribute(x -> x.createdAt, notNull(mustNotBeNull()))
     );
   }
 
@@ -82,12 +81,4 @@ public class Player {
   public int hashCode() {
     return id.hashCode();
   }
-}
-
-class PlayerValidationErrors {
-
-  static final Supplier<ValidationError> MUST_NOT_BE_NULL = () -> ValidationError.of(
-    Player.class.getName(), "must not be null"
-  );
-
 }

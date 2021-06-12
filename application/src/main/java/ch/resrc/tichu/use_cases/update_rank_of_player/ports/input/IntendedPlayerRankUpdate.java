@@ -13,9 +13,13 @@ import java.util.function.Supplier;
 import static ch.resrc.tichu.capabilities.validation.Validations.allOf;
 import static ch.resrc.tichu.capabilities.validation.Validations.attribute;
 import static ch.resrc.tichu.capabilities.validation.Validations.notNull;
-import static ch.resrc.tichu.use_cases.update_rank_of_player.ports.input.IntendedPlayerRankUpdateValidationErrors.MUST_NOT_BE_NULL;
+import static ch.resrc.tichu.domain.validation.DomainValidationErrors.mustNotBeNull;
 
 public class IntendedPlayerRankUpdate {
+
+  private static final Supplier<ValidationError> MUST_NOT_BE_NULL = () -> ValidationError.of(
+    "must not be null"
+  );
 
   private Id gameId;
   private Id playerId;
@@ -42,9 +46,9 @@ public class IntendedPlayerRankUpdate {
 
   private static Validation<Seq<ValidationError>, IntendedPlayerRankUpdate> validation() {
     return allOf(
-      attribute(x -> x.gameId, notNull(MUST_NOT_BE_NULL)),
-      attribute(x -> x.playerId, notNull(MUST_NOT_BE_NULL)),
-      attribute(x -> x.roundNumber, notNull(MUST_NOT_BE_NULL))
+      attribute(x -> x.gameId, notNull(mustNotBeNull())),
+      attribute(x -> x.playerId, notNull(mustNotBeNull())),
+      attribute(x -> x.roundNumber, notNull(mustNotBeNull()))
     );
   }
 
@@ -90,9 +94,3 @@ public class IntendedPlayerRankUpdate {
   }
 }
 
-class IntendedPlayerRankUpdateValidationErrors {
-
-  static final Supplier<ValidationError> MUST_NOT_BE_NULL = () -> ValidationError.of(
-    IntendedPlayerRankUpdate.class.getName(), "must not be null"
-  );
-}

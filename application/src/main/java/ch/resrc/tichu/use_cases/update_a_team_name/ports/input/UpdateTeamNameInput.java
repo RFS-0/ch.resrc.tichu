@@ -1,6 +1,6 @@
 package ch.resrc.tichu.use_cases.update_a_team_name.ports.input;
 
-import ch.resrc.tichu.use_cases.InputBoundary;
+import ch.resrc.tichu.domain.InputBoundary;
 import ch.resrc.tichu.use_cases.UseCaseInput;
 import ch.resrc.tichu.use_cases.update_a_team_name.ports.output.UpdateTeamNameOutput;
 

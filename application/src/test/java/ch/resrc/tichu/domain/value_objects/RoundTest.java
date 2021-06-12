@@ -1,9 +1,9 @@
 package ch.resrc.tichu.domain.value_objects;
 
 import ch.resrc.tichu.capabilities.validation.ValidationError;
+import ch.resrc.tichu.domain.validation.DomainValidationErrors;
 import io.vavr.collection.HashMap;
 import io.vavr.collection.Seq;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.NoSuchElementException;
@@ -15,7 +15,6 @@ import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 class RoundTest {
 
   @Test
-  @DisplayName("The [resultOf] legal values [RoundNumber, CardPoints, Ranks, Tichus] is a valid round")
   void legalValues_resultOf_validRound() {
     // given:
     Id player1 = Id.next();
@@ -43,7 +42,6 @@ class RoundTest {
   }
 
   @Test
-  @DisplayName("The [resultOf] illegal round number and legal values [CardPoints, Ranks, Tichus] is the validation error [MUST_NOT_BE_NULL]")
   void nullRoundNumber_resultOf_expectedError() {
     // given:
     Id player1 = Id.next();
@@ -57,7 +55,7 @@ class RoundTest {
     Tichus tichus = Tichus.resultOf(HashMap.of(player1, Tichu.NONE, player2, Tichu.NONE, player3, Tichu.NONE, player4, Tichu.NONE)).get();
     RoundNumber illegalRoundNumber = null;
 
-    ValidationError mustNotBeNullError = RoundValidationErrors.MUST_NOT_BE_NULL.get();
+    ValidationError mustNotBeNullError = DomainValidationErrors.mustNotBeNull().apply(illegalRoundNumber);
 
     // when:
     var errorOrRound = Round.resultOf(illegalRoundNumber, cardPoints, ranks, tichus);
@@ -70,7 +68,6 @@ class RoundTest {
   }
 
   @Test
-  @DisplayName("The [resultOf] illegal card points and legal values [RoundNumber, Ranks, Tichus] is the validation error [MUST_NOT_BE_NULL]")
   void nullCardPoints_resultOf_expectedError() {
     // given:
     Id player1 = Id.next();
@@ -82,7 +79,7 @@ class RoundTest {
     Tichus tichus = Tichus.resultOf(HashMap.of(player1, Tichu.NONE, player2, Tichu.NONE, player3, Tichu.NONE, player4, Tichu.NONE)).get();
     CardPoints illegalCardPoints = null;
 
-    ValidationError mustNotBeNullError = RoundValidationErrors.MUST_NOT_BE_NULL.get();
+    ValidationError mustNotBeNullError = DomainValidationErrors.mustNotBeNull().apply(illegalCardPoints);
 
     // when:
     var errorOrRound = Round.resultOf(nullRoundNumber, illegalCardPoints, ranks, tichus);
@@ -95,7 +92,6 @@ class RoundTest {
   }
 
   @Test
-  @DisplayName("The [resultOf] illegal ranks and legal values [CardPoints, Ranks, Tichus] is the validation error [MUST_NOT_BE_NULL]")
   void nullRanks_resultOf_expectedError() {
     // given:
     Id player1 = Id.next();
@@ -109,7 +105,7 @@ class RoundTest {
     Tichus tichus = Tichus.resultOf(HashMap.of(player1, Tichu.NONE, player2, Tichu.NONE, player3, Tichu.NONE, player4, Tichu.NONE)).get();
     Ranks nullRanks = null;
 
-    ValidationError mustNotBeNullError = RoundValidationErrors.MUST_NOT_BE_NULL.get();
+    ValidationError mustNotBeNullError = DomainValidationErrors.mustNotBeNull().apply(nullRanks);
 
     // when:
     var errorOrRound = Round.resultOf(roundNumber, cardPoints, nullRanks, tichus);
@@ -122,7 +118,6 @@ class RoundTest {
   }
 
   @Test
-  @DisplayName("The [resultOf] illegal tichus and legal values [CardPoints, Ranks, Tichus] is the validation error [MUST_NOT_BE_NULL]")
   void nullTichus_resultOf_expectedError() {
     // given:
     Id player1 = Id.next();
@@ -136,7 +131,7 @@ class RoundTest {
     Ranks ranks = Ranks.resultOf(HashMap.of(player1, 1, player2, 2, player3, 3, player4, 4)).get();
     Tichus nullTichus = null;
 
-    ValidationError mustNotBeNullError = RoundValidationErrors.MUST_NOT_BE_NULL.get();
+    ValidationError mustNotBeNullError = DomainValidationErrors.mustNotBeNull().apply(nullTichus);
 
     // when:
     var errorOrRound = Round.resultOf(roundNumber, cardPoints, ranks, nullTichus);

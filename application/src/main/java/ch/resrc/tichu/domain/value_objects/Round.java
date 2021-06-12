@@ -6,12 +6,11 @@ import io.vavr.collection.Seq;
 import io.vavr.control.Either;
 
 import java.util.function.Consumer;
-import java.util.function.Supplier;
 
 import static ch.resrc.tichu.capabilities.validation.Validations.allOf;
 import static ch.resrc.tichu.capabilities.validation.Validations.attribute;
 import static ch.resrc.tichu.capabilities.validation.Validations.notNull;
-import static ch.resrc.tichu.domain.value_objects.RoundValidationErrors.MUST_NOT_BE_NULL;
+import static ch.resrc.tichu.domain.validation.DomainValidationErrors.mustNotBeNull;
 
 public class Round {
 
@@ -42,10 +41,10 @@ public class Round {
 
   private static Validation<Seq<ValidationError>, Round> validation() {
     return allOf(
-      attribute(x -> x.roundNumber, notNull(MUST_NOT_BE_NULL)),
-      attribute(x -> x.cardPoints, notNull(MUST_NOT_BE_NULL)),
-      attribute(x -> x.ranks, notNull(MUST_NOT_BE_NULL)),
-      attribute(x -> x.tichus, notNull(MUST_NOT_BE_NULL))
+      attribute(x -> x.roundNumber, notNull(mustNotBeNull())),
+      attribute(x -> x.cardPoints, notNull(mustNotBeNull())),
+      attribute(x -> x.ranks, notNull(mustNotBeNull())),
+      attribute(x -> x.tichus, notNull(mustNotBeNull()))
     );
   }
 
@@ -89,9 +88,3 @@ public class Round {
   }
 }
 
-class RoundValidationErrors {
-
-  static final Supplier<ValidationError> MUST_NOT_BE_NULL = () -> ValidationError.of(
-    Round.class.getName(), "must not be null"
-  );
-}

@@ -11,12 +11,11 @@ import io.vavr.control.Either;
 
 import java.time.Instant;
 import java.util.function.Consumer;
-import java.util.function.Supplier;
 
 import static ch.resrc.tichu.capabilities.validation.Validations.allOf;
 import static ch.resrc.tichu.capabilities.validation.Validations.attribute;
 import static ch.resrc.tichu.capabilities.validation.Validations.notNull;
-import static ch.resrc.tichu.use_cases.common_ports.output.PlayerDocumentValidationErrors.MUST_NOT_BE_NULL;
+import static ch.resrc.tichu.domain.validation.DomainValidationErrors.errorDetails;
 
 public class PlayerDocument {
 
@@ -26,9 +25,9 @@ public class PlayerDocument {
 
   private static Validation<Seq<ValidationError>, PlayerDocument> validation() {
     return allOf(
-      attribute(x -> x.id, notNull(MUST_NOT_BE_NULL)),
-      attribute(x -> x.name, notNull(MUST_NOT_BE_NULL)),
-      attribute(x -> x.createdAt, notNull(MUST_NOT_BE_NULL))
+      attribute(x -> x.id, notNull(errorDetails("must not be null"))),
+      attribute(x -> x.name, notNull(errorDetails("must not be null"))),
+      attribute(x -> x.createdAt, notNull(errorDetails("must not be null")))
     );
   }
 
@@ -111,12 +110,4 @@ public class PlayerDocument {
       return buildResult().getOrElseThrow(InvalidInputDetected::of);
     }
   }
-}
-
-class PlayerDocumentValidationErrors {
-
-    static final Supplier<ValidationError> MUST_NOT_BE_NULL = () -> ValidationError.of(
-      PlayerDocument.class.getName(), "must not be null"
-    );
-
 }

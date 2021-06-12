@@ -1,15 +1,15 @@
 package ch.resrc.tichu.domain.value_objects;
 
 import ch.resrc.tichu.capabilities.validation.ValidationError;
+import ch.resrc.tichu.domain.validation.DomainValidationErrors;
 import io.vavr.collection.HashMap;
+import io.vavr.collection.List;
 import io.vavr.collection.Map;
 import io.vavr.collection.Seq;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.NullSource;
 
-import java.util.List;
 import java.util.NoSuchElementException;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatNoException;
@@ -19,7 +19,6 @@ import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 class CardPointsTest {
 
   @Test
-  @DisplayName("The [resultOf] legal values [-25, 125] are valid card points")
   void legalValues_resultOf_validCardPoints() {
     // given:
     final var aLegalId = Id.next();
@@ -43,11 +42,11 @@ class CardPointsTest {
     assertThat(cardPoints.values()).isEqualTo(expectedValues);
   }
 
-  @ParameterizedTest(name = "The [resultOf] illegal value [{0}] is the validation error [MUST_NOT_BE_NULL]")
+  @ParameterizedTest
   @NullSource
   void null_resultOf_expectedError(Map<String, String> input) {
     // given:
-    ValidationError mustNotBeNullError = CardPointsValidationErrors.MUST_NOT_BE_NULL.get();
+    ValidationError mustNotBeNullError = DomainValidationErrors.mustNotBeNull().apply(input);
 
     // when:
     var errorOrCardPoints = CardPoints.resultOf(input);
@@ -60,7 +59,6 @@ class CardPointsTest {
   }
 
   @Test
-  @DisplayName("The [resultOf] only one team having card points is the validation error [MUST_BE_DEFINED_FOR_BOTH_TEAMS]")
   void onlyOneTeamHasCardPoints_resultOf_expectedError() {
     // given:
     final var aLegalId = Id.next().value().toString();
@@ -68,7 +66,8 @@ class CardPointsTest {
     HashMap<String, String> invalidValues = HashMap.of(
       aLegalId, aLegalValue
     );
-    ValidationError mustBeDefinedForBothTeamsError = CardPointsValidationErrors.MUST_BE_DEFINED_FOR_BOTH_TEAMS.get();
+    ValidationError mustBeDefinedForBothTeamsError = DomainValidationErrors.errorDetails("both teams must have card points")
+      .apply(invalidValues.keySet().length());
 
     // when:
     var errorOrCardPoints = CardPoints.resultOf(invalidValues);
@@ -81,7 +80,6 @@ class CardPointsTest {
   }
 
   @Test
-  @DisplayName("The [resultOf] values not divisible by 5 [-24, 124] is the validation error [MUST_BE_DIVISIBLE_BY_5]")
   void valuesNotDivisibleBy5_resultOf_expectedError() {
     // given:
     final var aLegalId = Id.next().value().toString();
@@ -90,7 +88,8 @@ class CardPointsTest {
       aLegalId, "-24",
       anotherLegalId, "124"
     );
-    ValidationError mustBeDivisibleBy5Error = CardPointsValidationErrors.MUST_BE_DIVISIBLE_BY_5.get();
+    ValidationError mustBeDivisibleBy5Error = DomainValidationErrors.errorDetails("the total of card points must be divisible by 5")
+      .apply(List.of(124, -24).sorted());
 
     // when:
     var errorOrCardPoints = CardPoints.resultOf(invalidValues);
@@ -101,7 +100,6 @@ class CardPointsTest {
   }
 
   @Test
-  @DisplayName("The [resultOf] a too small value [-30] is the validation error [MUST_BE_HIGHER_THAN_MINUS_25]")
   void tooSmallValue_resultOf_expectedValidationError() {
     // given:
     final var aLegalId = Id.next().value().toString();
@@ -112,7 +110,8 @@ class CardPointsTest {
       aLegalId, String.valueOf(tooSmallValue),
       anotherLegalId, String.valueOf(legalValue)
     );
-    ValidationError mustBeHigherThanMinus25Error = CardPointsValidationErrors.MUST_NOT_BE_SMALLER_THAN_MINUS_25.get();
+    ValidationError mustBeHigherThanMinus25Error = DomainValidationErrors.errorDetails("the total of card points of a team can not be smaller than -25")
+      .apply(List.of(tooSmallValue, legalValue).sorted());
 
     // when:
     var errorOrCardPoints = CardPoints.resultOf(invalidValues);
@@ -124,7 +123,6 @@ class CardPointsTest {
   }
 
   @Test
-  @DisplayName("The [resultOf] a too large value [130] is the validation error [MUST_BE_LOWER_THAN_125]")
   void tooLargeValue_resultOf_expectedValidationError() {
     // given:
     final var aLegalId = Id.next().value().toString();
@@ -135,7 +133,8 @@ class CardPointsTest {
       aLegalId, String.valueOf(tooLargeValue),
       anotherLegalId, String.valueOf(legalValue)
     );
-    ValidationError mustBeLowerThan125Error = CardPointsValidationErrors.MUST_NOT_BE_HIGHER_THAN_125.get();
+    ValidationError mustBeLowerThan125Error = DomainValidationErrors.errorDetails("the total of card points of a team can not be larger than 125")
+      .apply(List.of(tooLargeValue, legalValue).sorted());
 
     // when:
     var errorOrCardPoints = CardPoints.resultOf(invalidValues);
@@ -147,7 +146,6 @@ class CardPointsTest {
   }
 
   @Test
-  @DisplayName("The [resultOf] legal values  [50, 55] whose total is not equal to 100 is the validation error [MUST_BE_EQUAL_TO_100]")
   void totalNotEqualTo100_resultOf_expectedValidationError() {
     // given:
     final var aLegalId = Id.next().value().toString();
@@ -158,7 +156,8 @@ class CardPointsTest {
       aLegalId, aLegalValue,
       anotherLegalId, anotherLegalValue
     );
-    ValidationError mustBeEqualTo100Error = CardPointsValidationErrors.MUST_BE_EQUAL_TO_100.get();
+    ValidationError mustBeEqualTo100Error = DomainValidationErrors.errorDetails("the sum of card points must be equal to 100")
+      .apply(List.of(50, 55).sum());
 
     // when:
     var errorOrCardPoints = CardPoints.resultOf(invalidValues);
@@ -170,7 +169,6 @@ class CardPointsTest {
   }
 
   @Test
-  @DisplayName("The [resultOf] a too large value not divisible by 5 [141] and a too small value [-30] are the validation errors [MUST_BE_DIVISIBLE_BY_5, MUST_BE_HIGHER_THAN_MINUS_25, MUST_BE_LOWER_THAN_125, MUST_BE_EQUAL_TO_100]")
   void tooLargeValueNotDivisibleBy5_tooSmallValue_resultOf_expectedValidationError() {
     // given:
     final var aLegalId = Id.next().value().toString();
@@ -181,10 +179,17 @@ class CardPointsTest {
       aLegalId, tooLargeValue,
       anotherLegalId, tooSmallValue
     );
-    ValidationError mustBeDivisibleBy5Error = CardPointsValidationErrors.MUST_BE_DIVISIBLE_BY_5.get();
-    ValidationError mustBeHigherThanMinus25Error = CardPointsValidationErrors.MUST_NOT_BE_SMALLER_THAN_MINUS_25.get();
-    ValidationError mustBeLowerThan125Error = CardPointsValidationErrors.MUST_NOT_BE_HIGHER_THAN_125.get();
-    ValidationError mustBeEqualTo100Error = CardPointsValidationErrors.MUST_BE_EQUAL_TO_100.get();
+
+    final var cardPointValues = List.of(-30, 141).toList().sorted();
+
+    ValidationError mustBeDivisibleBy5Error = DomainValidationErrors.errorDetails("the total of card points must be divisible by 5")
+      .apply(cardPointValues);
+    ValidationError mustBeHigherThanMinus25Error = DomainValidationErrors.errorDetails("the total of card points of a team can not be smaller than -25")
+      .apply(cardPointValues);
+    ValidationError mustBeLowerThan125Error = DomainValidationErrors.errorDetails("the total of card points of a team can not be larger than 125")
+      .apply(cardPointValues);
+    ValidationError mustBeEqualTo100Error = DomainValidationErrors.errorDetails("the sum of card points must be equal to 100")
+      .apply(cardPointValues.sum());
 
     // when:
     var errorOrCardPoints = CardPoints.resultOf(invalidValues);

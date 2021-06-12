@@ -1,10 +1,10 @@
 package ch.resrc.tichu.domain.entities;
 
 import ch.resrc.tichu.capabilities.validation.ValidationError;
+import ch.resrc.tichu.domain.validation.DomainValidationErrors;
 import ch.resrc.tichu.domain.value_objects.Id;
 import io.vavr.collection.Seq;
 import org.assertj.core.api.AssertionsForInterfaceTypes;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.NullSource;
@@ -18,7 +18,6 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 class TeamTest {
 
   @Test
-  @DisplayName("The [resultOf] legal values [Id] is a valid round")
   void legalValues_resultOf_validTeam() {
     // given:
     Id id = Id.next();
@@ -33,11 +32,11 @@ class TeamTest {
     assertThat(team.id()).isEqualTo(id);
   }
 
-  @ParameterizedTest(name = "The [resultOf] illegal values [{arguments}] is the validation error [MUST_NOT_BE_NULL]")
+  @ParameterizedTest
   @NullSource
-  void nullId_resultOf_expectedError(Id illegalId) {
+  void nullId_resultOf_validationError(Id illegalId) {
     // given:
-    ValidationError mustNotBeNullError = TeamValidationErrors.MUST_NOT_BE_NULL.get();
+    ValidationError mustNotBeNullError = DomainValidationErrors.mustNotBeNull().apply(illegalId);
 
     // when:
     var errorOrTeam = Team.create(illegalId);

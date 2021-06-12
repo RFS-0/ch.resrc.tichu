@@ -1,11 +1,11 @@
 package ch.resrc.tichu.domain.entities;
 
 import ch.resrc.tichu.capabilities.validation.ValidationError;
+import ch.resrc.tichu.domain.validation.DomainValidationErrors;
 import ch.resrc.tichu.domain.value_objects.Id;
 import ch.resrc.tichu.domain.value_objects.Name;
 import io.vavr.collection.Seq;
 import org.assertj.core.api.AssertionsForInterfaceTypes;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.time.Instant;
@@ -18,7 +18,6 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 class PlayerTest {
 
   @Test
-  @DisplayName("The [resultOf] legal values [Id, Name, Instant] is a valid round")
   void legalValues_resultOf_validPlayer() {
     // given:
     Id id = Id.next();
@@ -38,13 +37,12 @@ class PlayerTest {
   }
 
   @Test
-  @DisplayName("The [resultOf] illegal values [null, Name, Instant] is a valid round")
-  void nullId_resultOf_validPlayer() {
+  void nullId_resultOf_validationError() {
     // given:
     Id nullId = null;
     Name name = Name.resultOf("aPlayerName").get();
     Instant createdAt = Instant.now();
-    ValidationError mustNotBeNullError = PlayerValidationErrors.MUST_NOT_BE_NULL.get();
+    ValidationError mustNotBeNullError = DomainValidationErrors.mustNotBeNull().apply(nullId);
 
     // when:
     var errorOrPlayer = Player.create(nullId, name, createdAt);
@@ -57,13 +55,12 @@ class PlayerTest {
   }
 
   @Test
-  @DisplayName("The [resultOf] illegal values [Id, null, Instant] is a valid round")
-  void nullName_resultOf_validPlayer() {
+  void nullName_resultOf_validationError() {
     // given:
     Id id = Id.next();
     Name name = null;
     Instant createdAt = Instant.now();
-    ValidationError mustNotBeNullError = PlayerValidationErrors.MUST_NOT_BE_NULL.get();
+    ValidationError mustNotBeNullError = DomainValidationErrors.mustNotBeNull().apply(name);
 
     // when:
     var errorOrPlayer = Player.create(id, name, createdAt);
@@ -76,13 +73,12 @@ class PlayerTest {
   }
 
   @Test
-  @DisplayName("The [resultOf] illegal values [Id, Name, null] is a valid round")
-  void nullCreatedAt_resultOf_validPlayer() {
+  void nullCreatedAt_resultOf_validationError() {
     // given:
     Id id = Id.next();
     Name name = Name.resultOf("aPlayerName").get();
     Instant nullCreatedAt = null;
-    ValidationError mustNotBeNullError = PlayerValidationErrors.MUST_NOT_BE_NULL.get();
+    ValidationError mustNotBeNullError = DomainValidationErrors.mustNotBeNull().apply(nullCreatedAt);
 
     // when:
     var errorOrPlayer = Player.create(id, name, nullCreatedAt);

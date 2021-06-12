@@ -6,6 +6,7 @@ import {
   ResetRankEvent,
   UpdateCardPointsEvent,
   UpdateRankEvent,
+  UpdateRoundEvent,
 } from '@/domain/entities/game';
 import { Player } from '@/domain/entities/player';
 import {
@@ -195,7 +196,7 @@ export class FinishRoundFake implements FinishRound {
 }
 
 export class UpdateRoundFake implements UpdateRound {
-  send(intent: FinishRoundEvent): Observable<Game> {
+  send(intent: UpdateRoundEvent): Observable<Game> {
     if (isNone(gameState.game)) {
       throw Error('Invariant violated: cannot update team name of non existing game');
     }

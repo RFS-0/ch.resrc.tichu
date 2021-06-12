@@ -1,6 +1,7 @@
 package ch.resrc.tichu.domain.value_objects;
 
 import ch.resrc.tichu.capabilities.validation.ValidationError;
+import ch.resrc.tichu.domain.validation.DomainValidationErrors;
 import io.vavr.collection.Seq;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EmptySource;
@@ -15,7 +16,7 @@ import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 
 class PictureTest {
 
-  @ParameterizedTest(name = "The [resultOf] the {index}. legal picture [{arguments}] is a valid picture")
+  @ParameterizedTest
   @ValueSource(
     strings = {
       "http://www.test.com",
@@ -37,12 +38,13 @@ class PictureTest {
     assertThat(picture.value()).isEqualTo(legalPicture);
   }
 
-  @ParameterizedTest(name = "The [resultOf] the {index}. blank picture [{arguments}] is the validation error [MUST_NOT_BE_BLANK]")
+  @ParameterizedTest
   @EmptySource
   @NullSource
   void aBlankPicture_resultOf_expectedError(String blankPicture) {
     // given:
-    ValidationError mustNotBeBlankError = PictureValidationErrors.MUST_NOT_BE_BLANK.get();
+    ValidationError mustNotBeBlankError = DomainValidationErrors.errorDetails("value must not be blank")
+      .apply(blankPicture);
 
     // when:
     var errorOrPicture = Picture.resultOf(blankPicture);
@@ -53,7 +55,7 @@ class PictureTest {
     assertThat(errors).contains(mustNotBeBlankError);
   }
 
-  @ParameterizedTest(name = "The [resultOf] the {index}. illegal picture [{arguments}] is the validation error [MUST_BE_URL]")
+  @ParameterizedTest
   @ValueSource(
     strings = {
       "te;st.com",
@@ -66,7 +68,8 @@ class PictureTest {
   )
   void anIllegalUuid_resultOf_expectedError(String illegalPicture) {
     // given:
-    var mustBeUrlError = PictureValidationErrors.MUST_BE_URL.get();
+    var mustBeUrlError = DomainValidationErrors.errorDetails("value must be a valid URL")
+      .apply(illegalPicture);
 
     // when:
     var errorOrPicture = Picture.resultOf(illegalPicture);

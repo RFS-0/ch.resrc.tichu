@@ -6,13 +6,11 @@ import io.vavr.collection.Seq;
 import io.vavr.control.Either;
 
 import java.util.UUID;
-import java.util.function.Supplier;
 
 import static ch.resrc.tichu.capabilities.validation.Validations.chained;
 import static ch.resrc.tichu.capabilities.validation.Validations.matches;
 import static ch.resrc.tichu.capabilities.validation.Validations.notBlank;
-import static ch.resrc.tichu.domain.value_objects.JoinCodeValidationErrors.MUST_CONSIST_OF_EIGHT_ALPHANUMERIC_CHARACTERS;
-import static ch.resrc.tichu.domain.value_objects.JoinCodeValidationErrors.MUST_NOT_BE_BLANK;
+import static ch.resrc.tichu.domain.validation.DomainValidationErrors.errorDetails;
 
 public class JoinCode {
 
@@ -26,8 +24,8 @@ public class JoinCode {
 
   private static Validation<Seq<ValidationError>, String> validation() {
     return chained(
-      notBlank(MUST_NOT_BE_BLANK),
-      matches(JOIN_CODE_PATTERN, MUST_CONSIST_OF_EIGHT_ALPHANUMERIC_CHARACTERS)
+      notBlank(errorDetails("value must not be blank")),
+      matches(JOIN_CODE_PATTERN, errorDetails("value must consist of eight alphanumeric characters"))
     );
   }
 
@@ -61,14 +59,4 @@ public class JoinCode {
   public int hashCode() {
     return value.hashCode();
   }
-}
-
-class JoinCodeValidationErrors {
-
-  static final Supplier<ValidationError> MUST_NOT_BE_BLANK = () -> ValidationError.of(
-    JoinCode.class.getName(), "value must not be blank"
-  );
-  static final Supplier<ValidationError> MUST_CONSIST_OF_EIGHT_ALPHANUMERIC_CHARACTERS = () -> ValidationError.of(
-    JoinCode.class.getName(), "value must consist of eight alphanumeric characters"
-  );
 }

@@ -2,14 +2,12 @@ package ch.resrc.tichu.domain.value_objects;
 
 import ch.resrc.tichu.capabilities.validation.Validation;
 import ch.resrc.tichu.capabilities.validation.ValidationError;
+import ch.resrc.tichu.domain.validation.DomainValidationErrors;
 import io.vavr.collection.Seq;
 import io.vavr.control.Either;
 
-import java.util.function.Supplier;
-
 import static ch.resrc.tichu.capabilities.validation.Validations.allOf;
 import static ch.resrc.tichu.capabilities.validation.Validations.min;
-import static ch.resrc.tichu.domain.value_objects.RoundNumberValidationErrors.MUST_NOT_BE_SMALLER_THAN_ONE;
 
 public class RoundNumber {
 
@@ -21,7 +19,7 @@ public class RoundNumber {
 
   private static Validation<Seq<ValidationError>, Integer> validation() {
     return allOf(
-      min(1, MUST_NOT_BE_SMALLER_THAN_ONE)
+      min(1, DomainValidationErrors.errorDetails("must not be smaller than one"))
     );
   }
 
@@ -55,12 +53,4 @@ public class RoundNumber {
   public int hashCode() {
     return value;
   }
-}
-
-class RoundNumberValidationErrors {
-
-  static final Supplier<ValidationError> MUST_NOT_BE_SMALLER_THAN_ONE = () -> ValidationError.of(
-    Ranks.class.getName(), "must not be smaller than one"
-  );
-
 }

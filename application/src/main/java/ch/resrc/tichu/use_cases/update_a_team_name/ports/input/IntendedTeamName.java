@@ -8,12 +8,11 @@ import io.vavr.collection.Seq;
 import io.vavr.control.Either;
 
 import java.util.function.Consumer;
-import java.util.function.Supplier;
 
 import static ch.resrc.tichu.capabilities.validation.Validations.allOf;
 import static ch.resrc.tichu.capabilities.validation.Validations.attribute;
 import static ch.resrc.tichu.capabilities.validation.Validations.notNull;
-import static ch.resrc.tichu.use_cases.update_a_team_name.ports.input.IntendedTeamNameValidationErrors.MUST_NOT_BE_NULL;
+import static ch.resrc.tichu.domain.validation.DomainValidationErrors.mustNotBeNull;
 
 public class IntendedTeamName {
 
@@ -42,9 +41,9 @@ public class IntendedTeamName {
 
   private static Validation<Seq<ValidationError>, IntendedTeamName> validation() {
     return allOf(
-      attribute(x -> x.gameId, notNull(MUST_NOT_BE_NULL)),
-      attribute(x -> x.teamId, notNull(MUST_NOT_BE_NULL)),
-      attribute(x -> x.teamName, notNull(MUST_NOT_BE_NULL))
+      attribute(x -> x.gameId, notNull(mustNotBeNull())),
+      attribute(x -> x.teamId, notNull(mustNotBeNull())),
+      attribute(x -> x.teamName, notNull(mustNotBeNull()))
     );
   }
 
@@ -88,11 +87,4 @@ public class IntendedTeamName {
       return validation().applyTo(workpiece);
     }
   }
-}
-
-class IntendedTeamNameValidationErrors {
-
-  static final Supplier<ValidationError> MUST_NOT_BE_NULL = () -> ValidationError.of(
-    IntendedTeamName.class.getName(), "must not be null"
-  );
 }

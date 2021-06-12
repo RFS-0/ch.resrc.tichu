@@ -1,6 +1,6 @@
 package ch.resrc.tichu.capabilities.validation;
 
-import ch.resrc.tichu.capabilities.errorhandling.Try;
+import io.vavr.collection.HashSet;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
@@ -116,24 +116,6 @@ public abstract class Input<T> {
   public abstract <U> U applyOrNull(Function<Input<T>, U> f);
 
   /**
-   * Tries to parse the value of this object with the given parser.
-   * <p>
-   * Returns a success whose value is an input of the parsed value if the value parses successfully. The returned input
-   * has the same
-   * origin as this object.
-   * <p>
-   * Returns failure with an {@code InvalidInputDetected} exception if the value fails to parse.
-   * <p>
-   * Returns an empty input if this object is an empty input.
-   *
-   * @param parser the parser to be used
-   * @param <U>    the target type. The parser creates an object of this type
-   *
-   * @return the parsing result as explained
-   */
-  public abstract <U> Try<Input<U>> tryParse(InputParser<T, U> parser);
-
-  /**
    * Maps the input value to another value. The result is a new {@code Input} with the same origin as this {@code Input}
    * but with the
    * mapped value as the input value.
@@ -170,17 +152,6 @@ public abstract class Input<T> {
   }
 
   /**
-   * Creates a failed {@code Try} with an {@link InvalidInputDetected} exception if the input is absent. Returns this
-   * input wrapped in
-   * a {@code Try} if the input is defined.
-   *
-   * @param errorMessage the message that an absent input should use for the {@code InvalidInputDetected} exception.
-   *
-   * @return the failure result if the input is absent, a success result if the input is defined
-   */
-  public abstract Try<Input<T>> rejectAbsent(String errorMessage);
-
-  /**
    * Declares the input value as invalid.
    *
    * @param details explains to humans why the input value is invalid
@@ -189,7 +160,7 @@ public abstract class Input<T> {
    */
   public ValidationError invalidate(String details) {
 
-    return ValidationError.of(details, value()).butOrigin(origin());
+    return ValidationError.of(ValidationError.Origin.UNKNOWN, details, value(), HashSet.of()).butOrigin(origin());
   }
 
   /**
@@ -227,14 +198,6 @@ public abstract class Input<T> {
     }
 
     @Override
-    public <U> Try<Input<U>> tryParse(InputParser<T, U> parser) {
-      return Try.of(() -> parser.parse(this.value())
-        .map(x -> Input.<U>of(x, this.origin()))
-        .getOrElseThrow(InvalidInputDetected::of)
-      );
-    }
-
-    @Override
     public <U> Input<U> map(Function<T, U> inputMapping) {
 
       return Input.of(inputMapping.apply(this.value()), this.origin());
@@ -258,12 +221,6 @@ public abstract class Input<T> {
 
       return f.apply(this);
     }
-
-    @Override
-    public Try<Input<T>> rejectAbsent(String errorMessage) {
-
-      return Try.of(this);
-    }
   }
 
   /**
@@ -274,12 +231,6 @@ public abstract class Input<T> {
     private Absent(String origin) {
 
       super(null, origin);
-    }
-
-    @Override
-    public <U> Try<Input<U>> tryParse(InputParser<T, U> parser) {
-
-      return Try.of(Input.absent(this.origin()));
     }
 
     @Override
@@ -304,12 +255,6 @@ public abstract class Input<T> {
     public <U> U applyOrNull(Function<Input<T>, U> f) {
 
       return null;
-    }
-
-    @Override
-    public Try<Input<T>> rejectAbsent(String errorMessage) {
-
-      return Try.failure(InvalidInputDetected.of(this.invalidate(errorMessage)));
     }
   }
 }

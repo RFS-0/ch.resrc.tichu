@@ -1,6 +1,7 @@
 package ch.resrc.tichu.domain.value_objects;
 
 import ch.resrc.tichu.capabilities.validation.ValidationError;
+import ch.resrc.tichu.domain.validation.DomainValidationErrors;
 import io.vavr.collection.Seq;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EmptySource;
@@ -15,7 +16,7 @@ import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 
 class EmailTest {
 
-  @ParameterizedTest(name = "The [resultOf] the {index}. legal email address [{arguments}] is a valid email address")
+  @ParameterizedTest
   @ValueSource(strings = {"given.family@first.com", "valid@second.io"})
   void aLegalEmailAddress_resultOf_validCardPoints(String aLegalEmailAddress) {
     // when:
@@ -28,12 +29,12 @@ class EmailTest {
     assertThat(email.value()).isEqualTo(aLegalEmailAddress);
   }
 
-  @ParameterizedTest(name = "The [resultOf] [{arguments}] is the validation error [MUST_NOT_BE_BLANK] ")
+  @ParameterizedTest
   @NullSource
   @EmptySource
   void null_resultOf_validCardPoints(String input) {
     // given:
-    ValidationError mustNotBeBlankError = EmailValidationErrors.MUST_NOT_BE_BLANK.get();
+    ValidationError mustNotBeBlankError = DomainValidationErrors.errorDetails("value must not be blank").apply(input);
 
     // when:
     var errorOrEmail = Email.resultOf(input);
@@ -44,11 +45,12 @@ class EmailTest {
     assertThat(errors).contains(mustNotBeBlankError);
   }
 
-  @ParameterizedTest(name = "The [resultOf] the {index}. illegal email address [{arguments}] is the validation error [MUST_BE_VALID_EMAIL_ADDRESS]")
+  @ParameterizedTest
   @ValueSource(strings = {"!nvalid@valid.com", "valid@invalid"})
   void aIllegalEmailAddress_resultOf_expectedError(String aLegalEmailAddress) {
     // given:
-    ValidationError invalidEmailAddressError = EmailValidationErrors.MUST_BE_VALID_EMAIL_ADDRESS.get();
+    ValidationError invalidEmailAddressError = DomainValidationErrors.errorDetails("value must be a valid email address")
+      .apply(aLegalEmailAddress);
 
     // when:
     var errorOrEmail = Email.resultOf(aLegalEmailAddress);

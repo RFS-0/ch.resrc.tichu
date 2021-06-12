@@ -8,7 +8,6 @@ import ch.resrc.tichu.domain.value_objects.Picture;
 import ch.resrc.tichu.domain.value_objects.Round;
 import io.vavr.collection.HashSet;
 import io.vavr.collection.Set;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.time.Instant;
@@ -19,8 +18,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThatNoException
 class GameTest {
 
   @Test
-  @DisplayName("The [resultOf] legal values [Id, User, JoinCode, Team, Team, Rounds, Instant, Instant] is a valid game")
-  void legalValues_resultOf_validTeam() {
+  void legalValues_resultOf_validGame() {
     // given:
     Id gameId = Id.next();
 

@@ -1,6 +1,7 @@
 package ch.resrc.tichu.domain.value_objects;
 
 import ch.resrc.tichu.capabilities.validation.ValidationError;
+import ch.resrc.tichu.domain.validation.DomainValidationErrors;
 import io.vavr.collection.Seq;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EmptySource;
@@ -15,7 +16,7 @@ import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 
 class IdTest {
 
-  @ParameterizedTest(name = "The [resultOf] the {index}. legal UUID [{arguments}] is a valid Id")
+  @ParameterizedTest
   @ValueSource(
     strings = {
       "d0dbf509-c942-40bd-a6a1-d01b912d2615",
@@ -36,12 +37,12 @@ class IdTest {
     assertThat(id.value().toString()).isEqualTo(legalUuid);
   }
 
-  @ParameterizedTest(name = "The [resultOf] the {index}. blank UUID [{arguments}] is the validation error [MUST_NOT_BE_BLANK]")
+  @ParameterizedTest
   @EmptySource
   @NullSource
   void aBlankUuid_resultOf_expectedError(String blankUuid) {
     // given:
-    ValidationError mustNotBeBlankError = IdValidationErrors.MUST_NOT_BE_BLANK.get();
+    ValidationError mustNotBeBlankError = DomainValidationErrors.mustNotBeBlank().apply(blankUuid);
 
     // when:
     var errorOrId = Id.resultOf(blankUuid);
@@ -52,7 +53,7 @@ class IdTest {
     assertThat(errors).contains(mustNotBeBlankError);
   }
 
-  @ParameterizedTest(name = "The [resultOf] the {index}. illegal UUID [{arguments}] is the validation error [MUST_BE_UUID]")
+  @ParameterizedTest
   @ValueSource(
     strings = {
       "d0dbf509-c942-40bd-a6a1-d01b912d261!",
@@ -64,7 +65,7 @@ class IdTest {
   )
   void anIllegalUuid_resultOf_expectedError(String illegalUuid) {
     // given:
-    ValidationError mustBeUuidError = IdValidationErrors.MUST_BE_UUID.get();
+    ValidationError mustBeUuidError = DomainValidationErrors.mustBeUuid().apply(illegalUuid);
 
     // when:
     var errorOrId = Id.resultOf(illegalUuid);

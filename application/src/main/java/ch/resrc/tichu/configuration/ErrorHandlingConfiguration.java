@@ -1,7 +1,6 @@
 package ch.resrc.tichu.configuration;
 
 import ch.resrc.tichu.capabilities.errorhandling.ProblemCatalogue;
-import ch.resrc.tichu.capabilities.errorhandling.TichuProblemCatalog;
 
 import javax.enterprise.context.ApplicationScoped;
 

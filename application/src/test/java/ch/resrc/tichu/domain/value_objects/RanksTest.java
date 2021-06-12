@@ -1,10 +1,10 @@
 package ch.resrc.tichu.domain.value_objects;
 
 import ch.resrc.tichu.capabilities.validation.ValidationError;
+import ch.resrc.tichu.domain.validation.DomainValidationErrors;
 import io.vavr.collection.HashMap;
 import io.vavr.collection.Map;
 import io.vavr.collection.Seq;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.NullSource;
@@ -18,7 +18,6 @@ import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 class RanksTest {
 
   @Test
-  @DisplayName("The [resultOf] four players and four legal values [1, 2, 3, 4] are valid ranks")
   void legalValues_resultOf_validRanks() {
     // given:
     Id player1 = Id.next();
@@ -42,11 +41,11 @@ class RanksTest {
     assertThat(ranks.values()).isEqualTo(validValues);
   }
 
-  @ParameterizedTest(name = "The [resultOf] illegal input [{arguments}] is the validation error [MUST_NOT_BE_NULL]")
+  @ParameterizedTest
   @NullSource
   void null_resultOf_expectedError(Map<Id, Integer> input) {
     // given:
-    ValidationError mustNotBeNullError = RanksValidationErrors.MUST_NOT_BE_NULL.get();
+    ValidationError mustNotBeNullError = DomainValidationErrors.mustNotBeNull().apply(input);
 
     // when:
     var errorOrRanks = Ranks.resultOf(input);
@@ -59,7 +58,6 @@ class RanksTest {
   }
 
   @Test
-  @DisplayName("The [resultOf] illegal key [null] is the validation error [MUST_NOT_BE_NULL]")
   void nullKey_resultOf_expectedError() {
     // given:
     Id nullKey = null;
@@ -72,7 +70,7 @@ class RanksTest {
       player3, 3,
       player4, 4
     );
-    ValidationError mustNotBeNullError = RanksValidationErrors.MUST_NOT_BE_NULL.get();
+    ValidationError mustNotBeNullError = DomainValidationErrors.mustNotBeNull().apply(valuesWithNullKey);
 
     // when:
     var errorOrRanks = Ranks.resultOf(valuesWithNullKey);
@@ -85,7 +83,6 @@ class RanksTest {
   }
 
   @Test
-  @DisplayName("The [resultOf] illegal value [null] is the validation error [MUST_NOT_BE_NULL]")
   void nullValue_resultOf_expectedError() {
     // given:
     Id player1 = Id.next();
@@ -99,7 +96,7 @@ class RanksTest {
       player3, 3,
       player4, 4
     );
-    ValidationError mustNotBeNullError = RanksValidationErrors.MUST_NOT_BE_NULL.get();
+    ValidationError mustNotBeNullError = DomainValidationErrors.mustNotBeNull().apply(valuesWithNullValue);
 
     // when:
     var errorOrRanks = Ranks.resultOf(valuesWithNullValue);
@@ -112,8 +109,7 @@ class RanksTest {
   }
 
   @Test()
-  @DisplayName("The [resultOf] values with too many players is the validation error [MUST_BE_DEFINED_FOR_FOUR_PLAYERS]")
-  void notEnoughPlayers_resultOf_expectedError() {
+  void tooManyPlayers_resultOf_expectedError() {
     // given:
     Id player1 = Id.next();
     Id player2 = Id.next();
@@ -127,7 +123,8 @@ class RanksTest {
       player4, 4,
       player5, 1
     );
-    ValidationError mustBeDefinedForAllPlayersError = RanksValidationErrors.MUST_BE_DEFINED_FOR_FOUR_PLAYERS.get();
+    ValidationError mustBeDefinedForAllPlayersError = DomainValidationErrors.errorDetails("four players must have a rank")
+      .apply(tooManyPlayers.length());
 
     // when:
     var errorOrRanks = Ranks.resultOf(tooManyPlayers);
@@ -140,21 +137,21 @@ class RanksTest {
   }
 
   @Test
-  @DisplayName("The [resultOf] values with not enough players is the validation error [MUST_BE_DEFINED_FOR_FOUR_PLAYERS]")
-  void tooFewPlayers_resultOf_expectedError() {
+  void notEnoughtPlayers_resultOf_expectedError() {
     // given:
     Id player1 = Id.next();
     Id player2 = Id.next();
     Id player3 = Id.next();
-    HashMap<Id, Integer> tooFewPlayers = HashMap.of(
+    HashMap<Id, Integer> notEnoughtPlayers = HashMap.of(
       player1, 1,
       player2, 2,
       player3, 3
     );
-    ValidationError mustBeDefinedForAllPlayersError = RanksValidationErrors.MUST_BE_DEFINED_FOR_FOUR_PLAYERS.get();
+    ValidationError mustBeDefinedForAllPlayersError = DomainValidationErrors.errorDetails("four players must have a rank")
+      .apply(notEnoughtPlayers.length());
 
     // when:
-    var errorOrRanks = Ranks.resultOf(tooFewPlayers);
+    var errorOrRanks = Ranks.resultOf(notEnoughtPlayers);
 
     // then:
     assertThatThrownBy(errorOrRanks::get).isInstanceOf(NoSuchElementException.class);
@@ -164,7 +161,6 @@ class RanksTest {
   }
 
   @Test
-  @DisplayName("The [resultOf] duplicate rank values is the validation error [MUST_BE_DISTINCT_FOR_ALL_PLAYERS]")
   void duplicateRanks_resultOf_expectedError() {
     // given:
     Id player1 = Id.next();
@@ -172,16 +168,17 @@ class RanksTest {
     Id player3 = Id.next();
     Id player4 = Id.next();
     int duplicateRank = 3;
-    HashMap<Id, Integer> tooFewPlayers = HashMap.of(
+    HashMap<Id, Integer> duplicatedRanks = HashMap.of(
       player1, 1,
       player2, 2,
       player3, duplicateRank,
       player4, duplicateRank
     );
-    ValidationError mustBeDistinctForAllPlayersError = RanksValidationErrors.MUST_BE_DISTINCT_FOR_ALL_PLAYERS.get();
+    ValidationError mustBeDistinctForAllPlayersError = DomainValidationErrors.errorDetails("each player must have a distinct rank")
+      .apply(duplicatedRanks.values().toList().sorted());
 
     // when:
-    var errorOrRanks = Ranks.resultOf(tooFewPlayers);
+    var errorOrRanks = Ranks.resultOf(duplicatedRanks);
 
     // then:
     assertThatThrownBy(errorOrRanks::get).isInstanceOf(NoSuchElementException.class);
@@ -191,7 +188,6 @@ class RanksTest {
   }
 
   @Test
-  @DisplayName("The [resultOf] a too small rank value is the validation error [MUST_NOT_BE_SMALLER_THAN_ONE]")
   void tooSmallRank_resultOf_expectedError() {
     // given:
     Id player1 = Id.next();
@@ -199,16 +195,17 @@ class RanksTest {
     Id player3 = Id.next();
     Id player4 = Id.next();
     int tooSmallRank = 0;
-    HashMap<Id, Integer> tooFewPlayers = HashMap.of(
+    HashMap<Id, Integer> playerWithTooSmallRank = HashMap.of(
       player1, 1,
       player2, 2,
       player3, 3,
       player4, tooSmallRank
     );
-    ValidationError mustNotBeSmallerThanOneError = RanksValidationErrors.MUST_NOT_BE_SMALLER_THAN_ONE.get();
+    ValidationError mustNotBeSmallerThanOneError = DomainValidationErrors.errorDetails("a rank can not be smaller than one")
+      .apply(playerWithTooSmallRank.values().toList().sorted());
 
     // when:
-    var errorOrRanks = Ranks.resultOf(tooFewPlayers);
+    var errorOrRanks = Ranks.resultOf(playerWithTooSmallRank);
 
     // then:
     assertThatThrownBy(errorOrRanks::get).isInstanceOf(NoSuchElementException.class);
@@ -218,7 +215,6 @@ class RanksTest {
   }
 
   @Test
-  @DisplayName("The [resultOf] a too high rank value is the validation error [MUST_NOT_BE_HIGHER_THAN_FOUR]")
   void tooHighRank_resultOf_expectedError() {
     // given:
     Id player1 = Id.next();
@@ -226,16 +222,17 @@ class RanksTest {
     Id player3 = Id.next();
     Id player4 = Id.next();
     int tooHighRank = 5;
-    HashMap<Id, Integer> tooFewPlayers = HashMap.of(
+    HashMap<Id, Integer> playerWithTooHighRank = HashMap.of(
       player1, 1,
       player2, 2,
       player3, 3,
       player4, tooHighRank
     );
-    ValidationError mustNotBeHigherThanFourError = RanksValidationErrors.MUST_NOT_BE_HIGHER_THAN_FOUR.get();
+    ValidationError mustNotBeHigherThanFourError = DomainValidationErrors.errorDetails("a rank can not be higher than four")
+      .apply(playerWithTooHighRank.values().toList().sorted());
 
     // when:
-    var errorOrRanks = Ranks.resultOf(tooFewPlayers);
+    var errorOrRanks = Ranks.resultOf(playerWithTooHighRank);
 
     // then:
     assertThatThrownBy(errorOrRanks::get).isInstanceOf(NoSuchElementException.class);

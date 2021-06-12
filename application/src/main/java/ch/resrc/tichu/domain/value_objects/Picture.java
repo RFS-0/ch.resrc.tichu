@@ -5,13 +5,10 @@ import ch.resrc.tichu.capabilities.validation.ValidationError;
 import io.vavr.collection.Seq;
 import io.vavr.control.Either;
 
-import java.util.function.Supplier;
-
 import static ch.resrc.tichu.capabilities.validation.Validations.allOf;
 import static ch.resrc.tichu.capabilities.validation.Validations.isUrl;
 import static ch.resrc.tichu.capabilities.validation.Validations.notBlank;
-import static ch.resrc.tichu.domain.value_objects.PictureValidationErrors.MUST_BE_URL;
-import static ch.resrc.tichu.domain.value_objects.PictureValidationErrors.MUST_NOT_BE_BLANK;
+import static ch.resrc.tichu.domain.validation.DomainValidationErrors.errorDetails;
 
 public class Picture {
 
@@ -23,8 +20,8 @@ public class Picture {
 
   public static Validation<Seq<ValidationError>, String> validation() {
     return allOf(
-      notBlank(MUST_NOT_BE_BLANK),
-      isUrl(MUST_BE_URL)
+      notBlank(errorDetails("value must not be blank")),
+      isUrl(errorDetails("value must be a valid URL"))
     );
   }
 
@@ -54,14 +51,4 @@ public class Picture {
   public int hashCode() {
     return value.hashCode();
   }
-}
-
-class PictureValidationErrors {
-
-  static final Supplier<ValidationError> MUST_NOT_BE_BLANK = () -> ValidationError.of(
-    Picture.class.getName(), "value must not be blank"
-  );
-  static final Supplier<ValidationError> MUST_BE_URL = () -> ValidationError.of(
-    Picture.class.getName(), "value must be a valid URL"
-  );
 }

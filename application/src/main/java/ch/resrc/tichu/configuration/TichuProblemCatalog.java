@@ -1,5 +1,11 @@
-package ch.resrc.tichu.capabilities.errorhandling;
+package ch.resrc.tichu.configuration;
 
+import ch.resrc.tichu.capabilities.errorhandling.DomainProblem;
+import ch.resrc.tichu.capabilities.errorhandling.GenericProblem;
+import ch.resrc.tichu.capabilities.errorhandling.Problem;
+import ch.resrc.tichu.capabilities.errorhandling.ProblemCatalogue;
+import ch.resrc.tichu.capabilities.errorhandling.ProblemCode;
+import ch.resrc.tichu.capabilities.errorhandling.RestProblem;
 import ch.resrc.tichu.use_cases.capabilities.errors.UseCaseProblem;
 
 import java.util.List;

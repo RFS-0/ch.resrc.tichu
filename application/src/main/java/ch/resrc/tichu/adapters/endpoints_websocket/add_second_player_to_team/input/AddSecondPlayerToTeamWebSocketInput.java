@@ -1,6 +1,6 @@
 package ch.resrc.tichu.adapters.endpoints_websocket.add_second_player_to_team.input;
 
-import ch.resrc.tichu.adapters.endpoints_websocket.add_first_player_to_team.dto.IntendedFirstPlayerAdditionDto;
+import ch.resrc.tichu.adapters.endpoints_websocket.add_second_player_to_team.dto.IntendedSecondPlayerAdditionDto;
 import ch.resrc.tichu.capabilities.json.Json;
 import ch.resrc.tichu.capabilities.validation.InvalidInputDetected;
 import ch.resrc.tichu.capabilities.validation.ValidationError;
@@ -19,11 +19,11 @@ public class AddSecondPlayerToTeamWebSocketInput {
   private final IntendedPlayerAddition intendedSecondPlayerAddition;
 
   public AddSecondPlayerToTeamWebSocketInput(Json json, String message) {
-    IntendedFirstPlayerAdditionDto intent = json.parse(message, IntendedFirstPlayerAdditionDto.class);
+    IntendedSecondPlayerAdditionDto intent = json.parse(message, IntendedSecondPlayerAdditionDto.class);
     intendedSecondPlayerAddition = validateIntendedPlayerAddition(intent).getOrElseThrow(InvalidInputDetected::of);
   }
 
-  private Either<Seq<ValidationError>, IntendedPlayerAddition> validateIntendedPlayerAddition(IntendedFirstPlayerAdditionDto dto) {
+  private Either<Seq<ValidationError>, IntendedPlayerAddition> validateIntendedPlayerAddition(IntendedSecondPlayerAdditionDto dto) {
     return anIntendedPlayerAddition()
       .withGameId(parse(Id.class, dto.gameId))
       .withTeamId(parse(Id.class, dto.teamId))

@@ -1,4 +1,4 @@
-package ch.resrc.tichu.use_cases;
+package ch.resrc.tichu.domain;
 
 /**
  * Marker interface for use case output

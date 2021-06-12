@@ -15,12 +15,11 @@ import io.vavr.control.Either;
 
 import java.time.Instant;
 import java.util.function.Consumer;
-import java.util.function.Supplier;
 
 import static ch.resrc.tichu.capabilities.validation.Validations.allOf;
 import static ch.resrc.tichu.capabilities.validation.Validations.attribute;
 import static ch.resrc.tichu.capabilities.validation.Validations.notNull;
-import static ch.resrc.tichu.use_cases.create_a_game.ports.output.GameDocumentValidationErrors.MUST_NOT_BE_NULL;
+import static ch.resrc.tichu.domain.validation.DomainValidationErrors.errorDetails;
 
 public class GameDocument {
 
@@ -75,11 +74,11 @@ public class GameDocument {
 
   private static Validation<Seq<ValidationError>, GameDocument> validation() {
     return allOf(
-      attribute(x -> x.id, notNull(MUST_NOT_BE_NULL)),
-      attribute(x -> x.createdBy, notNull(MUST_NOT_BE_NULL)),
-      attribute(x -> x.joinCode, notNull(MUST_NOT_BE_NULL)),
-      attribute(x -> x.rounds, notNull(MUST_NOT_BE_NULL)),
-      attribute(x -> x.createdAt, notNull(MUST_NOT_BE_NULL))
+      attribute(x -> x.id, notNull(errorDetails("must not be null"))),
+      attribute(x -> x.createdBy, notNull(errorDetails("must not be null"))),
+      attribute(x -> x.joinCode, notNull(errorDetails("must not be null"))),
+      attribute(x -> x.rounds, notNull(errorDetails("must not be null"))),
+      attribute(x -> x.createdAt, notNull(errorDetails("must not be null")))
     );
   }
 
@@ -159,12 +158,4 @@ public class GameDocument {
       return buildResult().getOrElseThrow(InvalidInputDetected::of);
     }
   }
-}
-
-class GameDocumentValidationErrors {
-
-  static final Supplier<ValidationError> MUST_NOT_BE_NULL = () -> ValidationError.of(
-    GameDocument.class.getName(), "must not be null"
-  );
-
 }

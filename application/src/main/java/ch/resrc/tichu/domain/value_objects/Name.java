@@ -5,11 +5,9 @@ import ch.resrc.tichu.capabilities.validation.ValidationError;
 import io.vavr.collection.Seq;
 import io.vavr.control.Either;
 
-import java.util.function.Supplier;
-
 import static ch.resrc.tichu.capabilities.validation.Validations.allOf;
 import static ch.resrc.tichu.capabilities.validation.Validations.notBlank;
-import static ch.resrc.tichu.domain.value_objects.NameValidationErrors.MUST_NOT_BE_BLANK;
+import static ch.resrc.tichu.domain.validation.DomainValidationErrors.errorDetails;
 
 public class Name {
 
@@ -20,7 +18,7 @@ public class Name {
   }
 
   private static Validation<Seq<ValidationError>, String> validation() {
-    return allOf(notBlank(MUST_NOT_BE_BLANK));
+    return allOf(notBlank(errorDetails("value must not be blank")));
   }
 
   public static Either<Seq<ValidationError>, Name> resultOf(String literal) {
@@ -50,10 +48,4 @@ public class Name {
   public int hashCode() {
     return value.hashCode();
   }
-}
-
-class NameValidationErrors {
-  static final Supplier<ValidationError> MUST_NOT_BE_BLANK = () -> ValidationError.of(
-    Name.class.getName(), "value must not be blank"
-  );
 }

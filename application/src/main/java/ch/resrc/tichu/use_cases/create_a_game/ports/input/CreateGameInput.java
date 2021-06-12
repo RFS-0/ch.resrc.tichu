@@ -1,6 +1,6 @@
 package ch.resrc.tichu.use_cases.create_a_game.ports.input;
 
-import ch.resrc.tichu.use_cases.InputBoundary;
+import ch.resrc.tichu.domain.InputBoundary;
 import ch.resrc.tichu.use_cases.UseCaseInput;
 import ch.resrc.tichu.use_cases.create_a_game.ports.output.CreateGameOutput;
 

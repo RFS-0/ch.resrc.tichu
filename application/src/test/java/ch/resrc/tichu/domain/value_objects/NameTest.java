@@ -14,7 +14,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
 class NameTest {
 
-  @ParameterizedTest(name = "The [resultOf] the {index}. legal name [{arguments}] is a valid name")
+  @ParameterizedTest
   @ValueSource(
     strings = {
       "a",
@@ -37,7 +37,7 @@ class NameTest {
     assertThat(name.value()).isEqualTo(legalName);
   }
 
-  @ParameterizedTest(name = "The [resultOf] the {index}. blank name [{arguments}] is the validation error [MUST_NOT_BE_BLANK]")
+  @ParameterizedTest
   @NullSource
   @ValueSource(
     strings = {
@@ -49,7 +49,9 @@ class NameTest {
   )
   void anIllegalName_resultOf_expectedError(String blankName) {
     // given
-    var mustNotBeBlankError = NameValidationErrors.MUST_NOT_BE_BLANK.get();
+    var mustNotBeBlankError = ValidationError.of(
+      "value must not be blank"
+    );
 
     // when:
     var errorOrName = Name.resultOf(blankName);
