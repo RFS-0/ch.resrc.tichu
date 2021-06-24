@@ -24,7 +24,7 @@ class RoundTest {
     final var leftTeamId = Id.next().value().toString();
     final var rightTeamId = Id.next().value().toString();
     RoundNumber roundNumber = RoundNumber.resultOf(1).get();
-    CardPoints cardPoints = CardPoints.resultOf(HashMap.of(leftTeamId, "-25", rightTeamId, "125")).get();
+    CardPoints cardPoints = CardPoints.resultOfRaw(HashMap.of(leftTeamId, "-25", rightTeamId, "125")).get();
     Ranks ranks = Ranks.resultOf(HashMap.of(player1, 1, player2, 2, player3, 3, player4, 4)).get();
     Tichus tichus = Tichus.resultOf(HashMap.of(player1, Tichu.NONE, player2, Tichu.NONE, player3, Tichu.NONE, player4, Tichu.NONE)).get();
 
@@ -50,7 +50,7 @@ class RoundTest {
     Id player4 = Id.next();
     final var leftTeamId = Id.next().value().toString();
     final var rightTeamId = Id.next().value().toString();
-    CardPoints cardPoints = CardPoints.resultOf(HashMap.of(leftTeamId.toString(), "-25", rightTeamId.toString(), "125")).get();
+    CardPoints cardPoints = CardPoints.resultOfRaw(HashMap.of(leftTeamId.toString(), "-25", rightTeamId.toString(), "125")).get();
     Ranks ranks = Ranks.resultOf(HashMap.of(player1, 1, player2, 2, player3, 3, player4, 4)).get();
     Tichus tichus = Tichus.resultOf(HashMap.of(player1, Tichu.NONE, player2, Tichu.NONE, player3, Tichu.NONE, player4, Tichu.NONE)).get();
     RoundNumber illegalRoundNumber = null;
@@ -101,7 +101,7 @@ class RoundTest {
     final var leftTeamId = Id.next().value().toString();
     final var rightTeamId = Id.next().value().toString();
     RoundNumber roundNumber = RoundNumber.resultOf(1).get();
-    CardPoints cardPoints = CardPoints.resultOf(HashMap.of(leftTeamId, "-25", rightTeamId, "125")).get();
+    CardPoints cardPoints = CardPoints.resultOfRaw(HashMap.of(leftTeamId, "-25", rightTeamId, "125")).get();
     Tichus tichus = Tichus.resultOf(HashMap.of(player1, Tichu.NONE, player2, Tichu.NONE, player3, Tichu.NONE, player4, Tichu.NONE)).get();
     Ranks nullRanks = null;
 
@@ -127,7 +127,7 @@ class RoundTest {
     final var leftTeamId = Id.next().value().toString();
     final var rightTeamId = Id.next().value().toString();
     RoundNumber roundNumber = RoundNumber.resultOf(1).get();
-    CardPoints cardPoints = CardPoints.resultOf(HashMap.of(leftTeamId, "-25", rightTeamId, "125")).get();
+    CardPoints cardPoints = CardPoints.resultOfRaw(HashMap.of(leftTeamId, "-25", rightTeamId, "125")).get();
     Ranks ranks = Ranks.resultOf(HashMap.of(player1, 1, player2, 2, player3, 3, player4, 4)).get();
     Tichus nullTichus = null;
 

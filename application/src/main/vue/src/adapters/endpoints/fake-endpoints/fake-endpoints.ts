@@ -248,23 +248,23 @@ export class UpdateCardPointsOfRoundFake implements UpdateCardPointsOfRound {
     const fakeEndpoint = new Subject<Game>();
     const leftTeamId = gameState.game.value.leftTeam.id;
     const rightTeamId = gameState.game.value.rightTeam.id;
-    let sanitizedPointsOfLeftTeam;
-    let sanitizedPointsOfRightTeam;
+    let validPointsOfLeftTeam;
+    let validPointsOfRightTeam;
     if (gameState.game.value.isLeftTeam(intent.teamId)) {
-      sanitizedPointsOfLeftTeam = UpdateCardPointsOfRoundFake.sanitizeCardPointValue(intent.cardPoints);
-      sanitizedPointsOfRightTeam = 100 - sanitizedPointsOfLeftTeam;
+      validPointsOfLeftTeam = UpdateCardPointsOfRoundFake.mapToValidRange(intent.cardPoints);
+      validPointsOfRightTeam = 100 - validPointsOfLeftTeam;
     } else {
-      sanitizedPointsOfRightTeam = UpdateCardPointsOfRoundFake.sanitizeCardPointValue(intent.cardPoints);
-      sanitizedPointsOfLeftTeam = 100 - sanitizedPointsOfRightTeam;
+      validPointsOfRightTeam = UpdateCardPointsOfRoundFake.mapToValidRange(intent.cardPoints);
+      validPointsOfLeftTeam = 100 - validPointsOfRightTeam;
     }
     const updatedGame = gameState.game.value
-      .updateCardPointsOfTeam(leftTeamId, intent.roundNumber, sanitizedPointsOfLeftTeam)
-      .updateCardPointsOfTeam(rightTeamId, intent.roundNumber, sanitizedPointsOfRightTeam);
+      .updateCardPointsOfTeam(leftTeamId, intent.roundNumber, validPointsOfLeftTeam)
+      .updateCardPointsOfTeam(rightTeamId, intent.roundNumber, validPointsOfRightTeam);
     setTimeout(() => fakeEndpoint.next(updatedGame), 50);
     return fakeEndpoint.asObservable();
   }
 
-  private static sanitizeCardPointValue(cardPoints: number): number {
+  private static mapToValidRange(cardPoints: number): number {
     if (cardPoints > 100) {
       return 100;
     } else if (cardPoints < -25) {

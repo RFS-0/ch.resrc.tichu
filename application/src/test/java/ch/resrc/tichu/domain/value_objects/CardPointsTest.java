@@ -33,7 +33,7 @@ class CardPointsTest {
     );
 
     // when:
-    var errorOrCardPoints = CardPoints.resultOf(inputValues);
+    var errorOrCardPoints = CardPoints.resultOfRaw(inputValues);
 
     // then:
     errorOrCardPoints.peekLeft(System.out::println);
@@ -49,7 +49,7 @@ class CardPointsTest {
     ValidationError mustNotBeNullError = DomainValidationErrors.mustNotBeNull().apply(input);
 
     // when:
-    var errorOrCardPoints = CardPoints.resultOf(input);
+    var errorOrCardPoints = CardPoints.resultOfRaw(input);
 
     // then:
     assertThatThrownBy(errorOrCardPoints::get).isInstanceOf(NoSuchElementException.class);
@@ -70,7 +70,7 @@ class CardPointsTest {
       .apply(invalidValues.keySet().length());
 
     // when:
-    var errorOrCardPoints = CardPoints.resultOf(invalidValues);
+    var errorOrCardPoints = CardPoints.resultOfRaw(invalidValues);
 
     // then:
     assertThatThrownBy(errorOrCardPoints::get).isInstanceOf(NoSuchElementException.class);
@@ -92,7 +92,7 @@ class CardPointsTest {
       .apply(List.of(124, -24).sorted());
 
     // when:
-    var errorOrCardPoints = CardPoints.resultOf(invalidValues);
+    var errorOrCardPoints = CardPoints.resultOfRaw(invalidValues);
 
     // then:
     assertThatThrownBy(errorOrCardPoints::get).isInstanceOf(NoSuchElementException.class);
@@ -114,7 +114,7 @@ class CardPointsTest {
       .apply(List.of(tooSmallValue, legalValue).sorted());
 
     // when:
-    var errorOrCardPoints = CardPoints.resultOf(invalidValues);
+    var errorOrCardPoints = CardPoints.resultOfRaw(invalidValues);
 
     // then:
     assertThatThrownBy(errorOrCardPoints::get).isInstanceOf(NoSuchElementException.class);
@@ -137,7 +137,7 @@ class CardPointsTest {
       .apply(List.of(tooLargeValue, legalValue).sorted());
 
     // when:
-    var errorOrCardPoints = CardPoints.resultOf(invalidValues);
+    var errorOrCardPoints = CardPoints.resultOfRaw(invalidValues);
 
     // then:
     assertThatThrownBy(errorOrCardPoints::get).isInstanceOf(NoSuchElementException.class);
@@ -160,7 +160,7 @@ class CardPointsTest {
       .apply(List.of(50, 55).sum());
 
     // when:
-    var errorOrCardPoints = CardPoints.resultOf(invalidValues);
+    var errorOrCardPoints = CardPoints.resultOfRaw(invalidValues);
 
     // then:
     assertThatThrownBy(errorOrCardPoints::get).isInstanceOf(NoSuchElementException.class);
@@ -192,7 +192,7 @@ class CardPointsTest {
       .apply(cardPointValues.sum());
 
     // when:
-    var errorOrCardPoints = CardPoints.resultOf(invalidValues);
+    var errorOrCardPoints = CardPoints.resultOfRaw(invalidValues);
 
     // then:
     assertThatThrownBy(errorOrCardPoints::get).isInstanceOf(NoSuchElementException.class);

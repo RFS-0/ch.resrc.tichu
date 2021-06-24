@@ -15,7 +15,7 @@ import static ch.resrc.tichu.domain.validation.DomainValidationErrors.mustNotBeN
 public class Round {
 
   private final RoundNumber roundNumber;
-  private final CardPoints cardPoints;
+  private CardPoints cardPoints;
   private Ranks ranks;
   private final Tichus tichus;
 
@@ -66,6 +66,10 @@ public class Round {
 
   public Round butRanks(Ranks ranks) {
     return copied(but -> but.ranks = ranks);
+  }
+
+  public Round butCardPoints(CardPoints cardPoints) {
+    return copied(but -> but.cardPoints = cardPoints);
   }
 
   public Tichus tichus() {

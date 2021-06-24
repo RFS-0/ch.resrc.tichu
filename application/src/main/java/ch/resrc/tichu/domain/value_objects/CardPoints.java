@@ -36,7 +36,7 @@ public class CardPoints {
     );
   }
 
-  public static Either<Seq<ValidationError>, CardPoints> resultOf(Map<String, String> rawCardPoints) {
+  public static Either<Seq<ValidationError>, CardPoints> resultOfRaw(Map<String, String> rawCardPoints) {
     if (rawCardPoints == null) {
       return Either.left(List.of(mustNotBeNull().apply(rawCardPoints)));
     }
@@ -52,6 +52,13 @@ public class CardPoints {
     }
 
     return validation().applyTo(cardPointsInput.get().mapKeys(Either::get)).map(CardPoints::new);
+  }
+
+  public static Either<Seq<ValidationError>, CardPoints> resultOf(Map<Id, Integer> cardPoints) {
+    if (cardPoints == null) {
+      return Either.left(List.of(mustNotBeNull().apply(cardPoints)));
+    }
+    return validation().applyTo(cardPoints).map(CardPoints::new);
   }
 
   public Map<Id, Integer> values() {

@@ -29,7 +29,7 @@ public class DomainObjectInput {
     RoundNumber.class, RoundNumber::resultOf
   );
   private static final Map<Class<?>, InputParser<Map<String, String>, ?>> parserMapToType = HashMap.of(
-    CardPoints.class, CardPoints::resultOf
+    CardPoints.class, CardPoints::resultOfRaw
   );
 
   public static <T> T parse(Class<T> domainType, String input) {

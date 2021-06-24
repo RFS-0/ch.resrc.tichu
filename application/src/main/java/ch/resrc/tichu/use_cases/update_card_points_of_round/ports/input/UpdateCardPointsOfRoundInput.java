@@ -14,5 +14,9 @@ public interface UpdateCardPointsOfRoundInput {
     public Request(IntendedCardPointsUpdate intent) {
       this.intent = intent;
     }
+
+    public IntendedCardPointsUpdate intent() {
+      return intent;
+    }
   }
 }
