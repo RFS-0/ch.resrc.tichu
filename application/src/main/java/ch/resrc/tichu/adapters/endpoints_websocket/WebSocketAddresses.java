@@ -13,7 +13,8 @@ public final class WebSocketAddresses {
       public static final String REMOVE_FIRST_PLAYER_FROM_TEAM = "/events/teams/remove-first-player-from-team";
       public static final String REMOVE_SECOND_PLAYER_FROM_TEAM = "/events/teams/remove-second-player-from-team";
       public static final String UPDATE_RANK_OF_PLAYER = "/events/games/update-rank-of-player/{receiverId}";
-      public static final String RESET_RANK_OF_PLAYER = "/events/games/reset-rank-of-player/{receiverId}";
+      public static final String RESET_RANK_OF_PLAYER = "/events/games/input/reset-rank-of-player/{receiverId}";
+      public static final String UPDATE_CARD_POINTS_OF_ROUND = "/events/games/update-card-points-of-round/{receiverId}";
     }
 
     public static class Output {
@@ -25,7 +26,8 @@ public final class WebSocketAddresses {
       public static final String REMOVE_FIRST_PLAYER_FROM_TEAM = "/events/teams/removed-first-player-from-team/{receiverId}";
       public static final String REMOVE_SECOND_PLAYER_FROM_TEAM = "/events/teams/removed-second-player-from-team/{receiverId}";
       public static final String UPDATE_RANK_OF_PLAYER = "/events/games/updated-rank-of-player/{receiverId}";
-      public static final String RESET_RANK_OF_PLAYER = "/events/games/reset-rank-of-player/{receiverId}";
+      public static final String RESET_RANK_OF_PLAYER = "/events/games/output/reset-rank-of-player/{receiverId}";
+      public static final String UPDATE_CARD_POINTS_OF_ROUND = "/events/games/updated-card-points-of-round/{receiverId}";
     }
   }
 }

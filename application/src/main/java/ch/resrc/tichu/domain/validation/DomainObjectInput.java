@@ -12,21 +12,24 @@ import ch.resrc.tichu.domain.value_objects.Name;
 import ch.resrc.tichu.domain.value_objects.Picture;
 import ch.resrc.tichu.domain.value_objects.RoundNumber;
 import io.vavr.collection.HashMap;
+import io.vavr.collection.HashSet;
 import io.vavr.collection.List;
 import io.vavr.collection.Map;
 import io.vavr.collection.Seq;
 import io.vavr.control.Either;
+import io.vavr.control.Try;
 
 import static java.lang.String.format;
 
 public class DomainObjectInput {
 
-  private static final Map<Class<?>, InputParser<String, ?>> parseStringToType = HashMap.of(
+  private static final Map<Class<?>, InputParser<? super String, ?>> parseStringToType = HashMap.of(
     Id.class, Id::resultOf,
     Email.class, Email::resultOf,
     Name.class, Name::resultOf,
     Picture.class, Picture::resultOf,
-    RoundNumber.class, RoundNumber::resultOf
+    RoundNumber.class, RoundNumber::resultOf,
+    Integer.class, DomainObjectInput::resultOfInt
   );
   private static final Map<Class<?>, InputParser<Map<String, String>, ?>> parserMapToType = HashMap.of(
     CardPoints.class, CardPoints::resultOfRaw
@@ -64,6 +67,22 @@ public class DomainObjectInput {
         .map(domainType::cast);
     } else {
       throw Defect.of(format("Cannot parse %s. Unsupported domain type.", domainType.getName()));
+    }
+  }
+
+  private static Either<Seq<ValidationError>, Integer> resultOfInt(String literal) {
+    Try<Integer> tryParseInt = Try.of(() -> Integer.parseInt(literal));
+    if (tryParseInt.isFailure()) {
+      ValidationError stringNotParsableToInt = ValidationError.of(
+        ValidationError.Origin.CLIENT,
+        "literal must be parsable to String",
+        literal,
+        HashSet.of(ValidationError.Claim.CAN_BE_DISPLAYED)
+      );
+      return Either.left(
+        List.of(stringNotParsableToInt));
+    } else {
+      return Either.right(tryParseInt.get());
     }
   }
 }

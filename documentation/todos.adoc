@@ -2,13 +2,6 @@
 
 === Current task
 
-* Provide Implementation of UpdateCardPointsOfRoundFake
-** Implement Endpoint Input
-** Implement Endpoint Output
-** Implement Endpoint(s)
-
-=== Open
-
 * Provide Implementation of FinishRoundFake
 ** Implement Domain Operation
 ** Implement Domain Operation in Repository
@@ -18,6 +11,9 @@
 ** Implement Endpoint Input
 ** Implement Endpoint Output
 ** Implement Endpoint(s)
+
+=== Open
+
 * Provide Implementation of UpdateRoundFake
 ** Implement Domain Operation
 ** Implement Domain Operation in Repository

@@ -78,19 +78,19 @@ public class IntendedCardPointsUpdate {
       this.workpiece = workpiece;
     }
 
-    Builder withGameId(Id gameId) {
+    public Builder withGameId(Id gameId) {
       return new Builder(workpiece.copied(but -> but.gameId = gameId));
     }
 
-    Builder withTeamId(Id teamId) {
+    public Builder withTeamId(Id teamId) {
       return new Builder(workpiece.copied(but -> but.teamId = teamId));
     }
 
-    Builder withRoundNumber(RoundNumber roundNumber) {
+    public Builder withRoundNumber(RoundNumber roundNumber) {
       return new Builder(workpiece.copied(but -> but.roundNumber = roundNumber));
     }
 
-    Builder withCardPoints(int cardPoints) {
+    public Builder withCardPoints(int cardPoints) {
       return new Builder(workpiece.copied(but -> but.cardPoints = cardPoints));
     }
 

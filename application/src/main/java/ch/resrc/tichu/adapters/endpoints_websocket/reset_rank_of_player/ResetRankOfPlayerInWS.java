@@ -1,5 +1,6 @@
 package ch.resrc.tichu.adapters.endpoints_websocket.reset_rank_of_player;
 
+import ch.resrc.tichu.adapters.endpoints_websocket.WebSocketAddresses;
 import ch.resrc.tichu.adapters.endpoints_websocket.reset_rank_of_player.input.ResetRankOfPlayerWebSocketInput;
 import ch.resrc.tichu.adapters.endpoints_websocket.reset_rank_of_player.output.ResetRankOfPlayerWebSocketOutput;
 import ch.resrc.tichu.capabilities.json.Json;
@@ -13,8 +14,10 @@ import javax.websocket.OnClose;
 import javax.websocket.OnMessage;
 import javax.websocket.OnOpen;
 import javax.websocket.Session;
+import javax.websocket.server.ServerEndpoint;
 import java.util.concurrent.atomic.AtomicReference;
 
+@ServerEndpoint(WebSocketAddresses.UseCases.Input.RESET_RANK_OF_PLAYER)
 public class ResetRankOfPlayerInWS {
 
   private static final AtomicReference<Set<Session>> SESSIONS_REF = new AtomicReference<>(HashSet.empty());

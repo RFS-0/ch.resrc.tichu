@@ -7,7 +7,7 @@ import java.util.function.Function;
 
 public final class DomainValidationErrors {
 
-  public static <T> Function<T, ValidationError> mustNotBeNull() {
+  public static <T> Function<? super T, ? extends ValidationError> mustNotBeNull() {
     return (T toBeValidated) -> ValidationError.of(
       ValidationError.Origin.DOMAIN,
       "domain attribute must not be null",
