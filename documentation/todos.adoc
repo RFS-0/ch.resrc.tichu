@@ -2,7 +2,7 @@
 
 === Current task
 
-* Provide Implementation of FinishRoundFake
+* Provide Implementation of UpdateRoundFake
 ** Implement Domain Operation
 ** Implement Domain Operation in Repository
 ** Implement Use Case Input
@@ -14,15 +14,6 @@
 
 === Open
 
-* Provide Implementation of UpdateRoundFake
-** Implement Domain Operation
-** Implement Domain Operation in Repository
-** Implement Use Case Input
-** Implement Use Case Output
-** Implement Use Case
-** Implement Endpoint Input
-** Implement Endpoint Output
-** Implement Endpoint(s)
 * Provide Implementation of FinishGameFake
 ** Implement Domain Operation
 ** Implement Domain Operation in Repository

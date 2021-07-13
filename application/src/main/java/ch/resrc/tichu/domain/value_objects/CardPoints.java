@@ -1,5 +1,7 @@
 package ch.resrc.tichu.domain.value_objects;
 
+import ch.resrc.tichu.capabilities.errorhandling.DomainProblem;
+import ch.resrc.tichu.capabilities.errorhandling.DomainProblemDetected;
 import ch.resrc.tichu.capabilities.validation.Validation;
 import ch.resrc.tichu.capabilities.validation.ValidationError;
 import io.vavr.Tuple;
@@ -34,6 +36,10 @@ public class CardPoints {
       attribute(x -> x.values().toList().sorted(), allMax(125, errorDetails("the total of card points of a team can not be larger than 125"))),
       attribute(x -> x.values().sum(), equalTo(100, errorDetails("the sum of card points must be equal to 100")))
     );
+  }
+
+  Integer ofTeam(Id teamId) {
+    return values.get(teamId).getOrElseThrow(() -> DomainProblemDetected.of(DomainProblem.INVARIANT_VIOLATED));
   }
 
   public static Either<Seq<ValidationError>, CardPoints> resultOfRaw(Map<String, String> rawCardPoints) {

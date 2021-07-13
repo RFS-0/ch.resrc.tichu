@@ -4,6 +4,9 @@ import ch.resrc.tichu.capabilities.validation.Validation;
 import ch.resrc.tichu.capabilities.validation.ValidationError;
 import ch.resrc.tichu.domain.value_objects.Id;
 import ch.resrc.tichu.domain.value_objects.Name;
+import io.vavr.Tuple;
+import io.vavr.Tuple2;
+import io.vavr.collection.List;
 import io.vavr.collection.Seq;
 import io.vavr.control.Either;
 
@@ -77,6 +80,14 @@ public class Team {
 
   public Team butSecondPlayer(Player secondPlayer) {
     return copied(team -> team.secondPlayer = secondPlayer);
+  }
+
+  public Tuple2<Player, Player> players() {
+    return Tuple.of(firstPlayer, secondPlayer);
+  }
+
+  public Seq<Id> playerIds() {
+    return List.of(firstPlayer.id(), secondPlayer.id());
   }
 
   @Override

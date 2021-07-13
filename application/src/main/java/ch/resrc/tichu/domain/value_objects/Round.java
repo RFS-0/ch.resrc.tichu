@@ -1,7 +1,11 @@
 package ch.resrc.tichu.domain.value_objects;
 
+import ch.resrc.tichu.capabilities.errorhandling.DomainProblem;
+import ch.resrc.tichu.capabilities.errorhandling.DomainProblemDetected;
 import ch.resrc.tichu.capabilities.validation.Validation;
 import ch.resrc.tichu.capabilities.validation.ValidationError;
+import io.vavr.Tuple;
+import io.vavr.collection.Map;
 import io.vavr.collection.Seq;
 import io.vavr.control.Either;
 
@@ -17,7 +21,7 @@ public class Round {
   private final RoundNumber roundNumber;
   private CardPoints cardPoints;
   private Ranks ranks;
-  private final Tichus tichus;
+  private Tichus tichus;
 
   private Round(RoundNumber roundNumber, CardPoints cardPoints, Ranks ranks, Tichus tichus) {
     this.roundNumber = roundNumber;
@@ -52,12 +56,44 @@ public class Round {
     return validation().applyTo(new Round(roundNumber, cardPoints, ranks, tichus));
   }
 
+  public boolean match(Id firstPlayer, Id secondPlayer) {
+    return ranks.values()
+      .filter((playerId, rank) -> playerId.equals(firstPlayer) || playerId.equals(secondPlayer))
+      .map((idAndRank) -> idAndRank._2)
+      .sum().intValue() == 3;
+  }
+
+  public int totalPoints(Id teamId, Id firstPlayer, Id secondPlayer) {
+    return cardPoints(teamId)
+      + matchPoints(firstPlayer, secondPlayer)
+      + tichuPoints(firstPlayer)
+      + tichuPoints(secondPlayer);
+  }
+
+  private int cardPoints(Id team) {
+    return cardPoints.ofTeam(team);
+  }
+
+  private int matchPoints(Id firstPlayer, Id secondPlayer) {
+    return match(firstPlayer, secondPlayer) ? 100 : 0;
+  }
+
+  private int tichuPoints(Id playerId) {
+    return tichus.values().get(playerId)
+      .map(Tichu::value)
+      .getOrElseThrow(() -> DomainProblemDetected.of(DomainProblem.INVARIANT_VIOLATED));
+  }
+
   public RoundNumber roundNumber() {
     return roundNumber;
   }
 
   public CardPoints cardPoints() {
     return cardPoints;
+  }
+
+  public Round butCardPoints(CardPoints cardPoints) {
+    return copied(but -> but.cardPoints = cardPoints);
   }
 
   public Ranks ranks() {
@@ -68,12 +104,48 @@ public class Round {
     return copied(but -> but.ranks = ranks);
   }
 
-  public Round butCardPoints(CardPoints cardPoints) {
-    return copied(but -> but.cardPoints = cardPoints);
-  }
-
   public Tichus tichus() {
     return tichus;
+  }
+
+  public Round butTichus(Tichus tichus) {
+    return copied(but -> but.tichus = tichus);
+  }
+
+  public Round finish() {
+    Tichus evaluatedTichus = evaluateTichus();
+    return butTichus(evaluatedTichus);
+  }
+
+  private Tichus evaluateTichus() {
+    Map<Id, Tichu> evaluatedTichus = tichus.values()
+      .map((playerId, tichu) -> {
+        Boolean firstPlace = ranks.values()
+          .get(playerId)
+          .map(rank -> rank <= 1)
+          .getOrElseThrow(() -> DomainProblemDetected.of(DomainProblem.INVARIANT_VIOLATED));
+
+        Tichu evaluatedTichu = switch (tichu) {
+          case TICHU_CALLED -> {
+            if (firstPlace) {
+              yield Tichu.TICHU_SUCCEEDED;
+            } else {
+              yield Tichu.TICHU_FAILED;
+            }
+          }
+          case GRAND_TICHU_CALLED -> {
+            if (firstPlace) {
+              yield Tichu.GRAND_TICHU_SUCCEEDED;
+            } else {
+              yield Tichu.GRAND_TICHU_FAILED;
+            }
+          }
+          default -> Tichu.NONE;
+        };
+        return Tuple.of(playerId, evaluatedTichu);
+      });
+    return Tichus.resultOf(evaluatedTichus)
+      .getOrElseThrow(() -> DomainProblemDetected.of(DomainProblem.INVARIANT_VIOLATED));
   }
 
   @Override

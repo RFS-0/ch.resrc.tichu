@@ -31,6 +31,10 @@ public class RoundNumber {
     return validation().applyTo(Integer.parseInt(value)).map(RoundNumber::new);
   }
 
+  public RoundNumber increment() {
+    return new RoundNumber(value + 1);
+  }
+
   public int value() {
     return value;
   }

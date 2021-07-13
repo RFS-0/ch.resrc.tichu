@@ -16,6 +16,8 @@ import ch.resrc.tichu.use_cases.add_second_player_to_team.AddSecondPlayerToTeamU
 import ch.resrc.tichu.use_cases.add_second_player_to_team.ports.input.AddSecondPlayerToTeamInput;
 import ch.resrc.tichu.use_cases.create_a_game.CreateGameUseCase;
 import ch.resrc.tichu.use_cases.find_or_create_user.FindOrCreateUserUseCase;
+import ch.resrc.tichu.use_cases.finish_round.FinishRoundUseCase;
+import ch.resrc.tichu.use_cases.finish_round.ports.input.FinishRoundInput;
 import ch.resrc.tichu.use_cases.remove_first_player_from_team.RemoveFirstPlayerFromTeamUseCase;
 import ch.resrc.tichu.use_cases.remove_first_player_from_team.ports.input.RemoveFirstPlayerFromTeamInput;
 import ch.resrc.tichu.use_cases.remove_second_player_from_team.RemoveSecondPlayerFromTeamUseCase;
@@ -23,7 +25,7 @@ import ch.resrc.tichu.use_cases.remove_second_player_from_team.ports.input.Remov
 import ch.resrc.tichu.use_cases.reset_rank_of_player.ports.ResetRankOfPlayerUseCase;
 import ch.resrc.tichu.use_cases.reset_rank_of_player.ports.input.ResetRankOfPlayerInput;
 import ch.resrc.tichu.use_cases.update_a_team_name.UpdateTeamNameUseCase;
-import ch.resrc.tichu.use_cases.update_card_points_of_round.ports.UpdateCardPointsOfRoundUseCase;
+import ch.resrc.tichu.use_cases.update_card_points_of_round.UpdateCardPointsOfRoundUseCase;
 import ch.resrc.tichu.use_cases.update_card_points_of_round.ports.input.UpdateCardPointsOfRoundInput;
 import ch.resrc.tichu.use_cases.update_rank_of_player.UpdateRankOfPlayerUseCase;
 import ch.resrc.tichu.use_cases.update_rank_of_player.ports.input.UpdateRankOfPlayerInput;
@@ -159,6 +161,15 @@ public final class UseCasePortsConfiguration {
   public UpdateCardPointsOfRoundInput updateCardPointsOfRoundInput(GetAllGames getAllGames,
                                                                    UpdateGame updateGame) {
     return new UpdateCardPointsOfRoundUseCase(
+      getAllGames,
+      updateGame
+    );
+  }
+
+  @ApplicationScoped
+  public FinishRoundInput finishRoundInput(GetAllGames getAllGames,
+                                           UpdateGame updateGame) {
+    return new FinishRoundUseCase(
       getAllGames,
       updateGame
     );

@@ -1,4 +1,4 @@
-package ch.resrc.tichu.use_cases.update_card_points_of_round.ports;
+package ch.resrc.tichu.use_cases.update_card_points_of_round;
 
 import ch.resrc.tichu.domain.entities.Game;
 import ch.resrc.tichu.domain.entities.Team;
