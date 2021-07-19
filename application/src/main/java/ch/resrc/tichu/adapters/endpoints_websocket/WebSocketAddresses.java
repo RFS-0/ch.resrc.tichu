@@ -15,6 +15,7 @@ public final class WebSocketAddresses {
       public static final String RESET_RANK_OF_PLAYER = "/events/games/input/reset-rank-of-player/{receiverId}";
       public static final String UPDATE_CARD_POINTS_OF_ROUND = "/events/games/update-card-points-of-round/{receiverId}";
       public static final String UPDATE_RANK_OF_PLAYER = "/events/games/update-rank-of-player/{receiverId}";
+      public static final String UPDATE_ROUND = "/events/games/input/update-round/{receiverId}";
       public static final String UPDATE_TEAM_NAME = "/events/games/update-team-name/{receiverId}";
     }
 
@@ -29,6 +30,7 @@ public final class WebSocketAddresses {
       public static final String RESET_RANK_OF_PLAYER = "/events/games/output/reset-rank-of-player/{receiverId}";
       public static final String UPDATE_CARD_POINTS_OF_ROUND = "/events/games/updated-card-points-of-round/{receiverId}";
       public static final String UPDATE_RANK_OF_PLAYER = "/events/games/updated-rank-of-player/{receiverId}";
+      public static final String UPDATE_ROUND = "/events/games/output/update-round/{receiverId}";
       public static final String UPDATE_TEAM_NAME = "/events/games/updated-team-name/{receiverId}";
     }
   }

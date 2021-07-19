@@ -1,6 +1,6 @@
 package ch.resrc.tichu.adapters.endpoints_websocket.finish_round.input;
 
-import ch.resrc.tichu.adapters.endpoints_websocket.update_card_points_of_round.dto.IntendedCardPointsUpdateDto;
+import ch.resrc.tichu.adapters.endpoints_websocket.finish_round.dto.IntendedRoundFinishDto;
 import ch.resrc.tichu.capabilities.json.Json;
 import ch.resrc.tichu.capabilities.validation.InvalidInputDetected;
 import ch.resrc.tichu.capabilities.validation.ValidationError;
@@ -16,14 +16,14 @@ import static ch.resrc.tichu.use_cases.finish_round.ports.input.IntendedRoundFin
 
 public class FinishRoundWebSocketInput {
 
-  private final IntendedRoundFinish intendedRoundFinishDto;
+  private final IntendedRoundFinish intendedRoundFinish;
 
   public FinishRoundWebSocketInput(Json json, String message) {
-    IntendedCardPointsUpdateDto intent = json.parse(message, IntendedCardPointsUpdateDto.class);
-    this.intendedRoundFinishDto = validatedIntendedRoundFinish(intent).getOrElseThrow(InvalidInputDetected::of);
+    final var intent = json.parse(message, IntendedRoundFinishDto.class);
+    this.intendedRoundFinish = validatedIntendedRoundFinish(intent).getOrElseThrow(InvalidInputDetected::of);
   }
 
-  private Either<Seq<ValidationError>, IntendedRoundFinish> validatedIntendedRoundFinish(IntendedCardPointsUpdateDto dto) {
+  private Either<Seq<ValidationError>, IntendedRoundFinish> validatedIntendedRoundFinish(IntendedRoundFinishDto dto) {
     return anIntendedRoundFinish()
       .withGameId(parse(Id.class, dto.gameId))
       .withRoundNumber(parse(RoundNumber.class, dto.roundNumber))
@@ -31,6 +31,6 @@ public class FinishRoundWebSocketInput {
   }
 
   public FinishRoundInput.Request request() {
-    return new FinishRoundInput.Request(intendedRoundFinishDto);
+    return new FinishRoundInput.Request(intendedRoundFinish);
   }
 }

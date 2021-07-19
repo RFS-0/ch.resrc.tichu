@@ -29,6 +29,8 @@ import ch.resrc.tichu.use_cases.update_card_points_of_round.UpdateCardPointsOfRo
 import ch.resrc.tichu.use_cases.update_card_points_of_round.ports.input.UpdateCardPointsOfRoundInput;
 import ch.resrc.tichu.use_cases.update_rank_of_player.UpdateRankOfPlayerUseCase;
 import ch.resrc.tichu.use_cases.update_rank_of_player.ports.input.UpdateRankOfPlayerInput;
+import ch.resrc.tichu.use_cases.update_round.UpdateRoundUseCase;
+import ch.resrc.tichu.use_cases.update_round.ports.input.UpdateRoundInput;
 
 import javax.enterprise.context.ApplicationScoped;
 
@@ -170,6 +172,15 @@ public final class UseCasePortsConfiguration {
   public FinishRoundInput finishRoundInput(GetAllGames getAllGames,
                                            UpdateGame updateGame) {
     return new FinishRoundUseCase(
+      getAllGames,
+      updateGame
+    );
+  }
+
+  @ApplicationScoped
+  public UpdateRoundInput updateRoundInput(GetAllGames getAllGames,
+                                           UpdateGame updateGame) {
+    return new UpdateRoundUseCase(
       getAllGames,
       updateGame
     );
