@@ -13,3 +13,5 @@
 ** Implement Endpoint(s)
 
 === Open
+
+* Merge all websocket endpoints into one single endpoint

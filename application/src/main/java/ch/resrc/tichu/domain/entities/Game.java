@@ -166,6 +166,10 @@ public class Game {
     return createdAt;
   }
 
+  public Game butFinishedAt(Instant finishedAt) {
+    return copied(game -> game.finishedAt = finishedAt);
+  }
+
   public Instant finishedAt() {
     return finishedAt;
   }

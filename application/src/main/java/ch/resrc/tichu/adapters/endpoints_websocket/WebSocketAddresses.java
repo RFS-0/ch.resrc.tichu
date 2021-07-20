@@ -9,6 +9,7 @@ public final class WebSocketAddresses {
       public static final String ADD_SECOND_PLAYER_TO_TEAM = "/events/teams/add-second-player-to-team";
       public static final String CREATE_A_GAME = "/events/games/create";
       public static final String FIND_BY_ID = "/events/teams/find-by-id";
+      public static final String FINISH_GAME = "/events/games/input/finish-game/{receiverId}";
       public static final String FINISH_ROUND = "/events/games/input/finish-round/{receiverId}";
       public static final String REMOVE_FIRST_PLAYER_FROM_TEAM = "/events/teams/remove-first-player-from-team";
       public static final String REMOVE_SECOND_PLAYER_FROM_TEAM = "/events/teams/remove-second-player-from-team";
@@ -24,6 +25,7 @@ public final class WebSocketAddresses {
       public static final String ADD_SECOND_PLAYER_TO_TEAM = "/events/teams/added-second-player-to-team/{receiverId}";
       public static final String CREATE_A_GAME = "/events/games/created/{receiverId}";
       public static final String FIND_BY_ID = "/events/teams/found/{receiverId}";
+      public static final String FINISH_GAME = "/events/games/output/finish-game/{receiverId}";
       public static final String FINISH_ROUND = "/events/games/output/finish-round/{receiverId}";
       public static final String REMOVE_FIRST_PLAYER_FROM_TEAM = "/events/teams/removed-first-player-from-team/{receiverId}";
       public static final String REMOVE_SECOND_PLAYER_FROM_TEAM = "/events/teams/removed-second-player-from-team/{receiverId}";

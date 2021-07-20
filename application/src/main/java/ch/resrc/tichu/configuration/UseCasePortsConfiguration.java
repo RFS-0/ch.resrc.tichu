@@ -16,6 +16,8 @@ import ch.resrc.tichu.use_cases.add_second_player_to_team.AddSecondPlayerToTeamU
 import ch.resrc.tichu.use_cases.add_second_player_to_team.ports.input.AddSecondPlayerToTeamInput;
 import ch.resrc.tichu.use_cases.create_a_game.CreateGameUseCase;
 import ch.resrc.tichu.use_cases.find_or_create_user.FindOrCreateUserUseCase;
+import ch.resrc.tichu.use_cases.finish_game.FinishGameUseCase;
+import ch.resrc.tichu.use_cases.finish_game.ports.input.FinishGameInput;
 import ch.resrc.tichu.use_cases.finish_round.FinishRoundUseCase;
 import ch.resrc.tichu.use_cases.finish_round.ports.input.FinishRoundInput;
 import ch.resrc.tichu.use_cases.remove_first_player_from_team.RemoveFirstPlayerFromTeamUseCase;
@@ -181,6 +183,15 @@ public final class UseCasePortsConfiguration {
   public UpdateRoundInput updateRoundInput(GetAllGames getAllGames,
                                            UpdateGame updateGame) {
     return new UpdateRoundUseCase(
+      getAllGames,
+      updateGame
+    );
+  }
+
+  @ApplicationScoped
+  public FinishGameInput finishGameInput(GetAllGames getAllGames,
+                                         UpdateGame updateGame) {
+    return new FinishGameUseCase(
       getAllGames,
       updateGame
     );
