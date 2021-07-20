@@ -2,16 +2,45 @@
 
 === Current task
 
-* Provide Implementation of FinishGameFake
-** Implement Domain Operation
-** Implement Domain Operation in Repository
-** Implement Use Case Input
-** Implement Use Case Output
-** Implement Use Case
-** Implement Endpoint Input
-** Implement Endpoint Output
-** Implement Endpoint(s)
+* Improve handling of failures in use cases
+* Implement use case tests
+** AddFirstPlayerToTeamUseCase
 
 === Open
 
+* Implement use case tests
+** AddFirstPlayerToTeamUseCase
+** AddSecondPlayerToTeamUseCase
+** FinishGameUseCase
+** FinishRoundUseCase
+** RemoveFirstPlayerFromTeamUseCase
+** RemoveSecondPlayerFromTeamUseCase
+** ResetRankOfPlayerUseCase
+** UpdateTeamNameUseCase
+** UpdateCardPointsOfRoundUseCase
+** UpdateRankOfPlayerUseCase
+** UpdateRoundUseCase
+* Implement web socket adapter tests
+** AddFirstPlayerToTeamWS
+** AddSecondPlayerToTeamWS
+** FinishGameWS
+** FinishRoundWS
+** RemoveFirstPlayerFromTeamWS
+** RemoveSecondPlayerFromTeamWS
+** ResetRankOfPlayerWS
+** UpdateTeamNameWS
+** UpdateCardPointsOfRoundWS
+** UpdateRankOfPlayerWS
+** UpdateRoundWS
+* Replace web socket fakes with real endpoints
+** UpdateTeamNameFake
+** RemoveFirstPlayerFromTeamFake
+** AddSecondPlayerToTeamFake
+** RemoveSecondPlayerFromTeamFake
+** UpdateRankOfPlayerFake
+** ResetRankOfPlayerFake
+** UpdateCardPointsOfRoundFake
+** FinishRoundFake
+** UpdateRoundFake
+** FinishGameFake
 * Merge all websocket endpoints into one single endpoint
