@@ -9,5 +9,12 @@ pluginManagement {
     }
 }
 
-include 'documentation'
 include 'application'
+include 'capabilities'
+include 'documentation'
+include 'products'
+include 'products:quarkus-app'
+include 'products:quarkus-app-config'
+include 'domain'
+include 'use-cases'
+
