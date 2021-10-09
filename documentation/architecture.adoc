@@ -1,5 +1,52 @@
 == Architecture
 
-TBD
+[graphviz,modules,svg]
+....
+digraph modules {
+    rankdir = BT;
+
+    Capabilities
+    Domain
+    "Test Capabilities"
+    "Use Cases"
+    "In-Memory Database Adapter"
+    "DynamoDB Adapter"
+    "In-Memory MQ Adapter"
+    "RabbitMQ Adapter"
+    "Quarkus App Config"
+    "Spring App Config"
+    "Vue App Config"
+    "Angular App Config"
+    "Quarkus App"
+    "Spring App"
+    "Vue App"
+    "Angular App"
+
+    Domain -> Capabilities
+    "Test Capabilities" -> Capabilities
+    "Use Cases" -> Capabilities
+    "Use Cases" -> Domain
+    "Vue App Config" -> Domain
+    "Angular App Config" -> Domain
+    "Test Capabilities" -> "Use Cases"
+    "DynamoDB Adapter" -> "Use Cases"
+    "RabbitMQ Adapter" -> "Use Cases"
+    "Quarkus App Config" -> "Use Cases"
+    "Vue App Config" -> "Use Cases"
+    "Angular App Config" -> "Use Cases"
+    "In-Memory Database Adapter" -> "Test Capabilities"
+    "In-Memory MQ Adapter" -> "Test Capabilities"
+    "Quarkus App Config" -> "In-Memory Database Adapter"
+    "Quarkus App Config" -> "DynamoDB Adapter"
+    "Quarkus App Config" -> "In-Memory MQ Adapter"
+    "Quarkus App Config" -> "RabbitMQ Adapter"
+    "Spring App Config" -> "In-Memory Database Adapter"
+    "Spring App Config" -> "In-Memory MQ Adapter"
+    "Quarkus App" -> "Quarkus App Config"
+    "Spring App" -> "Spring App Config"
+    "Vue App" -> "Vue App Config"
+    "Angular App" -> "Angular App Config"
+}
+....
 
 ---
