@@ -48,6 +48,7 @@ public class DomainObjectInput {
     }
   }
 
+  @SuppressWarnings("unchecked")
   public static <T> Either<Seq<ValidationError>, T> parsingResult(Class<T> domainType, Input<?> input) {
     if (!input.isPresent()) {
       return Either.left(List.of(DomainValidationErrors.errorDetails("must be defined").apply(input)));
