@@ -1,7 +1,7 @@
 package ch.resrc.tichu.use_cases.remove_second_player_from_team.ports.output;
 
 import ch.resrc.tichu.use_cases.UseCaseOutput;
-import ch.resrc.tichu.use_cases.create_a_game.ports.output.GameDocument;
+import ch.resrc.tichu.use_cases.common.output.GameDocument;
 
 @FunctionalInterface
 public interface RemoveSecondPlayerFromTeamOutput {

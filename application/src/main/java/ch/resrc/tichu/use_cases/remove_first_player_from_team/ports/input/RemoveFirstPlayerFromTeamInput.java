@@ -1,7 +1,7 @@
 package ch.resrc.tichu.use_cases.remove_first_player_from_team.ports.input;
 
 import ch.resrc.tichu.use_cases.UseCaseInput;
-import ch.resrc.tichu.use_cases.common_ports.input.IntendedPlayerRemoval;
+import ch.resrc.tichu.use_cases.common.input.IntendedPlayerRemoval;
 import ch.resrc.tichu.use_cases.remove_first_player_from_team.ports.output.RemoveFirstPlayerFromTeamOutput;
 
 @FunctionalInterface

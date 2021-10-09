@@ -1,8 +1,6 @@
 package ch.resrc.tichu.use_cases.find_or_create_user.ports.output;
 
-import ch.resrc.tichu.capabilities.errorhandling.DomainProblem;
-import ch.resrc.tichu.capabilities.errorhandling.ProblemDetected;
-import ch.resrc.tichu.capabilities.errorhandling.ProblemDiagnosis;
+import ch.resrc.tichu.capabilities.validation.InvalidInputDetected;
 import ch.resrc.tichu.capabilities.validation.Validation;
 import ch.resrc.tichu.capabilities.validation.ValidationError;
 import ch.resrc.tichu.domain.entities.User;
@@ -129,7 +127,7 @@ public class UserDocument {
     }
 
     UserDocument build() {
-      return buildResult().getOrElseThrow(() -> ProblemDetected.of(ProblemDiagnosis.of(DomainProblem.INVARIANT_VIOLATED)));
+      return buildResult().getOrElseThrow(InvalidInputDetected::of);
     }
   }
 }

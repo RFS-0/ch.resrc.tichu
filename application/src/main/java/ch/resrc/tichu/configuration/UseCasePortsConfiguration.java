@@ -1,23 +1,30 @@
 package ch.resrc.tichu.configuration;
 
-import ch.resrc.tichu.domain.operations.AddGame;
 import ch.resrc.tichu.domain.operations.AddPlayer;
-import ch.resrc.tichu.domain.operations.AddTeam;
 import ch.resrc.tichu.domain.operations.AddUser;
+import ch.resrc.tichu.domain.operations.FindGame;
+import ch.resrc.tichu.domain.operations.FindOrCreatePlayerForUser;
+import ch.resrc.tichu.domain.operations.FindPlayerByUserId;
+import ch.resrc.tichu.domain.operations.FindUser;
+import ch.resrc.tichu.domain.operations.FinishGame;
 import ch.resrc.tichu.domain.operations.GetAllGames;
 import ch.resrc.tichu.domain.operations.GetAllPlayers;
 import ch.resrc.tichu.domain.operations.GetAllTeams;
 import ch.resrc.tichu.domain.operations.GetAllUsers;
+import ch.resrc.tichu.domain.operations.LoadAllGames;
+import ch.resrc.tichu.domain.operations.LoadAllTeams;
+import ch.resrc.tichu.domain.operations.SaveGame;
+import ch.resrc.tichu.domain.operations.SaveTeams;
+import ch.resrc.tichu.domain.operations.UpdateFirstPlayerOfTeam;
 import ch.resrc.tichu.domain.operations.UpdateGame;
+import ch.resrc.tichu.domain.operations.UpdatePlayersOfTeam;
+import ch.resrc.tichu.domain.operations.UpdateSecondPlayerOfTeam;
 import ch.resrc.tichu.domain.operations.UpdateTeam;
-import ch.resrc.tichu.use_cases.add_first_player_to_team.AddFirstPlayerToTeamUseCase;
-import ch.resrc.tichu.use_cases.add_first_player_to_team.ports.input.AddFirstPlayerToTeamInput;
-import ch.resrc.tichu.use_cases.add_second_player_to_team.AddSecondPlayerToTeamUseCase;
-import ch.resrc.tichu.use_cases.add_second_player_to_team.ports.input.AddSecondPlayerToTeamInput;
-import ch.resrc.tichu.use_cases.create_a_game.CreateGameUseCase;
+import ch.resrc.tichu.use_cases.add_first_player_to_team.UpdateFirstPlayerOfTeamUseCase;
+import ch.resrc.tichu.use_cases.add_second_player_to_team.UpdateSecondPlayerOfTeamUseCase;
+import ch.resrc.tichu.use_cases.create_game.CreateGameUseCase;
 import ch.resrc.tichu.use_cases.find_or_create_user.FindOrCreateUserUseCase;
 import ch.resrc.tichu.use_cases.finish_game.FinishGameUseCase;
-import ch.resrc.tichu.use_cases.finish_game.ports.input.FinishGameInput;
 import ch.resrc.tichu.use_cases.finish_round.FinishRoundUseCase;
 import ch.resrc.tichu.use_cases.finish_round.ports.input.FinishRoundInput;
 import ch.resrc.tichu.use_cases.remove_first_player_from_team.RemoveFirstPlayerFromTeamUseCase;
@@ -39,21 +46,19 @@ import javax.enterprise.context.ApplicationScoped;
 public final class UseCasePortsConfiguration {
 
   @ApplicationScoped
-  public CreateGameUseCase createGame(GetAllGames getAllGames,
-                                      AddGame addGame,
-                                      GetAllTeams getAllTeams,
-                                      AddTeam addTeam,
-                                      GetAllPlayers getAllPlayers,
-                                      AddPlayer addPlayer,
-                                      GetAllUsers getAllUsers) {
+  public CreateGameUseCase createGame(FindPlayerByUserId findPlayerByUserId,
+                                      LoadAllTeams loadAllTeams,
+                                      SaveTeams saveTeams,
+                                      LoadAllGames loadAllGames,
+                                      FindUser findUser,
+                                      SaveGame saveGame) {
     return new CreateGameUseCase(
-      getAllGames,
-      addGame,
-      getAllTeams,
-      addTeam,
-      getAllPlayers,
-      addPlayer,
-      getAllUsers
+      findPlayerByUserId,
+      loadAllTeams,
+      saveTeams,
+      loadAllGames,
+      findUser,
+      saveGame
     );
   }
 
@@ -84,36 +89,20 @@ public final class UseCasePortsConfiguration {
   }
 
   @ApplicationScoped
-  public AddFirstPlayerToTeamInput removeFirstPlayerFromTeamInput(GetAllGames getAllGames,
-                                                                  UpdateGame updateGame,
-                                                                  GetAllTeams getAllTeams,
-                                                                  UpdateTeam updateTeam,
-                                                                  GetAllPlayers getAllPlayers,
-                                                                  AddPlayer addPlayer) {
-    return new AddFirstPlayerToTeamUseCase(
-      getAllGames,
-      updateGame,
-      getAllTeams,
-      updateTeam,
-      getAllPlayers,
-      addPlayer
+  public UpdateFirstPlayerOfTeam updateFirstPlayerOfTeam(FindOrCreatePlayerForUser findOrCreatePlayerForUser,
+                                                         UpdatePlayersOfTeam updatePlayersOfTeam) {
+    return new UpdateFirstPlayerOfTeamUseCase(
+      findOrCreatePlayerForUser,
+      updatePlayersOfTeam
     );
   }
 
   @ApplicationScoped
-  public AddSecondPlayerToTeamInput addSecondPlayerToTeamInput(GetAllGames getAllGames,
-                                                               UpdateGame updateGame,
-                                                               GetAllTeams getAllTeams,
-                                                               UpdateTeam updateTeam,
-                                                               GetAllPlayers getAllPlayers,
-                                                               AddPlayer addPlayer) {
-    return new AddSecondPlayerToTeamUseCase(
-      getAllGames,
-      updateGame,
-      getAllTeams,
-      updateTeam,
-      getAllPlayers,
-      addPlayer
+  public UpdateSecondPlayerOfTeam updateSecondPlayerOfTeam(FindOrCreatePlayerForUser findOrCreatePlayerForUser,
+                                                           UpdatePlayersOfTeam updatePlayersOfTeam) {
+    return new UpdateSecondPlayerOfTeamUseCase(
+      findOrCreatePlayerForUser,
+      updatePlayersOfTeam
     );
   }
 
@@ -189,10 +178,12 @@ public final class UseCasePortsConfiguration {
   }
 
   @ApplicationScoped
-  public FinishGameInput finishGameInput(GetAllGames getAllGames,
-                                         UpdateGame updateGame) {
+  public FinishGame finishGameInput(FindGame findGame,
+                                    LoadAllGames loadAllGames,
+                                    UpdateGame updateGame) {
     return new FinishGameUseCase(
-      getAllGames,
+      findGame,
+      loadAllGames,
       updateGame
     );
   }

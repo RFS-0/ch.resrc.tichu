@@ -7,7 +7,7 @@ import ch.resrc.tichu.domain.operations.UpdateGame;
 import ch.resrc.tichu.domain.value_objects.CardPoints;
 import ch.resrc.tichu.domain.value_objects.Id;
 import ch.resrc.tichu.domain.value_objects.Round;
-import ch.resrc.tichu.use_cases.create_a_game.ports.output.GameDocument;
+import ch.resrc.tichu.use_cases.common.output.GameDocument;
 import ch.resrc.tichu.use_cases.update_card_points_of_round.ports.input.IntendedCardPointsUpdate;
 import ch.resrc.tichu.use_cases.update_card_points_of_round.ports.input.UpdateCardPointsOfRoundInput;
 import ch.resrc.tichu.use_cases.update_card_points_of_round.ports.output.UpdateCardPointsOfRoundOutput;

@@ -1,6 +1,6 @@
 package ch.resrc.tichu.capabilities.endpoints.jsonfixtures;
 
-import ch.resrc.tichu.adapters.endpoints_websocket.create_a_game.dto.IntendedGameDto;
+import ch.resrc.tichu.adapters.endpoints_websocket.input.IntendedGameDto;
 import ch.resrc.tichu.capabilities.endpoints.JsonHabits;
 
 import java.util.function.Consumer;

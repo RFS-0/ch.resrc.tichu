@@ -54,6 +54,10 @@ public class Team {
     return validation().applyTo(new Team(id));
   }
 
+  public static Team create() {
+    return new Team(Id.next());
+  }
+
   public Id id() {
     return id;
   }

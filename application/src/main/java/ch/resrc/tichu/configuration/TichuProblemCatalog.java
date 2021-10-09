@@ -6,7 +6,6 @@ import ch.resrc.tichu.capabilities.errorhandling.Problem;
 import ch.resrc.tichu.capabilities.errorhandling.ProblemCatalogue;
 import ch.resrc.tichu.capabilities.errorhandling.ProblemCode;
 import ch.resrc.tichu.capabilities.errorhandling.RestProblem;
-import ch.resrc.tichu.use_cases.capabilities.errors.UseCaseProblem;
 
 import java.util.List;
 import java.util.Map;
@@ -18,12 +17,6 @@ import static java.util.Map.entry;
 public class TichuProblemCatalog implements ProblemCatalogue {
 
   static final List<Entry<Problem, ProblemCode>> codeCatalogue = List.of(
-    entry(UseCaseProblem.INVALID_INPUT_DETECTED, code(100)),
-    entry(UseCaseProblem.EXCEPTION_LEAKED, code(101)),
-    entry(UseCaseProblem.RESOURCE_NOT_FOUND, code(102)),
-    entry(UseCaseProblem.METHOD_NOT_ALLOWED, code(103)),
-    entry(UseCaseProblem.UNAUTHENTICATED, code(104)),
-
     entry(RestProblem.HTTP_METHOD_NOT_SUPPORTED, code(200)),
     entry(RestProblem.RESOURCE_NOT_FOUND, code(201)),
     entry(RestProblem.USE_CASE_RESULT_MISSING, code(202)),

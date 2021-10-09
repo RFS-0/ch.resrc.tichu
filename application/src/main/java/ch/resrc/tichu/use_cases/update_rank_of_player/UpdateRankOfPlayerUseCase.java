@@ -5,7 +5,7 @@ import ch.resrc.tichu.domain.operations.GetAllGames;
 import ch.resrc.tichu.domain.operations.UpdateGame;
 import ch.resrc.tichu.domain.value_objects.Ranks;
 import ch.resrc.tichu.domain.value_objects.Round;
-import ch.resrc.tichu.use_cases.create_a_game.ports.output.GameDocument;
+import ch.resrc.tichu.use_cases.common.output.GameDocument;
 import ch.resrc.tichu.use_cases.update_rank_of_player.ports.input.IntendedPlayerRankUpdate;
 import ch.resrc.tichu.use_cases.update_rank_of_player.ports.input.UpdateRankOfPlayerInput;
 import ch.resrc.tichu.use_cases.update_rank_of_player.ports.output.UpdateRankOfPlayerOutput;

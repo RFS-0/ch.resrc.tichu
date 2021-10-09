@@ -1,7 +1,7 @@
 package ch.resrc.tichu.use_cases.update_a_team_name.ports.output;
 
 import ch.resrc.tichu.use_cases.UseCaseOutput;
-import ch.resrc.tichu.use_cases.create_a_game.ports.output.GameDocument;
+import ch.resrc.tichu.use_cases.common.output.GameDocument;
 
 @FunctionalInterface
 public interface UpdateTeamNameOutput extends UseCaseOutput {

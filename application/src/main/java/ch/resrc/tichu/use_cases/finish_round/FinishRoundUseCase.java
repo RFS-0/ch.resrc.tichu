@@ -4,7 +4,7 @@ import ch.resrc.tichu.domain.entities.Game;
 import ch.resrc.tichu.domain.operations.GetAllGames;
 import ch.resrc.tichu.domain.operations.UpdateGame;
 import ch.resrc.tichu.domain.value_objects.Round;
-import ch.resrc.tichu.use_cases.create_a_game.ports.output.GameDocument;
+import ch.resrc.tichu.use_cases.common.output.GameDocument;
 import ch.resrc.tichu.use_cases.finish_round.ports.input.FinishRoundInput;
 import ch.resrc.tichu.use_cases.finish_round.ports.input.IntendedRoundFinish;
 import ch.resrc.tichu.use_cases.finish_round.ports.output.FinishRoundOutput;

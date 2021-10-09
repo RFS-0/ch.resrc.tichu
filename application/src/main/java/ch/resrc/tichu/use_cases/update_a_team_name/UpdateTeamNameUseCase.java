@@ -6,7 +6,7 @@ import ch.resrc.tichu.domain.operations.GetAllGames;
 import ch.resrc.tichu.domain.operations.GetAllTeams;
 import ch.resrc.tichu.domain.operations.UpdateGame;
 import ch.resrc.tichu.domain.operations.UpdateTeam;
-import ch.resrc.tichu.use_cases.create_a_game.ports.output.GameDocument;
+import ch.resrc.tichu.use_cases.common.output.GameDocument;
 import ch.resrc.tichu.use_cases.update_a_team_name.ports.input.IntendedTeamName;
 import ch.resrc.tichu.use_cases.update_a_team_name.ports.input.UpdateTeamNameInput;
 import ch.resrc.tichu.use_cases.update_a_team_name.ports.output.UpdateTeamNameOutput;
@@ -25,7 +25,10 @@ public class UpdateTeamNameUseCase implements UpdateTeamNameInput {
   private final GetAllTeams getAllTeams;
   private final UpdateTeam updateTeam;
 
-  public UpdateTeamNameUseCase(GetAllGames getAllGames, UpdateGame updateGame, GetAllTeams getAllTeams, UpdateTeam updateTeam) {
+  public UpdateTeamNameUseCase(GetAllGames getAllGames,
+                               UpdateGame updateGame,
+                               GetAllTeams getAllTeams,
+                               UpdateTeam updateTeam) {
     this.getAllGames = getAllGames;
     this.updateGame = updateGame;
     this.getAllTeams = getAllTeams;

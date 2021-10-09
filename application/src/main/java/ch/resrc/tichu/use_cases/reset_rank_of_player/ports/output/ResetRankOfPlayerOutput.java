@@ -1,7 +1,7 @@
 package ch.resrc.tichu.use_cases.reset_rank_of_player.ports.output;
 
 import ch.resrc.tichu.use_cases.UseCaseOutput;
-import ch.resrc.tichu.use_cases.create_a_game.ports.output.GameDocument;
+import ch.resrc.tichu.use_cases.common.output.GameDocument;
 
 @FunctionalInterface
 public interface ResetRankOfPlayerOutput {
