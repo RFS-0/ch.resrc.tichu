@@ -1,5 +1,5 @@
 <template>
-  <div class="container--column text--lg" @click="addUser">
+  <div class="container--column text--lg" @click="saveUser">
     <player-avatar class="button--lg"/>
     &checkmark;
   </div>
@@ -48,13 +48,13 @@ export default class AddUser extends Vue {
     return this.game.value.teamById(this.teamId);
   }
 
-  addUser() {
+  saveUser() {
     if (isNone(this.user)) {
-      throw Error("Invariant violated: Cannot add non existing user to team");
+      throw Error('Invariant violated: Cannot add non existing user to team');
     }
     const userId = this.user.value.id;
     const userName = this.user.value.name.toUpperCase();
-    if (this.position === "add-first-player") {
+    if (this.position === 'add-first-player') {
       this.endpoints.addFirstPlayerToTeam.send(
         AddPlayerEvent.ofUser(this.game.value.id, this.teamId, userId, userName),
       ).subscribe(
