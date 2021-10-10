@@ -26,6 +26,7 @@ digraph modules {
     "Test Capabilities" -> Capabilities
     "Use Cases" -> Capabilities
     "Use Cases" -> Domain
+    "Test Capabilities" -> Domain
     "Vue App Config" -> Domain
     "Angular App Config" -> Domain
     "Test Capabilities" -> "Use Cases"

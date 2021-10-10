@@ -1,8 +1,17 @@
 plugins {
     id 'java'
+    id "io.spring.dependency-management" version "1.0.5.RELEASE" apply false
 }
 
 allprojects {
+
+    repositories {
+        mavenCentral()
+    }
+
+    ext {
+        springBootVersion = '2.3.3.RELEASE'
+    }
 
     group "${group}"
     version "${version}"
@@ -23,5 +32,95 @@ allprojects {
 
     test {
         systemProperty "java.util.logging.manager", "org.jboss.logmanager.LogManager"
+    }
+}
+
+subprojects {
+    apply plugin: 'java-library'
+    apply plugin: 'idea'
+    apply plugin: 'io.spring.dependency-management'
+
+    // Override the Groovy version from Spring Boot.
+    def groovy_version = '3.0.4'
+    ext['groovy.version'] = groovy_version
+
+    dependencyManagement {
+        imports {
+            // If Spring Boot is used in one of the concrete applications, ensure that libraries used by non-Spring modules
+            // of this project match the Spring Boot version. This is particularly important for the io.projectreactor
+            // library if Spring Webflux is used in the application.
+            mavenBom "org.springframework.boot:spring-boot-dependencies:${springBootVersion}"
+        }
+
+        dependencies {
+            dependency 'javax.persistence:javax.persistence-api:2.2'
+            dependency 'org.hibernate.javax.persistence:hibernate-jpa-2.1-api:1.0.0.Final'
+            dependency 'org.springframework.security.oauth:spring-security-oauth2:2.1.1.RELEASE'
+
+            // Bean validation:
+            dependency 'org.hibernate.validator:hibernate-validator:6.0.10.Final'
+            dependency 'org.hibernate.validator:hibernate-validator-annotation-processor:6.0.10.Final'
+            dependency 'javax.el:javax.el-api:3.0.0'
+            dependency 'org.glassfish.web:javax.el:2.2.6'
+
+            dependency 'org.flywaydb:flyway-core:5.2.1'
+
+            // Override version that is introduced by RestAssured.
+            // The RestAssured version produces errors in Gradle builds.
+            dependency 'com.sun.xml.bind:jaxb-osgi:3.0.0-M3'
+            dependency 'javax.xml.bind:jaxb-api:2.3.0'
+
+            dependency 'io.jsonwebtoken:jjwt:0.9.0'
+            dependency 'org.owasp.encoder:encoder:1.2.1'
+
+            dependency 'junit:junit:4.12'
+            dependency 'org.junit.jupiter:junit-jupiter:5.5.2'
+
+            dependency 'com.tngtech.archunit:archunit:0.14.1'
+            dependency 'com.tngtech.archunit:archunit-junit5:0.14.1'
+
+            dependency "org.codehaus.groovy:groovy-all:${groovy_version}"
+            dependency 'org.spockframework:spock-core:2.0-M2-groovy-3.0'
+            dependency 'net.bytebuddy:byte-buddy:1.8.21'  // allows mocking of classes (in addition to interfaces)
+            dependency 'org.objenesis:objenesis:2.6'
+            // allows mocking of classes without default constructor (together with CGLIB)
+
+            //dependency 'org.assertj:assertj-core:3.16.1'
+            dependency 'org.assertj:assertj-core:3.11.1'
+            dependency 'io.rest-assured:rest-assured:3.0.7'
+            dependency 'org.mockito:mockito-core:2.19.0'
+            dependency 'org.hamcrest:hamcrest-core:2.2'
+            dependency 'org.hamcrest:hamcrest:2.2'
+            dependency 'cglib:cglib-nodep:3.1'
+
+            dependency 'org.apache.commons:commons-lang3:3.1'
+            dependency 'com.google.guava:guava:28.0-jre'
+            dependency 'com.google.code.gson:gson:2.8.6'
+            dependency 'io.vavr:vavr:1.0.0-alpha-3'
+
+            dependency 'org.antlr:antlr4:4.7.2'
+        }
+    }
+
+    dependencies {
+        implementation enforcedPlatform("${quarkusPlatformGroupId}:${quarkusPlatformArtifactId}:${quarkusPlatformVersion}")
+
+        testImplementation 'io.quarkus:quarkus-jacoco'
+        testImplementation 'io.quarkus:quarkus-junit5'
+        testImplementation 'io.quarkus:quarkus-junit5-mockito'
+        testImplementation 'com.google.code.gson:gson'
+
+        testImplementation 'org.mockito:mockito-core'
+        testImplementation 'org.hamcrest:hamcrest'
+        testImplementation 'org.hamcrest:hamcrest-core'
+        testImplementation 'org.assertj:assertj-core'
+    }
+
+    test {
+        useJUnitPlatform()
+
+        testLogging {
+            events 'failed', 'skipped'
+        }
     }
 }

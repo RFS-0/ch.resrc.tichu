@@ -1,19 +1,7 @@
-plugins {
-    id 'java'
-}
-
-group 'tichu.resrc.ch'
-version '0.0.1-SNAPSHOT'
-
-repositories {
-    mavenCentral()
-}
-
 dependencies {
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
-}
+    implementation project(':capabilities')
 
-test {
-    useJUnitPlatform()
+    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
+
+    testImplementation project(':test-capabilities')
 }

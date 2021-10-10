@@ -1,0 +1,17 @@
+dependencies {
+    implementation project(':capabilities')
+    implementation project (':domain')
+    implementation project (':use-cases')
+
+    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
+    implementation 'com.google.code.gson:gson'
+    implementation 'org.apache.commons:commons-lang3'
+    implementation 'org.assertj:assertj-core'
+    implementation 'org.mockito:mockito-core'
+    implementation 'org.hamcrest:hamcrest-core'
+    implementation 'org.slf4j:slf4j-api'
+
+    testImplementation 'io.rest-assured:rest-assured'
+    testImplementation 'org.assertj:assertj-core:3.11.1'
+    testImplementation 'org.awaitility:awaitility:4.0.3'
+}

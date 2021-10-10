@@ -17,4 +17,5 @@ include 'products:quarkus-app'
 include 'products:quarkus-app-config'
 include 'domain'
 include 'use-cases'
+include 'test-capabilities'
 
