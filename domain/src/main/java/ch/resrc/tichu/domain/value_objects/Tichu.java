@@ -7,8 +7,7 @@ public enum Tichu {
   TICHU_FAILED(-100),
   GRAND_TICHU_CALLED(1),
   GRAND_TICHU_SUCCEEDED(200),
-  GRAND_TICHU_FAILED(-200),
-  UNKNOWN(Integer.MAX_VALUE);
+  GRAND_TICHU_FAILED(-200);
 
   private final int value;
 
@@ -25,7 +24,7 @@ public enum Tichu {
       case 1 -> GRAND_TICHU_CALLED;
       case 200 -> GRAND_TICHU_SUCCEEDED;
       case -200 -> GRAND_TICHU_FAILED;
-      default -> UNKNOWN;
+      default -> NONE;
     };
   }
 
