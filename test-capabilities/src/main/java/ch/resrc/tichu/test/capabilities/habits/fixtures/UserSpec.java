@@ -1,0 +1,62 @@
+package ch.resrc.tichu.test.capabilities.habits.fixtures;
+
+import ch.resrc.tichu.capabilities.result.*;
+import ch.resrc.tichu.capabilities.validation.*;
+import ch.resrc.tichu.domain.entities.*;
+import ch.resrc.tichu.domain.value_objects.*;
+
+import java.time.*;
+import java.util.function.*;
+
+public class UserSpec {
+
+    private Id id = Id.next();
+    private Name name = Name.of("Tichu User");
+    private Email email = Email.of("user@tichu.resrc.ch");
+    private Instant createdAt = Instant.now();
+
+    public UserSpec() {
+    }
+
+    public UserSpec(UserSpec other) {
+        this.id = other.id;
+        this.name = other.name;
+        this.email = other.email;
+        this.createdAt = other.createdAt;
+    }
+
+    private UserSpec copied(Consumer<UserSpec> modification) {
+        var copy = new UserSpec(this);
+        modification.accept(copy);
+        return copy;
+    }
+
+    public UserSpec id(Id id) {
+        return copied(but -> but.id = id);
+    }
+
+    public UserSpec name(Name name) {
+        return copied(but -> but.name = name);
+    }
+
+    public UserSpec email(Email email) {
+        return copied(but -> but.email = email);
+    }
+
+    public UserSpec createdAt(Instant createdAt) {
+        return copied(but -> but.createdAt = createdAt);
+    }
+
+    public Result<User, ValidationError> asResult() {
+        return User.resultOf(
+                id,
+                name,
+                email,
+                createdAt
+        );
+    }
+
+    public User asEntity() {
+        return asResult().value();
+    }
+}
