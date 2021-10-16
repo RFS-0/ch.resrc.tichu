@@ -5,7 +5,7 @@ import ch.resrc.tichu.test.capabilities.habits.use_cases.*;
 public interface UserFixtureHabits extends
         PortsHabits,
         FixtureHabits,
-        DomainLiteralHabits {
+        ValueObjectHabits {
 
     default UserSpec aUser() {
 

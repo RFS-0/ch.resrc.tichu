@@ -21,6 +21,10 @@ public class RoundSpec {
         this.tichus = other.tichus;
     }
 
+    public static RoundSpec round() {
+        return new RoundSpec();
+    }
+
     private RoundSpec copied(Consumer<RoundSpec> modification) {
         var copy = new RoundSpec(this);
         modification.accept(copy);
@@ -37,5 +41,13 @@ public class RoundSpec {
 
     public RoundSpec ranks(RanksSpec spec) {
         return copied(but -> but.ranks = Ranks.of(spec.playerIdToRank()));
+    }
+
+    public RoundSpec tichus(TichusSpec tichus) {
+        return copied(but -> but.tichus = Tichus.of(tichus.playerIdToTichu()));
+    }
+
+    public Round asValueObject() {
+        return Round.resultOf(roundNumber, cardPoints, ranks, tichus).value();
     }
 }

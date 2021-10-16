@@ -2,9 +2,9 @@ package ch.resrc.tichu.test.capabilities.habits.fixtures;
 
 import ch.resrc.tichu.domain.value_objects.*;
 
-public interface DomainLiteralHabits {
+public interface ValueObjectHabits {
 
-    DomainLiteralHabits domainLiterals = new DomainLiteralHabits() {
+    ValueObjectHabits valueObjects = new ValueObjectHabits() {
     };
 
     default ClientId clientId(String literal) {
@@ -42,6 +42,24 @@ public interface DomainLiteralHabits {
 
     default RoundNumber roundNumber(int literal) {
         return RoundNumber.of(literal);
+    }
+
+    default CardPoints cardPoints(String firstTeamId, String secondTeamId, int pointsOfFirstTeam, int pointsOfSecondTeam) {
+        return CardPointsSpec.cardPoints()
+                .firstTeamId(firstTeamId)
+                .pointsOfFirstTeam(pointsOfFirstTeam)
+                .secondTeamId(secondTeamId)
+                .pointsOfSecondTeam(pointsOfSecondTeam)
+                .asValueObject();
+    }
+
+    default Round round(int roundNumber, CardPointsSpec cardPoints, RanksSpec ranks, TichusSpec tichus) {
+        return RoundSpec.round()
+                .roundNumber(roundNumber)
+                .cardPoints(cardPoints)
+                .ranks(ranks)
+                .tichus(tichus)
+                .asValueObject();
     }
 
     default Tichu tichu(int literal) {

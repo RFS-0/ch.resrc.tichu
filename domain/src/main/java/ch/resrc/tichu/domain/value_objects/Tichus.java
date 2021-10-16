@@ -32,6 +32,10 @@ public class Tichus {
         return validation().applyTo(values).map(Tichus::new);
     }
 
+    public static Tichus of(Map<Id, Tichu> values) {
+        return Tichus.resultOf(values).value();
+    }
+
     public Map<Id, Tichu> value() {
         return playerToTichu;
     }

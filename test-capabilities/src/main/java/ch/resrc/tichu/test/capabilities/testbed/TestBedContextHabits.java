@@ -9,7 +9,7 @@ import ch.resrc.tichu.test.capabilities.habits.fixtures.*;
  */
 public interface TestBedContextHabits
         extends
-        DomainLiteralHabits,
+        ValueObjectHabits,
 
         EventBusAssertionHabits {
 }

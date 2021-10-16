@@ -21,9 +21,11 @@ public class JoinCode extends DomainPrimitive<JoinCode, String> implements Strin
     }
 
     private static Validation<String, ValidationError> validation() {
-        return chained(
-                notBlank(),
-                matches(JOIN_CODE_PATTERN, msg("value must consist of eight alphanumeric characters"))
+        return modified(
+                chained(
+                        notBlank(),
+                        matches(JOIN_CODE_PATTERN, msg("value must consist of eight alphanumeric characters"))),
+                context(JoinCode.class)
         );
     }
 
