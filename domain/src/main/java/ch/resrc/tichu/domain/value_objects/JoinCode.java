@@ -8,6 +8,7 @@ import java.util.*;
 import static ch.resrc.tichu.capabilities.validation.ValidationErrorModifier.*;
 import static ch.resrc.tichu.capabilities.validation.Validations.chained;
 import static ch.resrc.tichu.capabilities.validation.Validations.*;
+import static ch.resrc.tichu.domain.validation.DomainValidations.*;
 
 public class JoinCode extends DomainPrimitive<JoinCode, String> implements StringValueObject, Comparable<JoinCode> {
 
@@ -32,6 +33,10 @@ public class JoinCode extends DomainPrimitive<JoinCode, String> implements Strin
 
     public static JoinCode next() {
         return new JoinCode(UUID.randomUUID().toString().split("-")[0]);
+    }
+
+    public static JoinCode of(String literal) {
+        return resultOf(literal).getOrThrow(invariantViolated());
     }
 
     public String value() {

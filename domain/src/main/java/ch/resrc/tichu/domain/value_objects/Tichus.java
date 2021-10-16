@@ -8,7 +8,7 @@ import static ch.resrc.tichu.capabilities.validation.ValidationErrorModifier.*;
 import static ch.resrc.tichu.capabilities.validation.Validations.chained;
 import static ch.resrc.tichu.capabilities.validation.Validations.*;
 
-public class Tichus extends DomainPrimitive<Tichus, Map<Id, Tichu>> implements StringValueObject {
+public class Tichus {
 
     private final Map<Id, Tichu> playerToTichu;
 
@@ -32,8 +32,7 @@ public class Tichus extends DomainPrimitive<Tichus, Map<Id, Tichu>> implements S
         return validation().applyTo(values).map(Tichus::new);
     }
 
-    @Override
-    protected Map<Id, Tichu> getPrimitiveValue() {
+    public Map<Id, Tichu> value() {
         return playerToTichu;
     }
 

@@ -10,8 +10,9 @@ import static ch.resrc.tichu.capabilities.validation.ValidationError.Claim.*;
 import static ch.resrc.tichu.capabilities.validation.ValidationErrorModifier.*;
 import static ch.resrc.tichu.capabilities.validation.Validations.chained;
 import static ch.resrc.tichu.capabilities.validation.Validations.*;
+import static ch.resrc.tichu.domain.validation.DomainValidations.*;
 
-public class CardPoints extends DomainPrimitive<CardPoints, Map<Id, Integer>> {
+public class CardPoints {
 
     private final Map<Id, Integer> teamIdsToPoints;
 
@@ -32,18 +33,19 @@ public class CardPoints extends DomainPrimitive<CardPoints, Map<Id, Integer>> {
         );
     }
 
+    public static CardPoints of(Map<Id, Integer> teamIdToPoints) {
+        return resultOf(teamIdToPoints).getOrThrow(invariantViolated());
+    }
+
     Option<Integer> ofTeam(Id teamId) {
         return teamIdsToPoints.get(teamId);
     }
 
     public static Result<CardPoints, ValidationError> resultOf(Map<Id, Integer> teamIdsToPoints) {
-        final var cardPoints = new CardPoints(teamIdsToPoints);
-
         return validation().applyTo(teamIdsToPoints).map(CardPoints::new);
     }
 
-    @Override
-    protected Map<Id, Integer> getPrimitiveValue() {
+    public Map<Id, Integer> teamIdsToPoints() {
         return teamIdsToPoints;
     }
 }

@@ -19,10 +19,10 @@ class RanksTest {
         var thirdPlayer = Id.next();
         var fourthPlayer = Id.next();
         var validValues = HashMap.of(
-                firstPlayer, 1,
-                secondPlayer, 2,
-                thirdPlayer, 3,
-                fourthPlayer, 4
+                firstPlayer, Rank.FIRST,
+                secondPlayer, Rank.SECOND,
+                thirdPlayer, Rank.THIRD,
+                fourthPlayer, Rank.FOURTH
         );
 
         // when:
@@ -40,7 +40,7 @@ class RanksTest {
     @Test
     void null_resultOf_failure() {
         // given:
-        Map<Id, Integer> input = null;
+        Map<Id, Rank> input = null;
 
         // when:
         var result = Ranks.resultOf(input);
@@ -61,10 +61,10 @@ class RanksTest {
         var thirdPlayer = Id.next();
         var fourthPlayer = Id.next();
         var valuesWithNullKey = HashMap.of(
-                nullKey, 1,
-                secondPlayer, 2,
-                thirdPlayer, 3,
-                fourthPlayer, 4
+                nullKey, Rank.FIRST,
+                secondPlayer, Rank.SECOND,
+                thirdPlayer, Rank.THIRD,
+                fourthPlayer, Rank.FOURTH
         );
 
         // when:
@@ -87,9 +87,9 @@ class RanksTest {
         var fourthPlayer = Id.next();
         var valuesWithNullValue = HashMap.of(
                 firstPlayer, null,
-                secondPlayer, 2,
-                thirdPlayer, 3,
-                fourthPlayer, 4
+                secondPlayer, Rank.SECOND,
+                thirdPlayer, Rank.THIRD,
+                fourthPlayer, Rank.FOURTH
         );
 
         // when:
@@ -112,11 +112,11 @@ class RanksTest {
         var fourthPlayer = Id.next();
         var fifthPlayer = Id.next();
         var tooManyPlayers = HashMap.of(
-                firstPlayer, 1,
-                secondPlayer, 2,
-                thirdPlayer, 3,
-                fourthPlayer, 4,
-                fifthPlayer, 5
+                firstPlayer, Rank.FIRST,
+                secondPlayer, Rank.SECOND,
+                thirdPlayer, Rank.THIRD,
+                fourthPlayer, Rank.FOURTH,
+                fifthPlayer, Rank.FIRST
         );
 
         // when:
@@ -137,9 +137,9 @@ class RanksTest {
         var secondPlayer = Id.next();
         var thirdPlayer = Id.next();
         var notEnoughPlayers = HashMap.of(
-                firstPlayer, 1,
-                secondPlayer, 2,
-                thirdPlayer, 3
+                firstPlayer, Rank.FIRST,
+                secondPlayer, Rank.SECOND,
+                thirdPlayer, Rank.THIRD
         );
 
         // when:
@@ -150,58 +150,6 @@ class RanksTest {
         AssertionHabits.assertThat(
                 result.errors(),
                 hasItem(whereErrorMessage(containsString("exactly four players must have a rank")))
-        );
-    }
-
-    @Test
-    void tooSmallRank_resultOf_failure() {
-        // given:
-        var firstPlayer = Id.next();
-        var secondPlayer = Id.next();
-        var thirdPlayer = Id.next();
-        var fourthPlayer = Id.next();
-        var tooSmallRank = -1;
-        var playerWithTooSmallRank = HashMap.of(
-                firstPlayer, 1,
-                secondPlayer, 2,
-                thirdPlayer, 3,
-                fourthPlayer, tooSmallRank
-        );
-
-        // when:
-        var result = Ranks.resultOf(playerWithTooSmallRank);
-
-        // then:
-        assertThat(result.isFailure()).isTrue();
-        AssertionHabits.assertThat(
-                result.errors(),
-                hasItem(whereErrorMessage(containsString("a rank can not be smaller than zero")))
-        );
-    }
-
-    @Test
-    void tooHighRank_resultOf_failure() {
-        // given:
-        var firstPlayer = Id.next();
-        var secondPlayer = Id.next();
-        var thirdPlayer = Id.next();
-        var fourthPlayer = Id.next();
-        var tooHighRank = 5;
-        var playerWithTooHighRank = HashMap.of(
-                firstPlayer, 1,
-                secondPlayer, 2,
-                thirdPlayer, 3,
-                fourthPlayer, tooHighRank
-        );
-
-        // when:
-        var result = Ranks.resultOf(playerWithTooHighRank);
-
-        // then:
-        assertThat(result.isFailure()).isTrue();
-        AssertionHabits.assertThat(
-                result.errors(),
-                hasItem(whereErrorMessage(containsString("a rank can not be higher than four")))
         );
     }
 
@@ -238,14 +186,14 @@ class RanksTest {
     }
 
     private Ranks givenNoPlayerFinished() {
-        return givenPlayersWithRanks(0, 0, 0, 0);
+        return givenPlayersWithRanks(Rank.NONE, Rank.NONE, Rank.NONE, Rank.NONE);
     }
 
     private Ranks givenAllPlayersFinished() {
-        return givenPlayersWithRanks(1, 2, 3, 4);
+        return givenPlayersWithRanks(Rank.FIRST, Rank.SECOND, Rank.THIRD, Rank.FOURTH);
     }
 
-    private Ranks givenPlayersWithRanks(int rank1, int rank2, int rank3, int rank4) {
+    private Ranks givenPlayersWithRanks(Rank rank1, Rank rank2, Rank rank3, Rank rank4) {
         var firstPlayer = Id.next();
         var secondPlayer = Id.next();
         var thirdPlayer = Id.next();

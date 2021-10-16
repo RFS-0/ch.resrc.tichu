@@ -4,6 +4,7 @@ import ch.resrc.tichu.capabilities.result.*;
 import ch.resrc.tichu.capabilities.validation.*;
 
 import static ch.resrc.tichu.capabilities.validation.Validations.*;
+import static ch.resrc.tichu.domain.validation.DomainValidations.*;
 
 public class RoundNumber extends DomainPrimitive<RoundNumber, Integer> implements StringValueObject, Comparable<RoundNumber> {
 
@@ -19,6 +20,10 @@ public class RoundNumber extends DomainPrimitive<RoundNumber, Integer> implement
 
     public static Result<RoundNumber, ValidationError> resultOf(int value) {
         return validation().applyTo(value).map(RoundNumber::new);
+    }
+
+    public static RoundNumber of(int literal) {
+        return resultOf(literal).getOrThrow(invariantViolated());
     }
 
     public RoundNumber increment() {

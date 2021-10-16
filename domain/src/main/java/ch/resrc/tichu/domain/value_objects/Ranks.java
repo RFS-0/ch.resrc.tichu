@@ -6,37 +6,37 @@ import ch.resrc.tichu.capabilities.validation.*;
 import io.vavr.collection.*;
 import io.vavr.control.*;
 
-import java.util.function.*;
-
 import static ch.resrc.tichu.capabilities.validation.ValidationErrorModifier.*;
 import static ch.resrc.tichu.capabilities.validation.Validations.chained;
 import static ch.resrc.tichu.capabilities.validation.Validations.*;
+import static ch.resrc.tichu.domain.validation.DomainValidations.*;
 
-public class Ranks extends DomainPrimitive<Ranks, Map<Id, Rank>> {
+public class Ranks {
 
     private final Map<Id, Rank> playerIdToRank;
 
-    private Ranks(Map<Id, Integer> playerIdToValue) {
-        this.playerIdToRank = playerIdToValue.bimap(Function.identity(), Rank::of);
+    private Ranks(Map<Id, Rank> playerIdToRank) {
+        this.playerIdToRank = playerIdToRank;
     }
 
-    private static Validation<Map<Id, Integer>, ValidationError> validation() {
+    private static Validation<Map<Id, Rank>, ValidationError> validation() {
         return modified(
                 chained(
                         notNull(),
                         attribute(Map::keySet, noneNull()),
                         attribute(Map::values, noneNull()),
-                        allOf(
-                                attribute(x -> x.keySet().length(), equalTo(4, msg("exactly four players must have a rank"))),
-                                attribute(x -> x.values().toList().sorted(), allMin(0, msg("a rank can not be smaller than zero"))),
-                                attribute(x -> x.values().toList().sorted(), allMax(4, msg("a rank can not be higher than four")))
-                        )),
+                        attribute(x -> x.keySet().length(), equalTo(4, msg("exactly four players must have a rank")))
+                ),
                 context(Ranks.class)
         );
     }
 
-    public static Result<Ranks, ValidationError> resultOf(Map<Id, Integer> values) {
+    public static Result<Ranks, ValidationError> resultOf(Map<Id, Rank> values) {
         return validation().applyTo(values).map(Ranks::new);
+    }
+
+    public static Ranks of(Map<Id, Rank> values) {
+        return resultOf(values).getOrThrow(invariantViolated());
     }
 
     public Set<Id> playerIds() {
@@ -61,10 +61,7 @@ public class Ranks extends DomainPrimitive<Ranks, Map<Id, Rank>> {
     public Result<Ranks, ValidationError> nextRank(Id playerId) {
         int nextRankValue = playerIdToRank.values().map(Rank::value).max().get() + 1;
 
-        return resultOf(
-                playerIdToRank.bimap(Function.identity(), Rank::value)
-                        .put(playerId, nextRankValue)
-        );
+        return resultOf(playerIdToRank.put(playerId, Rank.of(nextRankValue)));
     }
 
     public Result<Ranks, ValidationError> resetRank(Id playerId) {
@@ -80,14 +77,12 @@ public class Ranks extends DomainPrimitive<Ranks, Map<Id, Rank>> {
                             }
                         }
                 )
-                .put(playerId, Rank.NONE)
-                .bimap(Function.identity(), Rank::value);
+                .put(playerId, Rank.NONE);
 
         return resultOf(updatedRanks);
     }
 
-    @Override
-    protected Map<Id, Rank> getPrimitiveValue() {
+    public Map<Id, Rank> playerIdToRank() {
         return playerIdToRank;
     }
 }

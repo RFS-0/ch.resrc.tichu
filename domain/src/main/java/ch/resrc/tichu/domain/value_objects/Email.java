@@ -2,6 +2,7 @@ package ch.resrc.tichu.domain.value_objects;
 
 import ch.resrc.tichu.capabilities.result.*;
 import ch.resrc.tichu.capabilities.validation.*;
+import com.fasterxml.jackson.annotation.*;
 
 import java.util.regex.*;
 
@@ -9,6 +10,7 @@ import static ch.resrc.tichu.capabilities.validation.ValidationError.Claim.*;
 import static ch.resrc.tichu.capabilities.validation.ValidationErrorModifier.*;
 import static ch.resrc.tichu.capabilities.validation.Validations.chained;
 import static ch.resrc.tichu.capabilities.validation.Validations.*;
+import static ch.resrc.tichu.domain.validation.DomainValidations.*;
 
 public class Email extends DomainPrimitive<Email, String> implements StringValueObject, Comparable<Email> {
 
@@ -33,6 +35,11 @@ public class Email extends DomainPrimitive<Email, String> implements StringValue
 
     public static Result<Email, ValidationError> resultOf(String literal) {
         return validation().applyTo(literal).map(Email::new);
+    }
+
+    @JsonCreator
+    public static Email of(String literal) {
+        return resultOf(literal).getOrThrow(invariantViolated());
     }
 
     public String value() {

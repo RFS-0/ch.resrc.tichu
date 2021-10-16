@@ -6,6 +6,7 @@ import ch.resrc.tichu.capabilities.validation.*;
 import java.util.*;
 
 import static ch.resrc.tichu.capabilities.validation.Validations.*;
+import static ch.resrc.tichu.domain.validation.DomainValidations.*;
 
 public class Id extends DomainPrimitive<Id, UUID> implements StringValueObject, Comparable<Id> {
 
@@ -32,6 +33,10 @@ public class Id extends DomainPrimitive<Id, UUID> implements StringValueObject, 
 
     public static Id next() {
         return new Id(UUID.randomUUID());
+    }
+
+    public static Id of(String literal) {
+        return resultOf(literal).getOrThrow(invariantViolated());
     }
 
     @Override
