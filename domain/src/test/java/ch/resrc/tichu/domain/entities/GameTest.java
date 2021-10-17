@@ -14,7 +14,7 @@ class GameTest implements GameTestHabits {
     @Test
     void validValues_resultOf_success() {
         // given:
-        Id gameId = Id.next();
+        var gameId = GameId.of("3280f70d-4ff9-4bed-9ef4-8c85e32da668");
         var createdBy = user(
                 "4ac12a42-8581-4253-8902-418fd9b8cec5",
                 "user name",

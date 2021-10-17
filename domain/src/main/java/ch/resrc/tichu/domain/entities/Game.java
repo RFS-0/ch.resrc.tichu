@@ -18,7 +18,7 @@ import static ch.resrc.tichu.domain.validation.DomainValidations.*;
 
 public class Game {
 
-    private final Id id;
+    private final GameId id;
     private final User createdBy;
     private final JoinCode joinCode;
     private Set<Team> teams;
@@ -26,7 +26,7 @@ public class Game {
     private final Instant createdAt;
     private Instant finishedAt;
 
-    private Game(Id id,
+    private Game(GameId id,
                  User createdBy,
                  JoinCode joinCode,
                  Set<Team> teams,
@@ -66,7 +66,7 @@ public class Game {
         );
     }
 
-    public static Result<Game, ValidationError> resultOf(Id id, User createdBy, JoinCode joinCode, Set<Team> teams, List<Round> rounds, Instant createdAt) {
+    public static Result<Game, ValidationError> resultOf(GameId id, User createdBy, JoinCode joinCode, Set<Team> teams, List<Round> rounds, Instant createdAt) {
         return validation().applyTo(new Game(id, createdBy, joinCode, teams, rounds, createdAt));
     }
 
@@ -92,7 +92,7 @@ public class Game {
                 .intValue();
     }
 
-    public Id id() {
+    public GameId id() {
         return id;
     }
 
