@@ -1,4 +1,4 @@
-package ch.resrc.tichu.use_cases.outbound_ports.transaction;
+package ch.resrc.tichu.use_cases.support.outbound_ports.transaction;
 
 /**
  * Provides related transaction adapters for a given application context.

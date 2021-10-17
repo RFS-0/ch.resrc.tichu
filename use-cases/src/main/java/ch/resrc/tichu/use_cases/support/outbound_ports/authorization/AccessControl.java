@@ -1,4 +1,4 @@
-package ch.resrc.tichu.use_cases.outbound_ports.authorization;
+package ch.resrc.tichu.use_cases.support.outbound_ports.authorization;
 
 import ch.resrc.tichu.capabilities.changelog.*;
 import ch.resrc.tichu.capabilities.error_handling.*;

@@ -1,7 +1,7 @@
 package ch.resrc.tichu.test.capabilities.adapters.testdoubles;
 
 import ch.resrc.tichu.capabilities.events.*;
-import ch.resrc.tichu.use_cases.outbound_ports.eventbus.*;
+import ch.resrc.tichu.use_cases.support.outbound_ports.eventbus.*;
 import org.apache.commons.lang3.builder.*;
 import org.slf4j.*;
 

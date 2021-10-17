@@ -1,4 +1,4 @@
-package ch.resrc.tichu.use_cases.outbound_ports.presentation;
+package ch.resrc.tichu.use_cases.support.outbound_ports.presentation;
 
 import ch.resrc.tichu.capabilities.error_handling.*;
 

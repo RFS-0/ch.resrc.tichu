@@ -2,7 +2,7 @@ package ch.resrc.tichu.test.capabilities.adapters.testdoubles;
 
 import ch.resrc.tichu.capabilities.error_handling.*;
 import ch.resrc.tichu.capabilities.events.*;
-import ch.resrc.tichu.use_cases.outbound_ports.transaction.*;
+import ch.resrc.tichu.use_cases.support.outbound_ports.transaction.*;
 
 import java.util.*;
 

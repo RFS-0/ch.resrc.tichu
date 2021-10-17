@@ -1,4 +1,4 @@
-package ch.resrc.tichu.use_cases.outbound_ports.eventbus;
+package ch.resrc.tichu.use_cases.support.outbound_ports.eventbus;
 
 import ch.resrc.tichu.capabilities.events.*;
 

@@ -1,4 +1,4 @@
-package ch.resrc.tichu.use_cases.outbound_ports.authentication;
+package ch.resrc.tichu.use_cases.support.outbound_ports.authentication;
 
 import ch.resrc.tichu.domain.value_objects.*;
 

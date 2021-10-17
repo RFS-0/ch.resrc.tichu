@@ -1,4 +1,4 @@
-package ch.resrc.tichu.use_cases.outbound_ports.transaction;
+package ch.resrc.tichu.use_cases.support.outbound_ports.transaction;
 
 /**
  * Makes sure that a given action is run within a transaction.

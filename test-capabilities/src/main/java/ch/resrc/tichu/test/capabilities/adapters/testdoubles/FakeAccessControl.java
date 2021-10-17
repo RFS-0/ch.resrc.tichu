@@ -4,14 +4,14 @@ import ch.resrc.tichu.capabilities.error_handling.*;
 import ch.resrc.tichu.capabilities.events.*;
 import ch.resrc.tichu.capabilities.result.*;
 import ch.resrc.tichu.domain.value_objects.*;
-import ch.resrc.tichu.use_cases.outbound_ports.authorization.*;
+import ch.resrc.tichu.use_cases.support.outbound_ports.authorization.*;
 import org.hamcrest.*;
 
 import java.util.*;
 import java.util.stream.*;
 
 import static ch.resrc.tichu.test.capabilities.habits.assertions.CustomMatchers.*;
-import static ch.resrc.tichu.use_cases.outbound_ports.authorization.AuthorizationProblem.*;
+import static ch.resrc.tichu.use_cases.support.outbound_ports.authorization.AuthorizationProblem.*;
 import static java.util.stream.Collectors.*;
 import static org.hamcrest.core.Is.*;
 
