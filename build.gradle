@@ -39,6 +39,7 @@ subprojects {
     apply plugin: 'java-library'
     apply plugin: 'idea'
     apply plugin: 'io.spring.dependency-management'
+    apply plugin: 'jacoco'
 
     // Override the Groovy version from Spring Boot.
     def groovy_version = '3.0.4'
@@ -122,5 +123,14 @@ subprojects {
         testLogging {
             events 'failed', 'skipped'
         }
+    }
+
+
+
+    test {
+        finalizedBy jacocoTestReport
+    }
+    jacocoTestReport {
+        dependsOn test
     }
 }
