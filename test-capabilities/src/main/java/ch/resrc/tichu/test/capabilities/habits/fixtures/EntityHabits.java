@@ -30,6 +30,6 @@ public interface EntityHabits {
     }
 
     default Team team(String id) {
-        return Team.resultOf(Id.of(id)).value();
+        return Team.resultOf(TeamId.of(id)).value();
     }
 }

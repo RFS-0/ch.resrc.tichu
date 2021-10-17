@@ -14,7 +14,7 @@ import static ch.resrc.tichu.capabilities.validation.Validations.*;
 
 public class Team {
 
-    private final Id id;
+    private final TeamId id;
     private Name name;
     private Player firstPlayer;
     private Player secondPlayer;
@@ -23,7 +23,7 @@ public class Team {
         return attribute(x -> x.id, notNull());
     }
 
-    private Team(Id id) {
+    private Team(TeamId id) {
         this.id = id;
         this.name = null;
         this.firstPlayer = null;
@@ -43,11 +43,11 @@ public class Team {
         return theCopy;
     }
 
-    public static Result<Team, ValidationError> resultOf(Id id) {
+    public static Result<Team, ValidationError> resultOf(TeamId id) {
         return validation().applyTo(new Team(id));
     }
 
-    public Id id() {
+    public TeamId id() {
         return id;
     }
 

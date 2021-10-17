@@ -68,14 +68,14 @@ public class Round implements Comparable<Round> {
         return ranks.rankOfPlayer(firstPlayer).value() + ranks.rankOfPlayer(secondPlayer).value() == 3;
     }
 
-    public int totalPoints(Id teamId, PlayerId firstPlayer, PlayerId secondPlayer) {
+    public int totalPoints(TeamId teamId, PlayerId firstPlayer, PlayerId secondPlayer) {
         return cardPoints(teamId)
                 + matchPoints(firstPlayer, secondPlayer)
                 + tichuPoints(firstPlayer)
                 + tichuPoints(secondPlayer);
     }
 
-    private int cardPoints(Id team) {
+    private int cardPoints(TeamId team) {
         return cardPoints.ofTeam(team).getOrElseThrow(
                 () -> DomainProblemDetected.of(DomainProblem.INVARIANT_VIOLATED)
         );

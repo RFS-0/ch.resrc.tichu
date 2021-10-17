@@ -80,7 +80,7 @@ public class Game {
         return !finished();
     }
 
-    public int totalPoints(Id teamId) {
+    public int totalPoints(TeamId teamId) {
         Tuple2<Player, Player> players = teams
                 .filter(team -> team.id().equals(teamId))
                 .map(Team::players)

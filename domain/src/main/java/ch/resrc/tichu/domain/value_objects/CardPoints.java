@@ -3,6 +3,7 @@ package ch.resrc.tichu.domain.value_objects;
 import ch.resrc.tichu.capabilities.result.*;
 import ch.resrc.tichu.capabilities.validation.Validation;
 import ch.resrc.tichu.capabilities.validation.*;
+import ch.resrc.tichu.domain.entities.*;
 import io.vavr.collection.*;
 import io.vavr.control.*;
 
@@ -14,13 +15,13 @@ import static ch.resrc.tichu.domain.validation.DomainValidations.*;
 
 public class CardPoints {
 
-    private final Map<Id, Integer> teamIdsToPoints;
+    private final Map<TeamId, Integer> teamIdsToPoints;
 
-    private CardPoints(Map<Id, Integer> values) {
+    private CardPoints(Map<TeamId, Integer> values) {
         this.teamIdsToPoints = values;
     }
 
-    private static Validation<Map<Id, Integer>, ValidationError> validation() {
+    private static Validation<Map<TeamId, Integer>, ValidationError> validation() {
         return modified(
                 chained(notNull(cannotBeUndefinedMsg()),
                         allOf(attribute(Map::size, equalTo(2)),
@@ -33,19 +34,19 @@ public class CardPoints {
         );
     }
 
-    public static CardPoints of(Map<Id, Integer> teamIdToPoints) {
+    public static CardPoints of(Map<TeamId, Integer> teamIdToPoints) {
         return resultOf(teamIdToPoints).getOrThrow(invariantViolated());
     }
 
-    Option<Integer> ofTeam(Id teamId) {
+    Option<Integer> ofTeam(TeamId teamId) {
         return teamIdsToPoints.get(teamId);
     }
 
-    public static Result<CardPoints, ValidationError> resultOf(Map<Id, Integer> teamIdsToPoints) {
+    public static Result<CardPoints, ValidationError> resultOf(Map<TeamId, Integer> teamIdsToPoints) {
         return validation().applyTo(teamIdsToPoints).map(CardPoints::new);
     }
 
-    public Map<Id, Integer> teamIdsToPoints() {
+    public Map<TeamId, Integer> teamIdsToPoints() {
         return teamIdsToPoints;
     }
 }

@@ -1,6 +1,5 @@
 package ch.resrc.tichu.domain.entities;
 
-import ch.resrc.tichu.domain.value_objects.*;
 import ch.resrc.tichu.test.capabilities.habits.assertions.*;
 import org.junit.jupiter.api.*;
 
@@ -13,7 +12,7 @@ class TeamTest {
   @Test
   void legalValues_resultOf_validTeam() {
     // given:
-    Id id = Id.next();
+    var id = TeamId.of("d2a80876-4f06-449f-99eb-45949bbe2ead");
 
     // when:
     var result = Team.resultOf(id);
@@ -27,7 +26,7 @@ class TeamTest {
   @Test
   void missingId_resultOf_validationError() {
     // given:
-    Id missingId = null;
+    TeamId missingId = null;
 
     // when:
     var result = Team.resultOf(missingId);

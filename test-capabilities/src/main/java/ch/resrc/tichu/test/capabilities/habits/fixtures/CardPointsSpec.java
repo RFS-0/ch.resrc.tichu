@@ -1,5 +1,6 @@
 package ch.resrc.tichu.test.capabilities.habits.fixtures;
 
+import ch.resrc.tichu.domain.entities.*;
 import ch.resrc.tichu.domain.value_objects.*;
 import io.vavr.collection.*;
 
@@ -7,8 +8,8 @@ import java.util.function.*;
 
 public class CardPointsSpec {
 
-    private Id firstTeamId;
-    private Id secondTeamId;
+    private TeamId firstTeamId;
+    private TeamId secondTeamId;
     private int pointsOfFirstTeam;
     private int pointsOfSecondTeam;
 
@@ -33,7 +34,7 @@ public class CardPointsSpec {
     }
 
     public CardPointsSpec firstTeamId(String firstTeamId) {
-        return copied(but -> but.firstTeamId = Id.of(firstTeamId));
+        return copied(but -> but.firstTeamId = TeamId.of(firstTeamId));
     }
 
     public CardPointsSpec pointsOfFirstTeam(int pointsOfFirstTeam) {
@@ -41,18 +42,18 @@ public class CardPointsSpec {
     }
 
     public CardPointsSpec secondTeamId(String secondTeamId) {
-        return copied(but -> but.secondTeamId = Id.of(secondTeamId));
+        return copied(but -> but.secondTeamId = TeamId.of(secondTeamId));
     }
 
     public CardPointsSpec pointsOfSecondTeam(int pointsOfSecondTeam) {
         return copied(but -> but.pointsOfSecondTeam = pointsOfSecondTeam);
     }
 
-    public Id firstTeamId() {
+    public TeamId firstTeamId() {
         return firstTeamId;
     }
 
-    public Id secondTeamId() {
+    public TeamId secondTeamId() {
         return secondTeamId;
     }
 
@@ -64,7 +65,7 @@ public class CardPointsSpec {
         return pointsOfSecondTeam;
     }
 
-    public Map<Id, Integer> teamIdToPoints() {
+    public Map<TeamId, Integer> teamIdToPoints() {
         return HashMap.of(
                 firstTeamId, pointsOfFirstTeam,
                 secondTeamId, pointsOfSecondTeam
