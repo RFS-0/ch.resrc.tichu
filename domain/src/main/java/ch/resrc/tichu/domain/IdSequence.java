@@ -1,4 +1,4 @@
-package ch.resrc.tichu.domain.value_objects;
+package ch.resrc.tichu.domain;
 
 public interface IdSequence<ID> {
 

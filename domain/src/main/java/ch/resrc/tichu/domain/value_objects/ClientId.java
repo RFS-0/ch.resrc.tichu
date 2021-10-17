@@ -2,6 +2,7 @@ package ch.resrc.tichu.domain.value_objects;
 
 import ch.resrc.tichu.capabilities.result.*;
 import ch.resrc.tichu.capabilities.validation.*;
+import ch.resrc.tichu.domain.*;
 import ch.resrc.tichu.domain.errorhandling.*;
 
 import java.util.*;
