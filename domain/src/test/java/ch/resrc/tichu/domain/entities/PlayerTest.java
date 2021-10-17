@@ -15,7 +15,7 @@ class PlayerTest {
     @Test
     void validValues_resultOf_success() {
         // given:
-        Id id = Id.next();
+        var id = PlayerId.of("be259517-3d0c-44d8-a2ac-19de414207fb");
         Name name = Name.of("aPlayerName");
         Instant createdAt = Instant.now();
 
@@ -30,7 +30,7 @@ class PlayerTest {
     @Test
     void missingId_resultOf_failure() {
         // given:
-        Id missingId = null;
+        PlayerId missingId = null;
         Name name = Name.of("aPlayerName");
         Instant createdAt = Instant.now();
 
@@ -50,9 +50,9 @@ class PlayerTest {
     @Test
     void missingName_resultOf_failure() {
         // given:
-        Id id = Id.next();
+        var id = PlayerId.of("f2106d22-830b-48fc-af97-8073892a1cbe");
         Name missingName = null;
-        Instant createdAt = Instant.now();
+        var createdAt = Instant.now();
 
         // when:
         var result = Player.resultOf(id, missingName, createdAt);
@@ -70,7 +70,7 @@ class PlayerTest {
     @Test
     void missingCreatedAt_resultOf_failure() {
         // given:
-        Id id = Id.next();
+        var id = PlayerId.of("eb6bd002-61f3-4c57-ba9a-52bcac87e223");
         Name name = Name.of("aPlayerName");
         Instant missingCreatedAt = null;
 

@@ -3,6 +3,7 @@ package ch.resrc.tichu.domain.value_objects;
 import ch.resrc.tichu.capabilities.result.*;
 import ch.resrc.tichu.capabilities.validation.Validation;
 import ch.resrc.tichu.capabilities.validation.*;
+import ch.resrc.tichu.domain.entities.*;
 import io.vavr.collection.*;
 import io.vavr.control.*;
 
@@ -13,13 +14,13 @@ import static ch.resrc.tichu.domain.validation.DomainValidations.*;
 
 public class Ranks {
 
-    private final Map<Id, Rank> playerIdToRank;
+    private final Map<PlayerId, Rank> playerIdToRank;
 
-    private Ranks(Map<Id, Rank> playerIdToRank) {
+    private Ranks(Map<PlayerId, Rank> playerIdToRank) {
         this.playerIdToRank = playerIdToRank;
     }
 
-    private static Validation<Map<Id, Rank>, ValidationError> validation() {
+    private static Validation<Map<PlayerId, Rank>, ValidationError> validation() {
         return modified(
                 chained(
                         notNull(),
@@ -31,15 +32,15 @@ public class Ranks {
         );
     }
 
-    public static Result<Ranks, ValidationError> resultOf(Map<Id, Rank> values) {
+    public static Result<Ranks, ValidationError> resultOf(Map<PlayerId, Rank> values) {
         return validation().applyTo(values).map(Ranks::new);
     }
 
-    public static Ranks of(Map<Id, Rank> values) {
+    public static Ranks of(Map<PlayerId, Rank> values) {
         return resultOf(values).getOrThrow(invariantViolated());
     }
 
-    public Set<Id> playerIds() {
+    public Set<PlayerId> playerIds() {
         return playerIdToRank.keySet();
     }
 
@@ -47,24 +48,24 @@ public class Ranks {
         return playerIdToRank.values();
     }
 
-    public Rank rankOfPlayer(Id playerId) {
+    public Rank rankOfPlayer(PlayerId playerId) {
         return playerIdToRank.get(playerId).getOrElse(Rank.NONE);
     }
 
-    public Option<Id> findPlayerWithRank(Rank rank) {
+    public Option<PlayerId> findPlayerWithRank(Rank rank) {
         return playerIdToRank
                 .filterValues(rankOfPlayer -> rankOfPlayer == rank)
                 .keySet()
                 .headOption();
     }
 
-    public Result<Ranks, ValidationError> nextRank(Id playerId) {
+    public Result<Ranks, ValidationError> nextRank(PlayerId playerId) {
         int nextRankValue = playerIdToRank.values().map(Rank::value).max().get() + 1;
 
         return resultOf(playerIdToRank.put(playerId, Rank.of(nextRankValue)));
     }
 
-    public Result<Ranks, ValidationError> resetRank(Id playerId) {
+    public Result<Ranks, ValidationError> resetRank(PlayerId playerId) {
         Rank rankOfPlayer = playerIdToRank.get(playerId).getOrElse(Rank.NONE);
 
         var updatedRanks = playerIdToRank
@@ -82,7 +83,7 @@ public class Ranks {
         return resultOf(updatedRanks);
     }
 
-    public Map<Id, Rank> playerIdToRank() {
+    public Map<PlayerId, Rank> playerIdToRank() {
         return playerIdToRank;
     }
 }

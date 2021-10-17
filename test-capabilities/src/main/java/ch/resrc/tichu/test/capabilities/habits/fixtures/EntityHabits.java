@@ -22,7 +22,7 @@ public interface EntityHabits {
 
     default Player player(String id, String name, Instant createdAt) {
         return Player.resultOf(
-                        Id.of(id),
+                        PlayerId.of(id),
                         Name.of(name),
                         createdAt
                 )

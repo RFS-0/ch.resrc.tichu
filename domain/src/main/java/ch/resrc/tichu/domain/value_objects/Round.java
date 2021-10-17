@@ -2,6 +2,7 @@ package ch.resrc.tichu.domain.value_objects;
 
 import ch.resrc.tichu.capabilities.result.*;
 import ch.resrc.tichu.capabilities.validation.*;
+import ch.resrc.tichu.domain.entities.*;
 import ch.resrc.tichu.domain.errorhandling.*;
 import io.vavr.*;
 import io.vavr.collection.*;
@@ -63,11 +64,11 @@ public class Round implements Comparable<Round> {
         return this.roundNumber.compareTo(other.roundNumber);
     }
 
-    public boolean doubleVictory(Id firstPlayer, Id secondPlayer) {
+    public boolean doubleVictory(PlayerId firstPlayer, PlayerId secondPlayer) {
         return ranks.rankOfPlayer(firstPlayer).value() + ranks.rankOfPlayer(secondPlayer).value() == 3;
     }
 
-    public int totalPoints(Id teamId, Id firstPlayer, Id secondPlayer) {
+    public int totalPoints(Id teamId, PlayerId firstPlayer, PlayerId secondPlayer) {
         return cardPoints(teamId)
                 + matchPoints(firstPlayer, secondPlayer)
                 + tichuPoints(firstPlayer)
@@ -80,11 +81,11 @@ public class Round implements Comparable<Round> {
         );
     }
 
-    private int matchPoints(Id firstPlayer, Id secondPlayer) {
+    private int matchPoints(PlayerId firstPlayer, PlayerId secondPlayer) {
         return doubleVictory(firstPlayer, secondPlayer) ? 100 : 0;
     }
 
-    private int tichuPoints(Id playerId) {
+    private int tichuPoints(PlayerId playerId) {
         return tichus.value().get(playerId)
                 .map(Tichu::value)
                 .getOrElseThrow(() -> DomainProblemDetected.of(DomainProblem.INVARIANT_VIOLATED));
@@ -124,7 +125,7 @@ public class Round implements Comparable<Round> {
     }
 
     private Result<Tichus, ValidationError> evaluateTichus() {
-        Map<Id, Tichu> evaluatedTichus = tichus.value().map((playerId, tichu) -> {
+        Map<PlayerId, Tichu> evaluatedTichus = tichus.value().map((playerId, tichu) -> {
             boolean firstPlace = ranks.rankOfPlayer(playerId) == Rank.FIRST;
 
             Tichu evaluatedTichu = switch (tichu) {

@@ -1,5 +1,6 @@
 package ch.resrc.tichu.test.capabilities.habits.fixtures;
 
+import ch.resrc.tichu.domain.entities.*;
 import ch.resrc.tichu.domain.value_objects.*;
 import io.vavr.collection.*;
 
@@ -100,12 +101,12 @@ public class TichusSpec {
         return tichuOfFourthPlayer;
     }
 
-    public Map<Id, Tichu> playerIdToTichu() {
+    public Map<PlayerId, Tichu> playerIdToTichu() {
         return HashMap.of(
-                Id.of(firstPlayerId), Tichu.of(tichuOfFirstPlayer),
-                Id.of(secondPlayerId), Tichu.of(tichuOfSecondPlayer),
-                Id.of(thirdPlayerId), Tichu.of(tichuOfThirdPlayer),
-                Id.of(fourthPlayerId), Tichu.of(tichuOfFourthPlayer)
+                PlayerId.of(firstPlayerId), Tichu.of(tichuOfFirstPlayer),
+                PlayerId.of(secondPlayerId), Tichu.of(tichuOfSecondPlayer),
+                PlayerId.of(thirdPlayerId), Tichu.of(tichuOfThirdPlayer),
+                PlayerId.of(fourthPlayerId), Tichu.of(tichuOfFourthPlayer)
         );
     }
 }

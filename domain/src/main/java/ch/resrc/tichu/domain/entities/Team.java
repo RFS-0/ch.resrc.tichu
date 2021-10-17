@@ -79,7 +79,7 @@ public class Team {
         return Tuple.of(firstPlayer, secondPlayer);
     }
 
-    public Seq<Id> playerIds() {
+    public Seq<PlayerId> playerIds() {
         return List.of(firstPlayer.id(), secondPlayer.id());
     }
 

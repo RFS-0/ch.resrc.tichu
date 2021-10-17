@@ -1,5 +1,6 @@
 package ch.resrc.tichu.test.capabilities.habits.fixtures;
 
+import ch.resrc.tichu.domain.entities.*;
 import ch.resrc.tichu.domain.value_objects.*;
 import io.vavr.collection.*;
 
@@ -68,12 +69,12 @@ public class RanksSpec {
         return copied(but -> but.rankOfFirstPlayer = rank);
     }
 
-    public Map<Id, Rank> playerIdToRank() {
+    public Map<PlayerId, Rank> playerIdToRank() {
         return HashMap.of(
-                Id.of(firstPlayerId), Rank.of(rankOfFirstPlayer),
-                Id.of(secondPlayerId), Rank.of(rankOfSecondPlayer),
-                Id.of(thirdPlayerId), Rank.of(rankOfThirdPlayer),
-                Id.of(fourthPlayerId), Rank.of(rankOfFourthPlayer)
+                PlayerId.of(firstPlayerId), Rank.of(rankOfFirstPlayer),
+                PlayerId.of(secondPlayerId), Rank.of(rankOfSecondPlayer),
+                PlayerId.of(thirdPlayerId), Rank.of(rankOfThirdPlayer),
+                PlayerId.of(fourthPlayerId), Rank.of(rankOfFourthPlayer)
         );
     }
 }

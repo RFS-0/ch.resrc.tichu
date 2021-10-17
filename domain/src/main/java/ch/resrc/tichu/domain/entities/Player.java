@@ -12,7 +12,7 @@ import static ch.resrc.tichu.capabilities.validation.Validations.*;
 
 public class Player {
 
-    private final Id id;
+    private final PlayerId id;
     private Name name;
     private Instant createdAt;
 
@@ -24,7 +24,7 @@ public class Player {
         );
     }
 
-    private Player(Id id, Name name, Instant createdAt) {
+    private Player(PlayerId id, Name name, Instant createdAt) {
         this.id = id;
         this.name = name;
         this.createdAt = createdAt;
@@ -42,11 +42,11 @@ public class Player {
         return theCopy;
     }
 
-    public static Result<Player, ValidationError> resultOf(Id id, Name name, Instant createdAt) {
+    public static Result<Player, ValidationError> resultOf(PlayerId id, Name name, Instant createdAt) {
         return validation().applyTo(new Player(id, name, createdAt));
     }
 
-    public Id id() {
+    public PlayerId id() {
         return id;
     }
 

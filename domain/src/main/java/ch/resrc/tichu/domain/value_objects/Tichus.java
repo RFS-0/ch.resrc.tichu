@@ -2,6 +2,7 @@ package ch.resrc.tichu.domain.value_objects;
 
 import ch.resrc.tichu.capabilities.result.*;
 import ch.resrc.tichu.capabilities.validation.*;
+import ch.resrc.tichu.domain.entities.*;
 import io.vavr.collection.*;
 
 import static ch.resrc.tichu.capabilities.validation.ValidationErrorModifier.*;
@@ -10,13 +11,13 @@ import static ch.resrc.tichu.capabilities.validation.Validations.*;
 
 public class Tichus {
 
-    private final Map<Id, Tichu> playerToTichu;
+    private final Map<PlayerId, Tichu> playerToTichu;
 
-    public Tichus(Map<Id, Tichu> playerToTichu) {
+    public Tichus(Map<PlayerId, Tichu> playerToTichu) {
         this.playerToTichu = playerToTichu;
     }
 
-    private static Validation<Map<Id, Tichu>, ValidationError> validation() {
+    private static Validation<Map<PlayerId, Tichu>, ValidationError> validation() {
         return modified(
                 chained(
                         notNull(),
@@ -28,19 +29,19 @@ public class Tichus {
         );
     }
 
-    public static Result<Tichus, ValidationError> resultOf(Map<Id, Tichu> values) {
+    public static Result<Tichus, ValidationError> resultOf(Map<PlayerId, Tichu> values) {
         return validation().applyTo(values).map(Tichus::new);
     }
 
-    public static Tichus of(Map<Id, Tichu> values) {
+    public static Tichus of(Map<PlayerId, Tichu> values) {
         return Tichus.resultOf(values).value();
     }
 
-    public Map<Id, Tichu> value() {
+    public Map<PlayerId, Tichu> value() {
         return playerToTichu;
     }
 
-    public Tichu tichuOfPlayer(Id playerId) {
+    public Tichu tichuOfPlayer(PlayerId playerId) {
         return playerToTichu.get(playerId).getOrElse(Tichu.NONE);
     }
 }
