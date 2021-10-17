@@ -10,7 +10,7 @@ import java.util.function.*;
 
 public class UserSpec {
 
-    private Id id = Id.next();
+    private UserId id = UserId.of("8f1f244f-ef18-4393-916b-70f5ded89442");
     private Name name = Name.of("Tichu User");
     private Email email = Email.of("user@tichu.resrc.ch");
     private Instant createdAt = Instant.now();
@@ -31,7 +31,7 @@ public class UserSpec {
         return copy;
     }
 
-    public UserSpec id(Id id) {
+    public UserSpec id(UserId id) {
         return copied(but -> but.id = id);
     }
 

@@ -15,7 +15,7 @@ class UserTest {
     @Test
     void validValues_resultOf_success() {
         // given:
-        Id id = Id.next();
+        var id = UserId.of("ecc32918-5924-4a4c-9120-8cf5dbe994c6");
         Email email = Email.of("test@example.com");
         Name name = Name.of("user name");
         Instant createdAt = Instant.now();
@@ -35,7 +35,7 @@ class UserTest {
     @Test
     void missingId_resultOf_validationError() {
         // given:
-        Id missingId = null;
+        UserId missingId = null;
         Email email = Email.of("test@example.com");
         Name name = Name.of("user name");
         Instant createdAt = Instant.now();
@@ -56,7 +56,7 @@ class UserTest {
     @Test
     void missingEmail_resultOf_validationError() {
         // given:
-        Id id = Id.next();
+        var id = UserId.of("6bc4a7e3-dbb4-491c-a62e-96f7c7c40836");
         Email missingEmail = null;
         Name name = Name.of("user name");
         Instant createdAt = Instant.now();
@@ -77,7 +77,7 @@ class UserTest {
     @Test
     void missingName_resultOf_validationError() {
         // given:
-        Id id = Id.next();
+        var id = UserId.of("4fc10782-218c-4212-af8c-441d42ff3f05");
         Email email = Email.of("test@example.com");
         Name missingName = null;
         Instant createdAt = Instant.now();
@@ -98,7 +98,7 @@ class UserTest {
     @Test
     void missingCreatedAt_resultOf_validationError() {
         // given:
-        Id id = Id.next();
+        var id = UserId.of("5770cf67-4e07-4581-8a3b-4aa191de4984");
         Email email = Email.of("test@example.com");
         Name name = Name.of("user name");
         Instant missingCreatedAt = null;

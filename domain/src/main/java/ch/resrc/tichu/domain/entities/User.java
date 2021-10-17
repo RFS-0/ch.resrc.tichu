@@ -13,7 +13,7 @@ import static ch.resrc.tichu.capabilities.validation.Validations.*;
 
 public class User {
 
-    private final Id id;
+    private final UserId id;
     private final Name name;
     private final Email email;
     private final Instant createdAt;
@@ -30,7 +30,7 @@ public class User {
         );
     }
 
-    private User(Id id, Name name, Email email, Instant createdAt) {
+    private User(UserId id, Name name, Email email, Instant createdAt) {
         this.id = id;
         this.email = email;
         this.name = name;
@@ -50,7 +50,7 @@ public class User {
         return theCopy;
     }
 
-    public static Result<User, ValidationError> resultOf(Id id, Name name, Email mail, Instant createdAt) {
+    public static Result<User, ValidationError> resultOf(UserId id, Name name, Email mail, Instant createdAt) {
         return validation().applyTo(new User(id, name, mail, createdAt));
     }
 
@@ -59,7 +59,7 @@ public class User {
         return creationFunction.get();
     }
 
-    public Id id() {
+    public UserId id() {
         return id;
     }
 

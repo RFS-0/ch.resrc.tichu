@@ -12,7 +12,7 @@ public interface EntityHabits {
 
     default User user(String id, String name, String email, Instant createdAt) {
         return User.resultOf(
-                        Id.of(id),
+                        UserId.of(id),
                         Name.of(name),
                         Email.of(email),
                         createdAt
