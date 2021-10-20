@@ -34,6 +34,10 @@ public class Name extends DomainPrimitive<Name, String> implements StringValueOb
     return value;
   }
 
+  public String asLiteral() {
+    return getPrimitiveValue();
+  }
+
   @Override
   public int compareTo(Name other) {
     return this.value.compareTo(other.value);
