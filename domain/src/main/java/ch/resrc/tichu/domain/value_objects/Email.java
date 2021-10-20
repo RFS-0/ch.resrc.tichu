@@ -42,7 +42,7 @@ public class Email extends DomainPrimitive<Email, String> implements StringValue
         return resultOf(literal).getOrThrow(invariantViolated());
     }
 
-    public String value() {
+    public String asLiteral() {
         return value;
     }
 
