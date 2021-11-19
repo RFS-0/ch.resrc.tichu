@@ -1,21 +1,21 @@
 package ch.resrc.tichu.capabilities.validation;
 
-import ch.resrc.tichu.capabilities.functional.*;
+import ch.resrc.tichu.capabilities.functional.Reduce;
 import ch.resrc.tichu.capabilities.result.*;
 import io.vavr.collection.*;
-import org.apache.commons.lang3.*;
+import org.apache.commons.lang3.StringUtils;
 
 import java.net.*;
 import java.util.List;
 import java.util.*;
 import java.util.function.*;
-import java.util.regex.*;
+import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
-import static ch.resrc.tichu.capabilities.validation.ValidationError.Claim.*;
+import static ch.resrc.tichu.capabilities.validation.ValidationError.Claim.UNINTERESTING_VALUE;
 import static ch.resrc.tichu.capabilities.validation.ValidationErrorModifier.*;
-import static java.lang.String.*;
-import static java.util.stream.Collectors.*;
+import static java.lang.String.format;
+import static java.util.stream.Collectors.toList;
 
 public class Validations {
 
