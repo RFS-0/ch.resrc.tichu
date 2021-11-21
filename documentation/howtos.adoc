@@ -15,9 +15,24 @@ mvn io.quarkus:quarkus-maven-plugin:1.9.2.Final:create \
 === How to run an application in DEV mode
 
 You can run your application in dev mode that enables live coding using:
+
 [source,shell]
 ----
 ./gradlew quarkusDev
+----
+
+=== How to execute jQAssistant scan
+
+[source,shell]
+----
+ jqassistant.sh scan -f **/build -storeUri bolt://localhost:7687 -storeUsername neo4j -storePassword tichu -reset
+----
+
+=== How to execute jQAssistant analyze
+
+[source,shell]
+----
+ jqassistant.sh analyze -storeUri bolt://localhost:7687 -storeUsername neo4j -storePassword tichu
 ----
 
 ---

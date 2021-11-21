@@ -1,6 +1,7 @@
 package ch.resrc.tichu.use_cases.support.outbound_ports.presentation;
 
-import ch.resrc.tichu.capabilities.error_handling.*;
+import ch.resrc.tichu.capabilities.error_handling.BusinessError;
+import ch.resrc.tichu.use_cases.support.outbound_ports.authentication.Client;
 
 /**
  * Presents errors to clients.
@@ -17,7 +18,7 @@ public interface ErrorPresenter {
      *
      * @param failure describes the failure that occurred
      */
-    void presentSystemFailure(RuntimeException failure);
+    void presentSystemFailure(Client client, RuntimeException failure);
 
     /**
      * A business error has occurred for which the client is responsible or on which the
@@ -32,17 +33,17 @@ public interface ErrorPresenter {
      *
      * @param businessError describes the business error that has occurred.
      */
-    void presentBusinessError(BusinessError businessError);
+    void presentBusinessError(Client client, BusinessError businessError);
 
     ErrorPresenter THROWING_NO_OP = new ErrorPresenter() {
 
         @Override
-        public void presentSystemFailure(RuntimeException failure) {
+        public void presentSystemFailure(Client client, RuntimeException failure) {
             throw failure;
         }
 
         @Override
-        public void presentBusinessError(BusinessError businessError) {
+        public void presentBusinessError(Client client, BusinessError businessError) {
             throw businessError.asException();
         }
     };

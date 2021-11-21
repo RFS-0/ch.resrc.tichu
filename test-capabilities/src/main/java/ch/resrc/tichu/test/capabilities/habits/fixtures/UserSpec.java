@@ -1,12 +1,12 @@
 package ch.resrc.tichu.test.capabilities.habits.fixtures;
 
-import ch.resrc.tichu.capabilities.result.*;
-import ch.resrc.tichu.capabilities.validation.*;
+import ch.resrc.tichu.capabilities.result.Result;
+import ch.resrc.tichu.capabilities.validation.ValidationError;
 import ch.resrc.tichu.domain.entities.*;
 import ch.resrc.tichu.domain.value_objects.*;
 
-import java.time.*;
-import java.util.function.*;
+import java.time.Instant;
+import java.util.function.Consumer;
 
 public class UserSpec {
 
@@ -15,7 +15,7 @@ public class UserSpec {
     private Email email = Email.of("user@tichu.resrc.ch");
     private Instant createdAt = Instant.now();
 
-    public UserSpec() {
+    private UserSpec() {
     }
 
     public UserSpec(UserSpec other) {
@@ -29,6 +29,10 @@ public class UserSpec {
         var copy = new UserSpec(this);
         modification.accept(copy);
         return copy;
+    }
+
+    public static UserSpec user() {
+        return new UserSpec();
     }
 
     public UserSpec id(UserId id) {

@@ -1,7 +1,8 @@
 package ch.resrc.tichu.test.capabilities.testbed;
 
-import ch.resrc.tichu.use_cases.support.outbound_ports.authorization.*;
-import ch.resrc.tichu.use_cases.support.outbound_ports.eventbus.*;
+import ch.resrc.tichu.use_cases.support.outbound_ports.authorization.AccessControl;
+import ch.resrc.tichu.use_cases.support.outbound_ports.eventbus.EventBus;
+import ch.resrc.tichu.use_cases.support.outbound_ports.persistence.*;
 import ch.resrc.tichu.use_cases.support.outbound_ports.transaction.*;
 
 public interface Ports {
@@ -13,4 +14,8 @@ public interface Ports {
     EnsuredTransaction ensuredTransaction();
 
     AccessControl accessControl();
+
+    UserRepository userRepository();
+
+    OtpRepository otpRepository();
 }

@@ -18,4 +18,6 @@ include 'products:quarkus-app-config'
 include 'domain'
 include 'use-cases'
 include 'test-capabilities'
+include 'adapters'
+include 'adapters:in-memory-persistence-adapter'
 

@@ -1,11 +1,13 @@
 package ch.resrc.tichu.test.capabilities.testbed;
 
-import ch.resrc.tichu.test.capabilities.adapters.testdoubles.*;
-import ch.resrc.tichu.use_cases.support.outbound_ports.authorization.*;
-import ch.resrc.tichu.use_cases.support.outbound_ports.eventbus.*;
+import ch.resrc.tichu.adapters.persistence.in_memory.*;
+import ch.resrc.tichu.test.capabilities.adapters.testdoubles.FakeEventBus;
+import ch.resrc.tichu.use_cases.support.outbound_ports.authorization.AccessControl;
+import ch.resrc.tichu.use_cases.support.outbound_ports.eventbus.EventBus;
+import ch.resrc.tichu.use_cases.support.outbound_ports.persistence.*;
 import ch.resrc.tichu.use_cases.support.outbound_ports.transaction.*;
 
-import java.util.stream.*;
+import java.util.stream.Stream;
 
 public final class TestBed {
 
@@ -79,21 +81,27 @@ public final class TestBed {
 
         private AccessControl accessControl = AccessControl.grantAll();
 
-        public Adapters useAccessControl(AccessControl accessControl) {
+        private UserRepository userRepository = new InMemoryUserRepository();
 
+        private OtpRepository otpRepository = new InMemoryOtpRepository();
+
+        public Adapters useAccessControl(AccessControl accessControl) {
             this.accessControl = accessControl;
             return this;
         }
 
         public Adapters useEventBus(EventBus eventBus) {
-
             this.eventBus = eventBus;
             return this;
         }
 
         public Adapters useTransactionAdapters(TransactionAdapters transactionAspects) {
-
             this.transactionAdapters = transactionAspects;
+            return this;
+        }
+
+        public Adapters useOtpRepository(OtpRepository otpRepository) {
+            this.otpRepository = otpRepository;
             return this;
         }
 
@@ -115,6 +123,16 @@ public final class TestBed {
         @Override
         public AccessControl accessControl() {
             return accessControl;
+        }
+
+        @Override
+        public UserRepository userRepository() {
+            return userRepository;
+        }
+
+        @Override
+        public OtpRepository otpRepository() {
+            return otpRepository;
         }
     }
 

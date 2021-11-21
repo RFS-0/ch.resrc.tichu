@@ -1,10 +1,13 @@
 package ch.resrc.tichu.use_cases.support.habits.errorhandling;
 
-import ch.resrc.tichu.capabilities.error_handling.*;
+import ch.resrc.tichu.capabilities.error_handling.Problem;
 
 public enum UseCaseProblem implements Problem {
 
-    USER_NOT_FOUND_OR_CREATED("User not found or created", "User with name <${name}> and email <${email}> could not be created.");
+    USER_NOT_FOUND_OR_CREATED("User not found or created", "User with name <${name}> and email <${email}> could not be created."),
+
+    INVALID_INPUT_DETECTED("Invalid input", "${validationMessage}"),
+    ;
 
     private final String title;
     private final String detailsTemplate;

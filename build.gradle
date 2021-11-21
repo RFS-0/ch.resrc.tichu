@@ -58,6 +58,8 @@ subprojects {
             dependency 'org.hibernate.javax.persistence:hibernate-jpa-2.1-api:1.0.0.Final'
             dependency 'org.springframework.security.oauth:spring-security-oauth2:2.1.1.RELEASE'
 
+            dependency 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.13.0'
+
             // Bean validation:
             dependency 'org.hibernate.validator:hibernate-validator:6.0.10.Final'
             dependency 'org.hibernate.validator:hibernate-validator-annotation-processor:6.0.10.Final'

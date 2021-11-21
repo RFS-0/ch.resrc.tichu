@@ -15,10 +15,6 @@ public interface ValueObjectHabits {
         return Email.of(literal);
     }
 
-    default Id id(String id) {
-        return Id.of(id);
-    }
-
     default JoinCode joinCode(String literal) {
         return JoinCode.of(literal);
     }

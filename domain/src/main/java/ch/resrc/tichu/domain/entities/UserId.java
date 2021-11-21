@@ -1,17 +1,16 @@
 package ch.resrc.tichu.domain.entities;
 
-import ch.resrc.tichu.capabilities.result.*;
+import ch.resrc.tichu.capabilities.result.Result;
 import ch.resrc.tichu.capabilities.validation.*;
-import ch.resrc.tichu.domain.*;
-import ch.resrc.tichu.domain.errorhandling.*;
+import ch.resrc.tichu.domain.IdSequence;
+import ch.resrc.tichu.domain.errorhandling.DomainProblemDetected;
 import ch.resrc.tichu.domain.value_objects.*;
 
-import java.util.*;
+import java.util.UUID;
 
-import static ch.resrc.tichu.capabilities.validation.ValidationErrorModifier.*;
-import static ch.resrc.tichu.capabilities.validation.Validations.chained;
+import static ch.resrc.tichu.capabilities.validation.ValidationErrorModifier.context;
 import static ch.resrc.tichu.capabilities.validation.Validations.*;
-import static ch.resrc.tichu.domain.validation.DomainValidations.*;
+import static ch.resrc.tichu.domain.validation.DomainValidations.invariantViolated;
 
 public class UserId extends DomainPrimitive<UserId, String> implements StringValueObject {
 
@@ -24,7 +23,7 @@ public class UserId extends DomainPrimitive<UserId, String> implements StringVal
     public static Validation<String, ValidationError> validation() {
         return modified(
                 chained(
-                        notNull(),
+                        notBlank(),
                         isUuid()
                 ),
                 context(UserId.class)
@@ -39,6 +38,10 @@ public class UserId extends DomainPrimitive<UserId, String> implements StringVal
     public static UserId of(String literal) throws DomainProblemDetected {
 
         return UserId.resultOf(literal).getOrThrow(invariantViolated());
+    }
+
+    public static UserId random() {
+        return UserId.of(UUID.randomUUID().toString());
     }
 
     @Override

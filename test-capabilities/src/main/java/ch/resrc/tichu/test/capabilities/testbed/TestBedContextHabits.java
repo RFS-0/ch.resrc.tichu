@@ -1,7 +1,8 @@
 package ch.resrc.tichu.test.capabilities.testbed;
 
-import ch.resrc.tichu.test.capabilities.habits.assertions.*;
-import ch.resrc.tichu.test.capabilities.habits.fixtures.*;
+import ch.resrc.tichu.test.capabilities.habits.assertions.EventBusAssertionHabits;
+import ch.resrc.tichu.test.capabilities.habits.fixtures.ValueObjectHabits;
+import ch.resrc.tichu.test.capabilities.habits.use_cases.CreateOtpHabits;
 
 /**
  * Provides all the functionality defined by the listed test habit interfaces.
@@ -9,7 +10,10 @@ import ch.resrc.tichu.test.capabilities.habits.fixtures.*;
  */
 public interface TestBedContextHabits
         extends
+
         ValueObjectHabits,
 
-        EventBusAssertionHabits {
+        EventBusAssertionHabits,
+
+        CreateOtpHabits {
 }

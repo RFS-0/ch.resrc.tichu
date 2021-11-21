@@ -1,8 +1,9 @@
 package ch.resrc.tichu.test.capabilities.adapters.testdoubles;
 
 import ch.resrc.tichu.capabilities.error_handling.*;
-import ch.resrc.tichu.capabilities.result.*;
-import ch.resrc.tichu.use_cases.support.outbound_ports.presentation.*;
+import ch.resrc.tichu.capabilities.result.Result;
+import ch.resrc.tichu.use_cases.support.outbound_ports.authentication.Client;
+import ch.resrc.tichu.use_cases.support.outbound_ports.presentation.ErrorPresenter;
 import org.apache.commons.lang3.builder.*;
 
 import java.util.*;
@@ -13,7 +14,7 @@ public class TestErrorPresenter implements ErrorPresenter {
     private final List<ProblemDetected> presentedBusinessErrors = new ArrayList<>();
 
     @Override
-    public void presentSystemFailure(RuntimeException failure) {
+    public void presentSystemFailure(Client client, RuntimeException failure) {
 
         presentedFailures.add(failure);
     }
@@ -27,7 +28,9 @@ public class TestErrorPresenter implements ErrorPresenter {
         }
     }
 
-    public List<RuntimeException> presentedFailures() { return this.presentedFailures; }
+    public List<RuntimeException> presentedFailures() {
+        return this.presentedFailures;
+    }
 
     public Result<Void, RuntimeException> presentedFailureResult() {
 
@@ -52,11 +55,10 @@ public class TestErrorPresenter implements ErrorPresenter {
     }
 
     @Override
-    public void presentBusinessError(BusinessError businessError) {
+    public void presentBusinessError(Client client, BusinessError businessError) {
 
         presentedBusinessErrors.add(businessError.asException());
     }
-
 
     @Override
     public String toString() {

@@ -1,14 +1,14 @@
 package ch.resrc.tichu.domain.value_objects;
 
-import ch.resrc.tichu.test.capabilities.habits.assertions.*;
-import org.junit.jupiter.params.*;
+import ch.resrc.tichu.test.capabilities.habits.assertions.AssertionHabits;
+import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.*;
 
-import static ch.resrc.tichu.test.capabilities.habits.assertions.IsValidationError.*;
-import static org.assertj.core.api.AssertionsForClassTypes.*;
+import static ch.resrc.tichu.test.capabilities.habits.assertions.IsValidationError.whereErrorMessage;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.hamcrest.Matchers.*;
 
-class OneTimePasswordTest {
+class OtpTest {
 
     @ParameterizedTest
     @ValueSource(
@@ -22,7 +22,7 @@ class OneTimePasswordTest {
     )
     void aValidOneTimePassword_resultOf_success(String validOneTimePassword) {
         // given, when:
-        var result = OneTimePassword.resultOf(validOneTimePassword);
+        var result = Otp.resultOf(validOneTimePassword);
 
         // then:
         result.failureEffect(System.out::println);
@@ -35,7 +35,7 @@ class OneTimePasswordTest {
     @NullSource
     void aBlankOneTimePassword_resultOf_failure(String blankOneTimePassword) {
         // given, when:
-        var result = OneTimePassword.resultOf(blankOneTimePassword);
+        var result = Otp.resultOf(blankOneTimePassword);
 
         // then:
         assertThat(result.isFailure()).isTrue();
@@ -57,7 +57,7 @@ class OneTimePasswordTest {
     )
     void anInvalidUuid_resultOf_failure(String invalidUuid) {
         // given, when:
-        var result = OneTimePassword.resultOf(invalidUuid);
+        var result = Otp.resultOf(invalidUuid);
 
         // then:
         assertThat(result.isFailure()).isTrue();

@@ -1,10 +1,10 @@
 package ch.resrc.tichu.test.capabilities.habits.fixtures;
 
-import ch.resrc.tichu.domain.entities.*;
-import ch.resrc.tichu.domain.value_objects.*;
+import ch.resrc.tichu.domain.entities.TeamId;
+import ch.resrc.tichu.domain.value_objects.CardPoints;
 import io.vavr.collection.*;
 
-import java.util.function.*;
+import java.util.function.Consumer;
 
 public class CardPointsSpec {
 
