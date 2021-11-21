@@ -44,6 +44,7 @@ public class CreateOtpUseCase implements CreateOtp {
         OtpSource otpSource = new OtpSource(ports.otpRepository);
 
         Forum forum = new Forum();
+
         UserInterface ui = new UserInterface(input.client(), presenter);
         forum.events().subscribe(ui);
 

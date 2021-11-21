@@ -50,6 +50,10 @@ public class UserId extends DomainPrimitive<UserId, String> implements StringVal
         return value.toString();
     }
 
+    public String asLiteral() {
+        return getPrimitiveValue();
+    }
+
     public interface Sequence extends IdSequence<UserId> {
 
         UserId.Sequence RANDOM = () -> UserId.of(UUID.randomUUID().toString());

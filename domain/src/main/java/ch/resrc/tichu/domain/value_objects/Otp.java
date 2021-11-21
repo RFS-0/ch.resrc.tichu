@@ -45,6 +45,14 @@ public class Otp extends DomainPrimitive<Otp, String> implements StringValueObje
         return value;
     }
 
+    public OtpValidationResult validate(Otp otp) {
+        if (value.equals(otp.value)) {
+            return OtpValidationResult.VALID;
+        } else {
+            return OtpValidationResult.INVALID;
+        }
+    }
+
     @Override
     protected String getPrimitiveValue() {
         return value;
