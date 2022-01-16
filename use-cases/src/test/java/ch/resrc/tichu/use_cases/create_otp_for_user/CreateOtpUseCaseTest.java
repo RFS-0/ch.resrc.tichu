@@ -4,6 +4,7 @@ import ch.resrc.tichu.domain.entities.UserId;
 import ch.resrc.tichu.domain.value_objects.*;
 import ch.resrc.tichu.test.capabilities.adapters.testdoubles.TestOtpPresenter;
 import ch.resrc.tichu.test.capabilities.habits.fixtures.*;
+import ch.resrc.tichu.test.capabilities.habits.use_cases.CreateOtpHabits;
 import ch.resrc.tichu.test.capabilities.testbed.TestBed;
 import ch.resrc.tichu.use_cases.support.outbound_ports.authentication.Client;
 import org.junit.jupiter.api.*;
@@ -12,11 +13,12 @@ import static ch.resrc.tichu.test.capabilities.habits.use_cases.CreateOtpInputSp
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 class CreateOtpUseCaseTest
+
         implements
 
         ValueObjectHabits,
-
-        UserFixtureHabits {
+        UserFixtureHabits,
+        CreateOtpHabits {
 
     @Nested
     class If_requested_to_create_a_new_otp {
