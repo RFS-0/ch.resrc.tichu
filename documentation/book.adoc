@@ -4,6 +4,7 @@
 :sectanchors:
 
 include::todos.adoc[]
+include::introduction.adoc[]
 include::deployment.adoc[]
 include::architecture.adoc[]
 include::cross-cutting-concerns.adoc[]

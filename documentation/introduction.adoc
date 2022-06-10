@@ -1,0 +1,14 @@
+== Vision
+
+This application strives to be the best digital score card for playing analog tichu games.
+
+[source, shell script]
+----
+FOR tichu players
+WHO do not want to track scores manually and are interested in their game statistics
+THE tichu.resrc.ch website is a easy an visually appealing resource
+THAT does the scoring of tichu games for you and let's you track you game statistics over multiple games
+UNLIKE pen and paper score boards
+THIS way of tracking game scores is fun
+----
+

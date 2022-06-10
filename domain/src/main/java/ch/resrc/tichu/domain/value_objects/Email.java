@@ -14,7 +14,7 @@ import static ch.resrc.tichu.domain.validation.DomainValidations.*;
 
 public class Email extends DomainPrimitive<Email, String> implements StringValueObject, Comparable<Email> {
 
-    public static final String EMAIL_ADDRESS_PATTERN = "^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$";
+    private static final String EMAIL_ADDRESS_PATTERN = "^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$";
 
     private final String value;
 
