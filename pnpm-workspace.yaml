@@ -1,0 +1,7 @@
+packages:
+  - 'app/**'
+  - 'adapters/**'
+  - 'capabilities/**'
+  - 'common-config/**'
+  - 'domain/**'
+  - 'use-cases/**'

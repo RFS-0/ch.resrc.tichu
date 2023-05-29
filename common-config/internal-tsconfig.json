@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "display": "Base config for internal modules",
+  "compilerOptions": {
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "isolatedModules": true,
+    "module": "ESNext",
+    "moduleResolution": "node",
+    "preserveWatchOutput": true,
+    "skipLibCheck": true,
+    "noEmit": true,
+    "strict": true,
+    "target": "ESNext"
+  },
+  "exclude": [
+    "node_modules"
+  ],
+  "types": [
+    "jest",
+    "@testing-library/jest-dom"
+  ]
+}

@@ -1,0 +1,358 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@900&display=swap');
+
+
+:root {
+  color-scheme: light;
+
+  --sys-transition-delay: 0.4s;
+  --sys-transition-duration: 0.4s;
+
+  --sys-font-family: 'Lato', sans-serif;
+
+  --fib-1: 1px;
+  --fib-2: 1px;
+  --fib-3: 2px;
+  --fib-4: 3px;
+  --fib-5: 5px;
+  --fib-6: 8px;
+  --fib-7: 13px;
+  --fib-8: 21px;
+  --fib-9: 34px;
+  --fib-10: 55px;
+  --fib-11: 89px;
+  --fib-12: 144px;
+  --fib-13: 233px;
+  --fib-14: 377px;
+  --fib-15: 610px;
+  --fib-16: 987px;
+  --fib-17: 1597px;
+  --fib-18: 2584px;
+  --fib-19: 4181px;
+
+  --white: #ffffff;
+  --black: #000000;
+
+  --sys-white-rgb: 255, 255, 255;
+  --sys-black-rgb: 0, 0, 0;
+
+  --sys-primary: rgb(221, 215, 181);
+  --sys-primary-variant: rgba(221, 215, 181, 0);
+  --sys-secondary: rgb(170, 166, 141);
+  --sys-tertiary: rgb(62, 197, 145);
+  --sys-tertiary-variant: rgb(45, 143, 105);
+  --sys-quaternary: rgb(214, 86, 97);
+  --sys-quaternary-variant: rgb(160, 63, 71);
+  --sys-outline: rgb(25, 29, 49);
+  --sys-outline-variant: rgb(118, 128, 236);
+  --sys-on-outline: rgb(86, 97, 171);
+
+  /* font-family: Arial, Helvetica, sans-serif; */
+  font-family: var(--sys-font-family);
+
+  --input-width: 70%;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-weight: normal;
+}
+
+@keyframes slide-in-input {
+  from {
+    width: 0;
+  }
+  to {
+    width: var(--input-width);
+  }
+}
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, response, ruby, section, summary,
+time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  vertical-align: baseline;
+}
+
+body {
+  line-height: 1;
+  font-size: clamp(0.1em, 0.75em + 0.75vw + 1vh, 2em);
+}
+
+ol, ul {
+  list-style: none;
+}
+
+button {
+  border-style: solid;
+  cursor: pointer;
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+.light-background {
+  color: var(--sys-outline);
+  background: var(--sys-on-outline);
+}
+
+.left-team-background {
+  color: var(--sys-primary);
+  background: var(--sys-tertiary);
+}
+
+.left-team-background-dark {
+  color: var(--sys-primary);
+  background: var(--sys-tertiary-variant);
+}
+
+.right-team-background {
+  color: var(--sys-primary);
+  background: var(--sys-quaternary);
+}
+
+.right-team-background-dark {
+  color: var(--sys-primary);
+  background: var(--sys-quaternary-variant);
+}
+
+/* App Style */
+#app {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  overflow: hidden;
+  width: 100vw;
+  height: 100vh;
+  background-color: var(--sys-primary);
+}
+
+.text--xl {
+  font-size: clamp(0.1em, 1em + 2vw + 2vh, 5em);
+}
+
+.text--lg {
+  font-size: clamp(0.1em, 0.9em + 0.9vw + 1.5vh, 4em);
+}
+
+.text--md {
+  font-size: clamp(0.1em, 0.8em + 0.8vw + 1.25vh, 3em);
+}
+
+.text--sm {
+  font-size: clamp(0.1em, 0.5em + 0.5vw + 0.5vh, 0.8em);
+}
+
+.container--row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+}
+
+.container--column {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+}
+
+.container--column-start {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+}
+
+.button--xl-dark {
+  background-color: var(--sys-outline);
+  color: var(--sys-on-outline);
+  width: 75vw;
+  height: 20vh;
+  border-radius: 2vh;
+  margin: 1vh
+}
+
+.button--xl-dark:hover {
+  background-color: var(--sys-outline-variant);
+}
+
+.button--lg-dark {
+  background-color: var(--sys-outline);
+  color: var(--sys-on-outline);
+  width: 80%;
+  height: 80%;
+  border-radius: 2vh;
+  margin: 1vh
+}
+
+.button--lg {
+  cursor: progress;
+  color: var(--sys-primary);
+  width: 80%;
+  height: 80%;
+  border-radius: 2vh;
+  margin: 1vh
+}
+
+.button--md {
+  width: 15vh;
+  height: 15vh;
+  border-radius: 2vh;
+  margin: 1vh
+}
+
+.button--md-dark {
+  background-color: var(--sys-outline);
+  color: var(--sys-on-outline);
+  width: 15vh;
+  height: 15vh;
+  border-radius: 2vh;
+  margin: 1vh
+}
+
+.button--sm {
+  width: 10vh;
+  height: 10vh;
+  border-radius: 2vh;
+  margin: 1vh
+}
+
+.button--sm-dark {
+  background-color: var(--sys-outline);
+  color: var(--sys-on-outline);
+  width: 10vh;
+  height: 10vh;
+  border-radius: 2vh;
+  margin: 1vh
+}
+
+.margin--xl {
+  margin: 3vh;
+}
+
+.margin--lg {
+  margin: 2vh;
+}
+
+.margin--md {
+  margin: 1vh;
+}
+
+.margin--sm {
+  margin: 0.5vh;
+}
+
+.border-radius {
+  border-radius: 3vh;
+}
+
+.input-container--center {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  height: 100%;
+  width: 100%;
+  border-radius: 2vh;
+}
+
+.input-container--left {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  height: 100%;
+  width: 100%;
+  border-radius: 5vh;
+  margin-left: 2vw;
+}
+
+.input-container--right {
+  display: flex;
+  align-items: center;
+  flex-direction: row-reverse;
+  height: 100%;
+  width: 100%;
+  border-radius: 5vh;
+  margin-right: 2vw;
+}
+
+.input--text {
+  animation-name: slide-in-input;
+  animation-duration: 1s;
+  width: 70%;
+  --input-width: 70%;
+  padding: 0 2vw 0 2vw;
+  border: none;
+  outline: none;
+  margin: 0 2vw 0 2vw;
+}
+
+.input--text.narrow {
+  width: 70%;
+  --input-width: 70%;
+  padding: 0 1vw 0 1vw;
+  margin: 0 1vw 0 1vw;
+}
+
+.confirm.button { /* two classes to increase specifity */
+  background: transparent;
+  color: var(--sys-primary);
+  outline: none;
+  height: 100%;
+  border: none;
+  border-bottom: 1vh;
+}
+
+.even {
+  background: var(--sys-outline);
+  color: var(--sys-outline-variant);
+}
+
+.odd {
+  background: var(--sys-outline-variant);
+  color: var(--sys-outline);
+}
+
+.none {
+  text-decoration: underline var(--black);
+}
+
+.called {
+  text-decoration: underline #ffdd00;
+}
+
+.failed {
+  text-decoration: underline red;
+}
+
+.success {
+  text-decoration: underline green;
+}
+
+.math {
+  font-family: times new roman, serif;
+  font-style: italic;
+  text-align: center;
+}
