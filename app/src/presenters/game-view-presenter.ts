@@ -10,6 +10,11 @@ export class GameViewPresenter implements CreateGamePresenter {
 
     async present(response: CreateGameResponse): Promise<void> {
         console.log(`Presenting ${JSON.stringify(response)}`);
+        if (response.problems.length > 0) {
+            // TODO: Handle problems
+            console.log(`Problems: ${JSON.stringify(response.problems)}`);
+            return;
+        }
         this._view = response.game;
     }
 

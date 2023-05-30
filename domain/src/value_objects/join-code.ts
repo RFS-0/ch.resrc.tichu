@@ -17,7 +17,7 @@ export class JoinCode extends StringValueObject {
         super(input);
         const result = JoinCodeSchema.safeParse(input);
         if (!result.success) {
-            throw new Error(`Precondtions to create ${JoinCode.name} not met`);
+            throw new Error(`Preconditions to create ${JoinCode.name} not met`);
         }
         this._value = result.data.value;
     }

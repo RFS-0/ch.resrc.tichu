@@ -1,12 +1,12 @@
 import {Rank, rankOf} from './rank';
 import {Tichu} from './tichu';
-import {Entity, type RawEntity} from '../entities';
 import {implement} from '../validation';
 import {z} from 'zod';
 import {PlayerId} from './player-id';
 import {TeamId} from './team-id';
+import {CompositeValueObject, type RawCompositeValueObject} from './value-object';
 
-export interface RawRound extends RawEntity {
+export interface RawRound extends RawCompositeValueObject {
     roundNumber: number,
     cardPoints: Map<string, number>,
     ranks: Map<string, Rank>,
@@ -14,13 +14,13 @@ export interface RawRound extends RawEntity {
 }
 
 export const RoundSchema = implement<RawRound>().with({
-    roundNumber: z.number(),
+    roundNumber: z.number().min(1).max(100),
     cardPoints: z.map(z.string(), z.number()),
     ranks: z.map(z.string(), z.nativeEnum(Rank)),
     tichus: z.map(z.string(), z.nativeEnum(Tichu))
 });
 
-export class Round extends Entity {
+export class Round extends CompositeValueObject  {
 
     private _roundNumber: number;
     private _cardPoints: Map<string, number>;

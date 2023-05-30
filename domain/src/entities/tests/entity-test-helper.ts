@@ -51,7 +51,7 @@ export function createIntendedEntityCreationTests<R extends RawIntendedEntity, S
 
           it(`is ensured that parsing the invalid input '${JSON.stringify(invalidInput)}' results in an exception`, () => {
             const parse = () => new params.ctor(invalidInput)
-            expect(parse).toThrow(`Precondtions to create ${params.ctor.name} not met`)
+            expect(parse).toThrow(`Preconditions to create ${params.ctor.name} not met`)
           })
         })
       })
@@ -109,7 +109,7 @@ export function createEntityCreationTests<R extends RawEntity, S extends Schema<
 
           it(`is ensured that parsing the invalid input '${JSON.stringify(invalidInput)}' results in an exception`, () => {
             const parse = () => new params.ctor(invalidInput)
-            expect(parse).toThrow(`Precondtions to create ${params.ctor.name} not met`)
+            expect(parse).toThrow(`Preconditions to create ${params.ctor.name} not met`)
           })
         })
       })

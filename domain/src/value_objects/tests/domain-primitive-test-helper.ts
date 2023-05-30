@@ -65,7 +65,7 @@ export function createStringValueObjectCreationTests<R extends RawStringValueObj
 
           it(`is ensured that parsing the invalid input '${invalidInput}' results in an exception`, () => {
             const parse = () => new params.ctor({ value: invalidInput } as R)
-            expect(parse).toThrow(`Precondtions to create ${params.ctor.name} not met`)
+            expect(parse).toThrow(`Preconditions to create ${params.ctor.name} not met`)
           })
         })
       })
@@ -126,7 +126,7 @@ export function createNumberPrimitiveCreationTests<R extends RawNumberValueObjec
 
           it(`is ensured that parsing the invalid input '${invalidInput}' results in an exception`, () => {
             const parse = () => new params.ctor({ value: invalidInput } as R)
-            expect(parse).toThrow(`Precondtions to create ${params.ctor.name} not met`)
+            expect(parse).toThrow(`Preconditions to create ${params.ctor.name} not met`)
           })
         })
       })

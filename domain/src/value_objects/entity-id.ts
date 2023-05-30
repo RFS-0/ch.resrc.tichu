@@ -18,7 +18,7 @@ export class EntityId extends StringValueObject {
     super(input)
     const result = EntityIdSchema.safeParse(input)
     if (!result.success) {
-      throw new Error('Precondtions to create EntityId not met')
+      throw new Error('Preconditions to create EntityId not met')
     }
     this._value = result.data.value
   }
@@ -37,7 +37,7 @@ export function createIdSequence<R extends RawEntityId, S extends Schema<R>, T e
     next(): T {
       const result = schema.safeParse({ value: uuid() })
       if (!result.success) {
-        throw new Error('Precondtions to create EntityId not met')
+        throw new Error('Preconditions to create EntityId not met')
       }
       return new c(result.data)
     }

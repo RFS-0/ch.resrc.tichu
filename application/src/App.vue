@@ -6,9 +6,9 @@
 </template>
 
 <script lang="ts">
-import { endpointRegistry } from '@/configuration/application-configuration';
+import {endpointRegistry} from '@/configuration/application-configuration';
 import 'vue-meta';
-import { Component, Provide, Vue } from 'vue-property-decorator';
+import {Component, Provide, Vue} from 'vue-property-decorator';
 
 Component.registerHooks(['mounted']);
 
@@ -268,49 +268,40 @@ table {
   border-radius: 2vh;
 }
 
-.input-container--left {
+.input-container--left ,.input-container--right{
   display: flex;
   align-items: center;
-  flex-direction: row;
-  height: 100%;
-  width: 100%;
+  justify-content: center;
+  flex-direction: column;
+  gap: 4vw;
   border-radius: 5vh;
   margin-left: 2vw;
 }
 
 .input-container--right {
-  display: flex;
-  align-items: center;
   flex-direction: row-reverse;
-  height: 100%;
-  width: 100%;
-  border-radius: 5vh;
-  margin-right: 2vw;
 }
 
 .input--text {
   animation-name: slide-in-input;
   animation-duration: 1s;
-  width: 70%;
-  --input-width: 70%;
-  padding: 0 2vw 0 2vw;
+  width: var(--input-width);
+  padding: 2vw;
   border: none;
   outline: none;
-  margin: 0 2vw 0 2vw;
+  margin: 2vw;
 }
 
 .input--text.narrow {
   width: 70%;
-  --input-width: 70%;
   padding: 0 1vw 0 1vw;
   margin: 0 1vw 0 1vw;
 }
 
-.confirm.button { /* two classes to increase specifity */
+.confirm.button {
   background: transparent;
   color: var(--color-main);
   outline: none;
-  height: 100%;
   border: none;
   border-bottom: 1vh;
 }

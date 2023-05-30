@@ -1,14 +1,14 @@
 import {type FirebaseApp, initializeApp} from "firebase/app";
 import {getFirestore} from "firebase/firestore";
 import {type Auth, getAuth, signInAnonymously} from "firebase/auth";
-import {createApp} from 'vue'
-import {createPinia} from 'pinia'
+import {createApp, inject, ref, type Ref, type UnwrapRef} from 'vue'
+import {createPinia, defineStore} from 'pinia'
 import App from './App.vue'
 import router from './router'
 import {GameRepositoryImpl} from 'pointchu.database-adapter';
 import {CreateGameUseCaseImpl} from 'pointchu.use-cases/src/create-game-use-case';
-import {createIdSequence, EntityIdSchema, GameId,} from 'pointchu.domain';
-import {createGameUseCaseProviderKey,} from '@/dependency-injection';
+import {createIdSequence, EntityIdSchema, Game, GameId, JoinCode,} from 'pointchu.domain';
+import {authProviderKey, createGameUseCaseProviderKey,} from '@/dependency-injection';
 import './assets/main.css'
 
 const firebaseConfig = {
@@ -22,22 +22,25 @@ const firebaseConfig = {
 };
 
 const firebaseApp: FirebaseApp = initializeApp(firebaseConfig);
-const database = getFirestore(firebaseApp);
+
+// TODO: use adapter and store instead
 const authorization: Auth = getAuth();
 signInAnonymously(authorization)
-    .then(() => {
-        console.log("Signed in");
-        // Signed in..
+    .then((credential) => {
+        console.log(`Signed in anonymously as user ${JSON.stringify(credential)}`);
+        // TODO: check if player for this uses exists already
     })
     .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
-        // ...
+        window.alert(`Could not sign in anonymously because of error ${errorCode} with message ${errorMessage}. Please try later`);
     });
 
+// TODO: fix typing issue
+// @ts-ignore
 const app = createApp(App);
 
-
+const database = getFirestore(firebaseApp);
 const gameRepository = new GameRepositoryImpl(database);
 const createGameUseCase = new CreateGameUseCaseImpl({
         inbound: {
@@ -50,6 +53,7 @@ const createGameUseCase = new CreateGameUseCaseImpl({
 );
 
 app.provide(createGameUseCaseProviderKey, createGameUseCase);
+app.provide(authProviderKey, authorization);
 
 app.use(createPinia());
 app.use(router);

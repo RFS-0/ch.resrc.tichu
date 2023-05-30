@@ -1,11 +1,11 @@
 import {type RawTeam, Team, TeamSchema} from './team';
 import {
-    EntityIdSchema, GameId, Rank, type RawRound, Round, RoundSchema, TeamId, UserId, JoinCode, JoinCodeSchema, PlayerId
+    EntityIdSchema, GameId, JoinCode, JoinCodeSchema, PlayerId, Rank, type RawRound, Round, RoundSchema, TeamId
 } from '../value_objects';
 import {Player} from './player';
-import {Entity, type RawEntity} from './entity';
+import {Entity, EntitySchema, type RawEntity} from './entity';
 import {implement} from '../validation';
-import {z} from 'zod';
+import {z, type ZodTypeDef} from 'zod';
 
 export interface RawGame extends RawEntity {
     id: string
@@ -15,18 +15,20 @@ export interface RawGame extends RawEntity {
     rounds: RawRound[]
 }
 
-export const GameSchema = implement<RawGame>().with({
-    id: EntityIdSchema.shape.value,
-    createdBy: EntityIdSchema.shape.value,
-    joinCode: JoinCodeSchema.shape.value,
-    teams: z.array(TeamSchema),
-    rounds: z.array(RoundSchema),
-});
+export const GameSchema: z.ZodType<RawGame, ZodTypeDef, RawGame> = implement<RawGame>()
+    .extend(EntitySchema)
+    .with({
+        id: EntityIdSchema.shape.value,
+        createdBy: EntityIdSchema.shape.value,
+        joinCode: JoinCodeSchema.shape.value,
+        teams: z.array(TeamSchema).max(2),
+        rounds: z.array(RoundSchema).max(100)
+    });
 
 export class Game extends Entity {
 
     private _id: GameId;
-    private _createdBy: UserId;
+    private _createdBy: PlayerId;
     private _joinCode: JoinCode;
     private _teams: Team[];
     private _rounds: Round[];
@@ -40,7 +42,7 @@ export class Game extends Entity {
             throw new Error(`Preconditions to create ${Game.name} not met because ${result.error.message}`)
         }
         this._id = new GameId({value: result.data.id});
-        this._createdBy = new UserId({value: result.data.createdBy});
+        this._createdBy = new PlayerId({value: result.data.createdBy});
         this._joinCode = new JoinCode({value: result.data.joinCode});
         this._teams = result.data.teams.map(team => new Team(team));
         this._rounds = result.data.rounds.map(round => new Round(round));
@@ -154,7 +156,7 @@ export class Game extends Entity {
         return this._id;
     }
 
-    get createdBy(): UserId {
+    get createdBy(): PlayerId {
         return this._createdBy;
     }
 
@@ -190,83 +192,5 @@ export class Game extends Entity {
             teams: this.teams.map(team => team.toRaw()),
             rounds: this.rounds.map(round => round.toRaw()),
         };
-    }
-}
-
-
-export class CreateGameEvent {
-    private constructor(public createdBy: string) {
-    }
-
-    static of(userId: string): CreateGameEvent {
-        return new CreateGameEvent(userId);
-    }
-
-    toDto(): string {
-        return JSON.stringify(this);
-    }
-}
-
-export class UpdateRankEvent {
-    private constructor(
-        public gameId: string,
-        public playerId: string,
-        public roundNumber: number) {
-    }
-
-    static of(gameId: string, playerId: string, roundNumber: number): UpdateRankEvent {
-        return new UpdateRankEvent(gameId, playerId, roundNumber);
-    }
-}
-
-export class ResetRankEvent {
-    private constructor(
-        public gameId: string,
-        public playerId: string,
-        public roundNumber: number) {
-    }
-
-    static of(gameId: string, playerId: string, roundNumber: number): ResetRankEvent {
-        return new ResetRankEvent(gameId, playerId, roundNumber);
-    }
-}
-
-export class UpdateCardPointsEvent {
-    private constructor(
-        public gameId: string,
-        public teamId: string,
-        public roundNumber: number,
-        public cardPoints: number) {
-    }
-
-    static of(gameId: string, teamId: string, roundNumber: number, cardPoints: number): UpdateCardPointsEvent {
-        return new UpdateCardPointsEvent(gameId, teamId, roundNumber, cardPoints);
-    }
-}
-
-export class FinishRoundEvent {
-    private constructor(public gameId: string, public roundNumber: number) {
-    }
-
-    static of(gameId: string, roundNumber: number): FinishRoundEvent {
-        return new FinishRoundEvent(gameId, roundNumber);
-    }
-}
-
-export class UpdateRoundEvent {
-    private constructor(public gameId: string, public roundNumber: number) {
-    }
-
-    static of(gameId: string, roundNumber: number): UpdateRoundEvent {
-        return new UpdateRoundEvent(gameId, roundNumber);
-    }
-}
-
-export class FinishGameEvent {
-    private constructor(public gameId: string) {
-    }
-
-    static of(gameId: string): FinishGameEvent {
-        return new FinishGameEvent(gameId);
     }
 }

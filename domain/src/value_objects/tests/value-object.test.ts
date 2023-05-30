@@ -24,7 +24,7 @@ describe("Testing the domain primitives", () => {
 
     it(`is ensured that parsing the invalid input '1' results in an exception`, () => {
       const parse = () => new StringValueObject({ value: 1 as any })
-      expect(parse).toThrowError(`Precondtions to create ${StringValueObject.name} not met`)
+      expect(parse).toThrowError(`Preconditions to create ${StringValueObject.name} not met`)
     })
   })
 
@@ -44,7 +44,7 @@ describe("Testing the domain primitives", () => {
     it(`is ensured that parsing the invalid input '1' results in an exception`, () => {
       const value = "1" as any
       const parse = () => new NumberValueObject({ value })
-      expect(parse).toThrowError(`Precondtions to create ${NumberValueObject.name} not met`)
+      expect(parse).toThrowError(`Preconditions to create ${NumberValueObject.name} not met`)
     })
   })
 })

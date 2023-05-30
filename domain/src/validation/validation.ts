@@ -1,4 +1,4 @@
-import { z } from 'zod';
+import {z, ZodObject, type ZodRawShape} from 'zod';
 
 type Implements<Model> = {
   [key in keyof Model]-?: // make all keys of Model required
@@ -17,14 +17,13 @@ type EnsureNoUnknownKeys<ValidKeys, KeysToBeChecked> = {
 
 export function implement<Model = never>() {
   return {
-    // TODO: this does not compile correctly becasue of an issue with the keyof operator
-    // extend: <SuperModel extends ZodRawShape>(baseSchema: ZodObject<SuperModel>) => {
-    //   return {
-    //     with: <Schema extends Implements<Omit<Model, keyof SuperModel>> & EnsureNoUnknownKeys<Schema, Model>>(schema: Schema) => {
-    //       return baseSchema.extend(schema)
-    //     }
-    //   };
-    // },
+    extend: <SuperModel extends ZodRawShape>(baseSchema: ZodObject<SuperModel>) => {
+      return {
+        with: <Schema extends Implements<Omit<Model, keyof SuperModel>> & EnsureNoUnknownKeys<Schema, Model>>(schema: Schema) => {
+          return baseSchema.extend(schema)
+        }
+      };
+    },
     with: <Schema extends Implements<Model> & EnsureNoUnknownKeys<Schema, Model>>(schema: Schema) => z.object(schema),
   };
 }

@@ -15,7 +15,7 @@ export class Title extends StringValueObject {
     super(input);
     const result = TitleSchema.safeParse(input)
     if (!result.success) {
-      throw new Error(`Precondtions to create ${Title.name} not met`)
+      throw new Error(`Preconditions to create ${Title.name} not met`)
     }
     this._value = result.data.value
   }

@@ -1,9 +1,9 @@
-import {UserId} from 'pointchu.domain';
 import {type GameView} from './views';
 import {type RawProblem} from 'pointchu.capabilities';
+import {PlayerId} from 'pointchu.domain';
 
 export interface CreateGameRequest {
-    createdBy: UserId;
+    createdBy: PlayerId;
 }
 
 export interface CreateGameResponse {
