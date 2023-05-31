@@ -8,18 +8,18 @@ import {implement} from '../validation';
 import {z, type ZodTypeDef} from 'zod';
 
 export interface RawGame extends RawEntity {
-    id: string
-    createdBy: string
-    joinCode: string
-    teams: RawTeam[]
-    rounds: RawRound[]
+    id: string;
+    createdBy: string | null;
+    joinCode: string;
+    teams: RawTeam[];
+    rounds: RawRound[];
 }
 
 export const GameSchema: z.ZodType<RawGame, ZodTypeDef, RawGame> = implement<RawGame>()
     .extend(EntitySchema)
     .with({
         id: EntityIdSchema.shape.value,
-        createdBy: EntityIdSchema.shape.value,
+        createdBy: EntityIdSchema.shape.value.nullable(),
         joinCode: JoinCodeSchema.shape.value,
         teams: z.array(TeamSchema).max(2),
         rounds: z.array(RoundSchema).max(100)
@@ -28,7 +28,7 @@ export const GameSchema: z.ZodType<RawGame, ZodTypeDef, RawGame> = implement<Raw
 export class Game extends Entity {
 
     private _id: GameId;
-    private _createdBy: PlayerId;
+    private _createdBy: PlayerId | null;
     private _joinCode: JoinCode;
     private _teams: Team[];
     private _rounds: Round[];
@@ -42,7 +42,7 @@ export class Game extends Entity {
             throw new Error(`Preconditions to create ${Game.name} not met because ${result.error.message}`)
         }
         this._id = new GameId({value: result.data.id});
-        this._createdBy = new PlayerId({value: result.data.createdBy});
+        this._createdBy = result.data.createdBy !== null ? new PlayerId({value: result.data.createdBy}) : null;
         this._joinCode = new JoinCode({value: result.data.joinCode});
         this._teams = result.data.teams.map(team => new Team(team));
         this._rounds = result.data.rounds.map(round => new Round(round));
@@ -156,7 +156,7 @@ export class Game extends Entity {
         return this._id;
     }
 
-    get createdBy(): PlayerId {
+    get createdBy(): PlayerId | null {
         return this._createdBy;
     }
 
@@ -187,7 +187,7 @@ export class Game extends Entity {
     toRaw(): RawGame {
         return {
             id: this.id.value,
-            createdBy: this.createdBy.value,
+            createdBy: this.createdBy ? this.createdBy.value : null,
             joinCode: this.joinCode.value,
             teams: this.teams.map(team => team.toRaw()),
             rounds: this.rounds.map(round => round.toRaw()),

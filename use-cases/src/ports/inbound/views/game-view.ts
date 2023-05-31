@@ -3,11 +3,11 @@ import {mapToRawTeam, type TeamView} from './team-view';
 import {type RawGame} from 'pointchu.domain';
 
 export interface GameView {
-    id: string
-    createdBy: string
-    joinCode: string
-    teams: TeamView[]
-    rounds: RoundView[]
+    id: string;
+    createdBy: string | null;
+    joinCode: string;
+    teams: TeamView[];
+    rounds: RoundView[];
 }
 
 export function mapToRawGame(view: GameView): RawGame {

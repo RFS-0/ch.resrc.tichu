@@ -7,7 +7,7 @@ export const usePlayerStore = defineStore('players', () => {
     const initialPlayer = new Player({
         id: userIdSequence.next().value,
         userId: null,
-        name: 'anonymous',
+        name: 'Anonymous',
     });
 
     let currentPlayer: Ref<UnwrapRef<Player>> = ref(initialPlayer);

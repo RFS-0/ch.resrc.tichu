@@ -6,7 +6,7 @@ export const useGameStore = defineStore('games', () => {
     const gameIdSequence = createIdSequence(EntityIdSchema, GameId)
     const initialGame = new Game({
         id: gameIdSequence.next().value,
-        createdBy: 'anonymous',
+        createdBy: null,
         joinCode: JoinCode.create().value,
         teams: [],
         rounds: [],

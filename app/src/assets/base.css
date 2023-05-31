@@ -38,6 +38,7 @@
     --sys-primary: rgb(221, 215, 181);
     --sys-primary-variant: rgba(221, 215, 181, 0);
     --sys-secondary: rgb(170, 166, 141);
+    --sys-on-secondary: rgb(65, 64, 53);
     --sys-tertiary: rgb(62, 197, 145);
     --sys-tertiary-variant: rgb(45, 143, 105);
     --sys-quaternary: rgb(214, 86, 97);
@@ -178,6 +179,12 @@ table {
     background-color: var(--sys-outline-variant);
 }
 
+.button--xl-dark:disabled {
+    background-color: var(--sys-secondary);
+    color: var(--sys-on-secondary);
+    cursor: not-allowed;
+}
+
 .button--lg-dark {
     cursor: pointer;
     background-color: var(--sys-outline);
@@ -286,7 +293,7 @@ table {
     margin: 1vw;
 }
 
-.confirm.button { /* two classes to increase specifity */
+.confirm.button {
     cursor: pointer;
     background: transparent;
     color: var(--sys-primary);

@@ -4,9 +4,9 @@ import {EntityIdSchema, PlayerId} from '../value_objects';
 import {z, type ZodTypeDef} from 'zod';
 
 export interface RawPlayer extends RawEntity {
-    id: string,
-    userId: string | null,
-    name: string
+    id: string;
+    userId: string | null;
+    name: string;
 }
 
 export const PlayerSchema: z.ZodType<RawPlayer, ZodTypeDef, RawPlayer> = implement<RawPlayer>()
@@ -43,10 +43,14 @@ export class Player {
         return this._name;
     }
 
+    get userId(): string | null {
+        return this._userId;
+    }
+
     toRaw(): RawPlayer {
         return {
             id: this.id.value,
-            userId: this._userId,
+            userId: this.userId,
             name: this.name
         }
     }

@@ -6,12 +6,15 @@ import {Game, GameSchema, PlayerId, safeParseEntity,} from 'pointchu.domain';
 import {mapToRawGame} from 'pointchu.use-cases';
 import {useRouter} from 'vue-router';
 import {useGameStore} from '@/stores/game-store';
+import {usePlayerStore} from '@/stores/user-store';
 
 const router = useRouter()
 const gameStore = useGameStore();
+const playerStore = usePlayerStore();
+
+const createGameUseCase = inject(createGameUseCaseProviderKey)
 
 async function onCreateGame(): Promise<void> {
-  const createGameUseCase = inject(createGameUseCaseProviderKey)
   if (!createGameUseCase) {
     throw new Error('createGameUseCase is not defined');
   }
@@ -23,7 +26,7 @@ async function onCreateGame(): Promise<void> {
       presenter
   );
   if (!presenter.view) {
-    throw new Error('Either error or defect occurred. TODO: handle this gracefully');
+    throw new Error('Either system error or defect occurred. TODO: handle this gracefully');
   }
   const parseError = () => new Error('Implementation defect: failed to parse game');
   const rawGame = mapToRawGame(presenter.view);
@@ -40,7 +43,11 @@ const onJoinGame = () => {
 
 <template>
   <div class="start-view-container">
-    <button class="button--xl-dark text--lg" @click="onCreateGame">
+    <button
+        class="button--xl-dark text--lg"
+        :disabled="!playerStore.currentPlayer.userId"
+        @click="onCreateGame"
+    >
       Create Game
     </button>
     <button class="button--xl-dark text--lg" @click="onJoinGame">

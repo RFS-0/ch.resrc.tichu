@@ -5,7 +5,7 @@ import {
     type GameRepository,
     type GameView
 } from './ports';
-import {AsyncResult} from 'pointchu.capabilities';
+import {AsyncResult, Problem} from 'pointchu.capabilities';
 import {
     Game,
     GameId,
@@ -29,20 +29,14 @@ export class CreateGameUseCaseImpl implements CreateGameUseCase {
 
     async execute(request: CreateGameRequest, presenter: CreateGamePresenter): Promise<void> {
         await AsyncResult
-            .fromValue(this.mapToEntity(request))
-            .doAsyncEffect(async game => await this.ports.outbound.gameRepository.create(game).get())
-            .doAsyncEffect(async game => await presenter.present({
-                game: this.mapToView(game),
-                problems: []
-            }))
-            .doFailureEffect(errors => presenter.present({
-                game: undefined,
-                problems: errors.map(error => error.toRaw())
-            }))
+            .fromValue(this.createEntity(request))
+            .doAsyncEffect(async game => await this.storeEntity(game).get())
+            .doAsyncEffect(async game => await this.presentEntity(presenter, game))
+            .doFailureEffect(async problems => await this.presentProblems(presenter, problems))
             .get();
     }
 
-    private mapToEntity(request: CreateGameRequest): Game {
+    private createEntity(request: CreateGameRequest): Game {
         return new Game({
             id: this.ports.inbound.gameIdSequence.next().value,
             createdBy: request.createdBy.value,
@@ -50,6 +44,24 @@ export class CreateGameUseCaseImpl implements CreateGameUseCase {
             teams: [],
             rounds: [],
         });
+    }
+
+    private storeEntity(game: Game): AsyncResult<Game> {
+        return this.ports.outbound.gameRepository.create(game);
+    }
+
+    private presentEntity(presenter: CreateGamePresenter, game: Game): Promise<void> {
+        return presenter.present({
+            game: this.mapToView(game),
+            problems: []
+        })
+    }
+
+    private presentProblems(presenter: CreateGamePresenter, problems: Problem[]): Promise<void> {
+        return presenter.present({
+            game: undefined,
+            problems: problems.map(problem => problem.toRaw())
+        })
     }
 
     private mapToView(game: Game): GameView {

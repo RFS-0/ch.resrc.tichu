@@ -3,13 +3,12 @@
   "version": "0.0.1",
   "main": "src/index.ts",
   "types": "src/index.ts",
-  "devDependencies": {},
   "dependencies": {
+    "firebase": "9.22.1",
     "pointchu.capabilities": "workspace:*",
     "pointchu.common-config": "workspace:*",
     "pointchu.domain": "workspace:*",
-    "pointchu.use-cases": "workspace:*",
-    "firebase": "9.22.1"
+    "pointchu.use-cases": "workspace:*"
   },
   "scripts": {
     "build": "tsc",

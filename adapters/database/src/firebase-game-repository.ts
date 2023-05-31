@@ -3,7 +3,9 @@ import {Game,} from 'pointchu.domain';
 import {AsyncResult} from 'pointchu.capabilities';
 import {doc, type Firestore, setDoc} from "firebase/firestore";
 
+
 export class GameRepositoryImpl implements GameRepository {
+    private readonly COLLECTION = 'games';
 
     constructor(private readonly database: Firestore) {
     }
@@ -14,7 +16,11 @@ export class GameRepositoryImpl implements GameRepository {
             .doAsyncEffect(async games => {
                 for (const game of games) {
                     await setDoc(
-                        doc(this.database, 'games', game.id.value),
+                        doc(
+                            this.database,
+                            this.COLLECTION,
+                            game.id.value
+                        ),
                         game.toRaw()
                     );
                 }
