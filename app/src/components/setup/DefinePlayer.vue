@@ -25,7 +25,7 @@ const playerDefined: Ref<UnwrapRef<boolean>> = ref(false);
         :player-index="props.playerIndex"
     />
     <div v-else
-         class="container--column">
+         class="add-player-container">
       <AddPlayer :team-index="props.teamIndex" :player-index="props.playerIndex"/>
       <!--      <add-player :is-left-team="isLeftTeam"-->
       <!--                  :team-id="teamId"-->
@@ -38,5 +38,12 @@ const playerDefined: Ref<UnwrapRef<boolean>> = ref(false);
 </template>
 
 <style scoped>
-
+.add-player-container {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
 </style>

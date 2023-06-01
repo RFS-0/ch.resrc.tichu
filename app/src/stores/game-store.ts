@@ -71,9 +71,9 @@ export const useGameStore = defineStore('games', () => {
                 if (snapshot.exists()) {
                     const rawUpdatedGame = mapToRawGame(snapshot.data() as RawGame);
                     const parseError = () => new Error('Implementation defect: failed to parse game');
-                    const createdGame = safeParseEntity(rawUpdatedGame, GameSchema, Game).getOrThrow(parseError);
-                    console.log('Current data: ', JSON.stringify(createdGame));
-                    setGame(createdGame);
+                    const updatedGame = safeParseEntity(rawUpdatedGame, GameSchema, Game).getOrThrow(parseError);
+                    console.log('Current data: ', JSON.stringify(updatedGame, null, 2));
+                    setGame(updatedGame);
                 } else {
                     console.log('No such document!');
                 }
@@ -113,7 +113,7 @@ export const useGameStore = defineStore('games', () => {
     }
 
     async function loadGame(gameId: GameId) {
-        if (currentGame.value.id === gameId) {
+        if (currentGame.value.id.value === gameId.value) {
             return;
         }
         unsubscribeToChangesOfGame && unsubscribeToChangesOfGame();

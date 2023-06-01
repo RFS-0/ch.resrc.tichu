@@ -67,7 +67,7 @@
 
 <style scoped>
 .avatar {
-  max-height: 70%;
-  max-width: 70%;
+  max-height: 50%;
+  max-width: 50%;
 }
 </style>

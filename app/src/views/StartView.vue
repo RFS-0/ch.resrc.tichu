@@ -8,7 +8,7 @@ const gameStore = useGameStore();
 const playerStore = usePlayerStore();
 
 async function onCreateGame(): Promise<void> {
-  await gameStore.createGame(playerStore.currentPlayerId);
+  await gameStore.createGame(playerStore.loggedInPlayerId);
   await router.push('/setup/' + gameStore.currentGame.id.value);
 }
 
@@ -21,7 +21,7 @@ const onJoinGame = () => {
   <div class="start-view-container">
     <button
         class="button--xl-dark text--lg"
-        :disabled="!playerStore.currentPlayer.userId"
+        :disabled="!playerStore.loggedInPlayer.userId"
         @click="onCreateGame"
     >
       Create Game

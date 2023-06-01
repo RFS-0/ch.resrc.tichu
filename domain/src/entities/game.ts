@@ -132,6 +132,10 @@ export class Game extends Entity {
         return this._teams;
     }
 
+    get players(): PlayerId[] {
+        return this.teams[0].playerIds.concat(this.teams[1].playerIds);
+    }
+
     get leftTeam(): Team {
         return this._teams[0];
     }

@@ -1,5 +1,5 @@
 import {type PlayerRepository} from 'pointchu.use-cases';
-import {Player, PlayerId, type RawPlayer} from 'pointchu.domain';
+import { Player, PlayerId, type RawPlayer} from 'pointchu.domain';
 import {AsyncResult} from 'pointchu.capabilities';
 import {doc, query, where, collection, Firestore, setDoc, getDoc, getDocs} from 'firebase/firestore';
 
@@ -65,5 +65,27 @@ export class PlayerRepositoryImpl implements PlayerRepository {
                 return new Player(snapshot.data() as RawPlayer);
             })
 
+    }
+
+    updateMultiple(updatedPlayers: Player[]): AsyncResult<Player[]> {
+        return AsyncResult
+            .fromValue(updatedPlayers)
+            .doAsyncEffect(async players => {
+                for (const player of players) {
+                    await setDoc(
+                        doc(
+                            this.database,
+                            this.COLLECTION,
+                            player.id.value
+                        ),
+                        player.toRaw()
+                    );
+                }
+            });
+    }
+
+    update(updatedPlayer: Player): AsyncResult<Player> {
+        return this.updateMultiple([updatedPlayer])
+                   .map(players => players[0]);
     }
 }

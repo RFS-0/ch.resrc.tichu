@@ -11,12 +11,15 @@ import {
     createIdSequence, EntityIdSchema, GameId, Player, PlayerId, PlayerSchema, safeParseEntity,
 } from 'pointchu.domain';
 import {
-    authProviderKey, createGameUseCaseProviderKey, databaseProviderKey, findGameUseCaseProviderKey,
-    updateGameUseCaseProviderKey,
+    authProviderKey, createGameUseCaseProviderKey, createPlayerUseCaseProviderKey, databaseProviderKey,
+    findGameUseCaseProviderKey, findPlayerUseCaseProviderKey,
+    updateGameUseCaseProviderKey, updatePlayerUseCaseProviderKey,
 } from '@/dependency-injection';
 import './assets/main.css'
 import {
-    FindGameUseCaseImpl, FindOrCreatePlayerUseCaseImpl, mapToRawPlayer, UpdateGameUseCaseImpl
+    CreatePlayerUseCaseImpl,
+    FindGameUseCaseImpl, FindOrCreatePlayerUseCaseImpl, FindPlayerUseCaseImpl, mapToRawPlayer, UpdateGameUseCaseImpl,
+    UpdatePlayerUseCaseImpl
 } from 'pointchu.use-cases';
 import {PlayerViewPresenter} from '@/presenters/player-view-presenter';
 import {usePlayerStore} from '@/stores/player-store';
@@ -33,7 +36,6 @@ const firebaseConfig = {
 
 const firebaseApp: FirebaseApp = initializeApp(firebaseConfig);
 
-
 const database = getFirestore(firebaseApp);
 
 const gameRepository = new GameRepositoryImpl(database);
@@ -47,10 +49,24 @@ const createGameUseCase = new CreateGameUseCaseImpl({
         gameRepository
     }
 });
+const createPlayerUseCase = new CreatePlayerUseCaseImpl({
+    inbound: {
+        playerIdSequence: createIdSequence(EntityIdSchema, PlayerId)
+    },
+    outbound: {
+        playerRepository
+    }
+});
 const findGameUseCase = new FindGameUseCaseImpl({
     inbound: {},
     outbound: {
         gameRepository
+    }
+});
+const findPlayerUseCase = new FindPlayerUseCaseImpl({
+    inbound: {},
+    outbound: {
+        playerRepository
     }
 });
 const updateGameUseCase = new UpdateGameUseCaseImpl({
@@ -60,6 +76,12 @@ const updateGameUseCase = new UpdateGameUseCaseImpl({
     }
 });
 
+const updatePlayerUseCase = new UpdatePlayerUseCaseImpl({
+    inbound: {},
+    outbound: {
+        playerRepository
+    }
+});
 const findOrCreatePlayerUseCase = new FindOrCreatePlayerUseCaseImpl({
     inbound: {
         playerIdSequence: createIdSequence(EntityIdSchema, PlayerId)
@@ -79,8 +101,11 @@ createApp(App)
     .provide(authProviderKey, authorization)
     .provide(databaseProviderKey, database)
     .provide(createGameUseCaseProviderKey, createGameUseCase)
+    .provide(createPlayerUseCaseProviderKey, createPlayerUseCase)
     .provide(findGameUseCaseProviderKey, findGameUseCase)
+    .provide(findPlayerUseCaseProviderKey, findPlayerUseCase)
     .provide(updateGameUseCaseProviderKey, updateGameUseCase)
+    .provide(updatePlayerUseCaseProviderKey, updatePlayerUseCase)
     .mount('#app');
 
 const playerStore = usePlayerStore();
@@ -101,7 +126,7 @@ authorization.onAuthStateChanged(async (user) => {
     }
     const parseError = () => new Error('Implementation defect: failed to parse game');
     const player = safeParseEntity(mapToRawPlayer(presenter.view), PlayerSchema, Player).getOrThrow(parseError);
-    playerStore.setPlayer(player);
+    playerStore.setLoggedInPlayer(player);
 });
 
 signInAnonymously(authorization)
