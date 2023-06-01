@@ -268,16 +268,6 @@ table {
     border-radius: 2vh;
 }
 
-.input-container--left ,.input-container--right{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: row;
-    gap: 4vw;
-    border-radius: 5vh;
-    margin-left: 2vw;
-}
-
 .input--text {
     animation-name: slide-in-input;
     animation-duration: 1s;
@@ -293,7 +283,13 @@ table {
     margin: 1vw;
 }
 
-.confirm.button {
+.button-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.button {
     cursor: pointer;
     background: transparent;
     color: var(--sys-primary);

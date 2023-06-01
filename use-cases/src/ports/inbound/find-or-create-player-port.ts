@@ -1,4 +1,4 @@
-import {PlayerView} from './views';
+import {type PlayerView} from './views';
 import {type RawProblem} from 'pointchu.capabilities';
 
 export interface FindOrCreatePlayerRequest {

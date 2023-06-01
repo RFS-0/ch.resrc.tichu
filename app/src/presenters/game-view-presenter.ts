@@ -1,15 +1,21 @@
 import type {
     CreateGamePresenter,
+    FindGamePresenter,
     CreateGameResponse,
-    GameView
+    FindGameResponse,
+    UpdateGameResponse,
+    GameView,
+} from 'pointchu.use-cases';
+import {
 } from 'pointchu.use-cases';
 
-export class GameViewPresenter implements CreateGamePresenter {
+export class GameViewPresenter implements CreateGamePresenter, FindGamePresenter {
 
     private _view: GameView | undefined;
 
+    async present(response: FindGameResponse): Promise<void>
+    async present(response: UpdateGameResponse): Promise<void>
     async present(response: CreateGameResponse): Promise<void> {
-        console.log(`Presenting ${JSON.stringify(response)}`);
         if (response.problems.length > 0) {
             // TODO: Handle problems
             console.log(`Problems: ${JSON.stringify(response.problems)}`);

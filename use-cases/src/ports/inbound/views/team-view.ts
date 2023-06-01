@@ -1,18 +1,15 @@
-import {mapToRawPlayer, type PlayerView} from './player-view';
 import {type RawTeam} from 'pointchu.domain';
 
 export interface TeamView {
-    id: string
+    index: number
     name: string
-    firstPlayer: PlayerView
-    secondPlayer: PlayerView
+    playerIds: string[]
 }
 
 export function mapToRawTeam(team: TeamView): RawTeam {
     return {
-        id: team.id,
+        index: team.index,
         name: team.name,
-        firstPlayer: mapToRawPlayer(team.firstPlayer),
-        secondPlayer: mapToRawPlayer(team.secondPlayer),
+        playerIds: team.playerIds
     }
 }

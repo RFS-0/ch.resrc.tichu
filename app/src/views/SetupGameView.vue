@@ -3,9 +3,14 @@
 import {useGameStore} from '@/stores/game-store';
 import JoinCode from '@/components/setup/JoinCode.vue';
 import SetupTeam from '@/components/setup/SetupTeam.vue';
+import {useRoute} from 'vue-router';
+import {GameId} from 'pointchu.domain';
 
+const route = useRoute();
 const gameStore = useGameStore();
-const currentGame = gameStore.currentGame;
+
+await gameStore.loadGame(new GameId({value: route.params.game_id.toString()}));
+
 </script>
 
 <template>

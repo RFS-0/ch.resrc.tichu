@@ -1,16 +1,17 @@
 import {defineStore} from 'pinia';
-import {type Ref, ref, type UnwrapRef} from 'vue';
+import {computed, type Ref, ref, type UnwrapRef} from 'vue';
 import {createIdSequence, EntityIdSchema, Player, PlayerId,} from 'pointchu.domain';
 
 export const usePlayerStore = defineStore('players', () => {
-    const userIdSequence = createIdSequence(EntityIdSchema, PlayerId)
+    const playerIdSequence = createIdSequence(EntityIdSchema, PlayerId)
     const initialPlayer = new Player({
-        id: userIdSequence.next().value,
+        id: playerIdSequence.next().value,
         userId: null,
         name: 'Anonymous',
     });
 
     let currentPlayer: Ref<UnwrapRef<Player>> = ref(initialPlayer);
+    const currentPlayerId = computed(() => currentPlayer.value.id as PlayerId);
 
     const setPlayer = (player: Player) => {
         currentPlayer.value = player;
@@ -18,6 +19,7 @@ export const usePlayerStore = defineStore('players', () => {
 
     return {
         currentPlayer,
+        currentPlayerId,
         setPlayer,
     }
 });

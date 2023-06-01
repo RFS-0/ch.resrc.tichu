@@ -1,3 +1,5 @@
 export * from './create-game-use-case'
+export * from './find-game-use-case'
 export * from './find-or-create-player-use-case'
 export * from './ports'
+export * from './update-game-use-case'

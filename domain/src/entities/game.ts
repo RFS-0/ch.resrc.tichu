@@ -1,8 +1,7 @@
-import {type RawTeam, Team, TeamSchema} from './team';
 import {
-    EntityIdSchema, GameId, JoinCode, JoinCodeSchema, PlayerId, Rank, type RawRound, Round, RoundSchema, TeamId
+    EntityIdSchema, GameId, JoinCode, JoinCodeSchema, PlayerId, Rank, type RawRound, type RawTeam, Round, RoundSchema,
+    Team, TeamSchema
 } from '../value_objects';
-import {Player} from './player';
 import {Entity, EntitySchema, type RawEntity} from './entity';
 import {implement} from '../validation';
 import {z, type ZodTypeDef} from 'zod';
@@ -48,19 +47,14 @@ export class Game extends Entity {
         this._rounds = result.data.rounds.map(round => new Round(round));
     }
 
-
-    updateCardPointsOfTeam(teamId: string, roundNumber: number, cardPoints: number): Game {
-        return this;
-    }
-
-    cardPointsOfTeam(roundNumber: number, teamId: TeamId): number {
+    cardPointsOfTeam(roundNumber: number, teamIndex: number): number {
         const round = this.rounds.find(
             round => round.roundNumber === roundNumber,
         );
         if (!round) {
             throw new Error('Invariant violated: Round cannot be undefined');
         }
-        const cardPoints = round.cardPoints.get(teamId.value);
+        const cardPoints = round.cardPoints.get(teamIndex);
         if (cardPoints === undefined) {
             throw new Error('Invariant violated: Card points cannot be undefined');
         }
@@ -70,8 +64,7 @@ export class Game extends Entity {
     createRound(roundNumber: number): Game {
         const newRound = Round.create(
             roundNumber,
-            this.teams.map(team => team.id.value),
-            this.players.map(player => player.id.value),
+            this.teams,
         );
         this._rounds.push(newRound);
         return this;
@@ -97,58 +90,29 @@ export class Game extends Entity {
         return this.currentRound().nextRank();
     }
 
-    isLeftTeam(teamId: TeamId) {
-        return this.teams[0].id.value === teamId.value;
-    }
-
-    teamById(teamId: TeamId): Team {
-        const team = this.teams.find(team => team.id.value === teamId.value);
-        if (!team) {
-            throw new Error('Invariant violated: Cannot find team');
-        }
-        return team;
-    }
-
-    playerById(playerId: PlayerId): Player {
-        const player = this.players.find(player => player.id.value === playerId.value);
-        if (!player) {
-            throw new Error('Invariant violated: Cannot find player');
-        }
-        return player;
-    }
-
-    findPlayerById(playerId: PlayerId): Player | undefined {
-        return this.players.find(player => player.id.value === playerId.value);
-    }
-
-    totalPointsOfTeam(teamId: TeamId): number {
-        const firstPlayerId = this.teamById(teamId).firstPlayer.id;
-        const secondPlayerId = this.teamById(teamId).secondPlayer.id;
-        if (!firstPlayerId || !secondPlayerId) {
-            throw new Error('Invariant violated: Player id cannot be undefined');
-        }
+    totalPointsOfTeam(team: Team): number {
         return this.rounds
-                   .map(round => round.totalPoints(teamId, firstPlayerId, secondPlayerId))
+                   .map(round => round.totalPoints(team))
                    .reduce((prev, current) => prev + current) || 0;
     }
 
-    totalPointsOfRound(roundNumber: number, teamId: TeamId, firstPlayerId: PlayerId, secondPlayerId: PlayerId): number {
+    totalPointsOfRound(roundNumber: number, team: Team): number {
         return this.rounds
                    .filter(round => round.roundNumber === roundNumber)
-                   .map(round => round.totalPoints(teamId, firstPlayerId, secondPlayerId))
+                   .map(round => round.totalPoints(team))
                    .reduce((prev, current) => prev + current) || 0;
     }
 
-    totalPointsUpToRound(roundNumber: number, teamId: TeamId, firstPlayerId: PlayerId, secondPlayerId: PlayerId): number {
+    totalPointsUpToRound(roundNumber: number, team: Team): number {
         return this.rounds
                    .filter(round => round.roundNumber <= roundNumber)
-                   .map(round => round.totalPoints(teamId, firstPlayerId, secondPlayerId))
+                   .map(round => round.totalPoints(team))
                    .reduce((prev, current) => prev + current) || 0;
     }
 
     isComplete() {
-        const totalPointsLeftTeam = this.totalPointsOfTeam(this.leftTeam.id);
-        const totalPointsRightTeam = this.totalPointsOfTeam(this.rightTeam.id);
+        const totalPointsLeftTeam = this.totalPointsOfTeam(this.teams[0]);
+        const totalPointsRightTeam = this.totalPointsOfTeam(this.teams[1]);
         return totalPointsLeftTeam >= 1000 || totalPointsRightTeam >= 1000;
     }
 
@@ -176,8 +140,8 @@ export class Game extends Entity {
         return this._teams[1];
     }
 
-    get players(): Player[] {
-        return this.teams[0].players.concat(this.teams[1].players);
+    get playerIds(): PlayerId[] {
+        return this.teams[0].playerIds.concat(this.teams[1].playerIds);
     }
 
     get rounds(): Round[] {

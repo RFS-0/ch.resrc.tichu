@@ -1,41 +1,35 @@
 <script setup lang="ts">
 import {ref} from 'vue';
+import {useGameStore} from '@/stores/game-store';
+import {Game} from 'pointchu.domain';
 
 const props = defineProps<{
   teamIndex: number;
 }>();
 
-const editingTeamName = ref(false);
+const gameStore = useGameStore();
+const editingTeamName = ref(false)
 const teamNameInput = ref<HTMLInputElement | null>(null);
-const teamName = ref('click to edit');
+
+const isLeftTeam = props.teamIndex === 0;
+const isRightTeam = props.teamIndex === 1;
 
 const onChangeTeamName = () => {
   editingTeamName.value = true;
   // TODO: fix typing issue
   // @ts-ignore
-  if (teamName.value === 'click to edit') {
-    teamName.value = '';
-  }
   teamNameInput.value?.focus()
 }
 
-const updateTeamName = (event: Event) => {
+const updateTeamName = async (event: Event) => {
   const target = event.target as HTMLInputElement;
-  teamName.value = target.value;
-  if (teamName.value === '') {
-    teamName.value = 'click to edit';
-  }
+  gameStore.currentGame.teams[props.teamIndex].name = target.value;
 }
 
-const onConfirm = () => {
+const onConfirm = async () => {
   editingTeamName.value = false;
-  if (teamName.value === '') {
-    teamName.value = 'click to edit';
-  }
+  await gameStore.updateGame(gameStore.currentGame as Game);
 }
-
-const isLeftTeam = props.teamIndex === 0;
-const isRightTeam = props.teamIndex === 1;
 </script>
 
 <template>
@@ -43,14 +37,14 @@ const isRightTeam = props.teamIndex === 1;
     <div v-if="!editingTeamName"
          class="button--sm text--md"
          @click="onChangeTeamName">
-      {{ teamName }}
+      {{ gameStore.currentGame.teams[props.teamIndex].name }}
     </div>
     <div v-else :class="{'input-container--left': isLeftTeam, 'input-container--right': isRightTeam}">
       <input type="text"
              ref="teamNameInput"
              :class="{'left-team-background': isLeftTeam, 'right-team-background': isRightTeam}"
              class="text--sm input--text"
-             :value="teamName"
+             :value="gameStore.currentGame.teams[props.teamIndex].name"
              @input="updateTeamName"/>
       <div class="confirm button"
            @click="onConfirm">
@@ -64,4 +58,11 @@ const isRightTeam = props.teamIndex === 1;
 </template>
 
 <style scoped>
+.confirm.button {
+  background: transparent;
+  color: var(--color-main);
+  outline: none;
+  border: none;
+  border-bottom: 1vh;
+}
 </style>

@@ -10,42 +10,29 @@ const validInputs: RawGame[] = [
         joinCode: '979b4782-fe51-11ed-be56-0242ac120002',
         teams: [
             {
-                id: '81d80a38-fe43-11ed-be56-0242ac120002',
+                index: 0,
                 name: 'John & Doe',
-                firstPlayer: {
-                    id: '8e3255a4-fe43-11ed-be56-0242ac120002',
-                    userId: 'user1',
-                    name: 'John',
-                },
-                secondPlayer: {
-                    id: '934d1056-fe43-11ed-be56-0242ac120002',
-                    userId: 'user2',
-                    name: 'Doe',
-                }
+                playerIds: [
+                    '8e3255a4-fe43-11ed-be56-0242ac120002',
+                    '934d1056-fe43-11ed-be56-0242ac120002',
+
+                ]
             },
             {
-                id: 'c5cbe652-fe51-11ed-be56-0242ac120002',
+                index: 1,
                 name: 'Fizz & Buzz',
-                firstPlayer: {
-                    id: 'd676be28-fe51-11ed-be56-0242ac120002',
-                    userId: 'user3',
-                    name: 'Fizz',
-                },
-                secondPlayer: {
-                    id: 'dab96120-fe51-11ed-be56-0242ac120002',
-                    userId: 'user4',
-                    name: 'Buzz',
-                }
+                playerIds: [
+                    'd676be28-fe51-11ed-be56-0242ac120002',
+                    'dab96120-fe51-11ed-be56-0242ac120002',
+                ],
             }
         ],
         rounds: [
             {
                 roundNumber: 1,
-                cardPoints: new Map<string, number>([
-                    ['b919996e-9070-41d9-82be-a908e07c5952', 10],
-                    ['53305f-b1aa-4ac6-b976-715c8af41e8d', 20],
-                    ['b5e382-0e39-4983-b206-ae025d05eeba', 30],
-                    ['480427-049e-4d50-afdd-0f87bafabf7a', 40],
+                cardPoints: new Map<number, number>([
+                    [0, 10],
+                    [1, 20],
                 ]),
                 ranks: new Map<string, Rank>([
                     ['b919996e-9070-41d9-82be-a908e07c5952', Rank.NONE],
@@ -71,32 +58,20 @@ const invalidInputs = [
         joinCode: '979b4782-fe51-11ed-be56-0242ac120002',
         teams: [
             {
-                id: '81d80a38-fe43-11ed-be56-0242ac120002',
+                index: 0,
                 name: 'John & Doe',
-                firstPlayer: {
-                    id: '8e3255a4-fe43-11ed-be56-0242ac120002',
-                    userId: 'user1',
-                    name: 'John',
-                },
-                secondPlayer: {
-                    id: '934d1056-fe43-11ed-be56-0242ac120002',
-                    userId: 'user2',
-                    name: 'Doe',
-                }
+                playerIds: [
+                    '8e3255a4-fe43-11ed-be56-0242ac120002',
+                    '934d1056-fe43-11ed-be56-0242ac120002',
+                ]
             },
             {
-                id: 'c5cbe652-fe51-11ed-be56-0242ac120002',
+                index: 1,
                 name: 'Fizz & Buzz',
-                firstPlayer: {
-                    id: 'd676be28-fe51-11ed-be56-0242ac120002',
-                    userId: 'user3',
-                    name: 'Fizz',
-                },
-                secondPlayer: {
-                    id: 'dab96120-fe51-11ed-be56-0242ac120002',
-                    userId: 'user4',
-                    name: 'Buzz',
-                }
+                playerIds: [
+                    'd676be28-fe51-11ed-be56-0242ac120002',
+                    'dab96120-fe51-11ed-be56-0242ac120002',
+                ],
             }
         ],
         rounds: []
@@ -107,32 +82,20 @@ const invalidInputs = [
         joinCode: '979b4782-fe51-11ed-be56-0242ac120002',
         teams: [
             {
-                id: '81d80a38-fe43-11ed-be56-0242ac120002',
+                index: 0,
                 name: 'John & Doe',
-                firstPlayer: {
-                    id: '8e3255a4-fe43-11ed-be56-0242ac120002',
-                    userId: 'user1',
-                    name: 'John',
-                },
-                secondPlayer: {
-                    id: '934d1056-fe43-11ed-be56-0242ac120002',
-                    userId: 'user2',
-                    name: 'Doe',
-                }
+                playerIds: [
+                    '8e3255a4-fe43-11ed-be56-0242ac120002',
+                    '934d1056-fe43-11ed-be56-0242ac120002',
+                ]
             },
             {
-                id: 'c5cbe652-fe51-11ed-be56-0242ac120002',
+                index: 1,
                 name: 'Fizz & Buzz',
-                firstPlayer: {
-                    id: 'd676be28-fe51-11ed-be56-0242ac120002',
-                    userId: 'user3',
-                    name: 'Fizz',
-                },
-                secondPlayer: {
-                    id: 'dab96120-fe51-11ed-be56-0242ac120002',
-                    userId: 'user4',
-                    name: 'Buzz',
-                }
+                playerIds: [
+                    'd676be28-fe51-11ed-be56-0242ac120002',
+                    'dab96120-fe51-11ed-be56-0242ac120002',
+                ],
             }
         ],
         rounds: []
@@ -151,9 +114,9 @@ describe(`Testing the entity '${Game.name}'`, () => {
         describe("with valid input", () => {
             validInputs.forEach(validInput => {
                 it(`is ensured that the properties of '${JSON.stringify(validInput)}' are parsed correctly`, () => {
-                    const game = new Game(validInput)
+                    const game = new Game(validInput);
                     expect(game.id.value).toEqual(validInput.id);
-                    expect(game.createdBy.value).toEqual(validInput.createdBy);
+                    expect(game.createdBy?.value).toEqual(validInput.createdBy);
                     expect(game.joinCode.value).toEqual(validInput.joinCode);
                     expect(game.leftTeam.toRaw()).toEqual(validInput.teams[0]);
                     expect(game.rightTeam.toRaw()).toEqual(validInput.teams[1]);

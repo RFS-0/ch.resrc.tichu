@@ -87,14 +87,14 @@ export function safeParseNumber<R extends RawNumberValueObject, S extends z.ZodT
 export interface RawCompositeValueObject {
 }
 
-export const CompositeValueObjectSchema = implement<RawCompositeValueObject>().with({
-});
+export const CompositeValueObjectSchema = implement<RawCompositeValueObject>()
+    .with({});
 
 export class CompositeValueObject {
     constructor(input: RawCompositeValueObject) {
         const result = CompositeValueObjectSchema.safeParse(input)
         if (!result.success) {
-            throw new Error(`Preconditions to create ${CompositeValueObject .name} not met`)
+            throw new Error(`Preconditions to create ${CompositeValueObject.name} not met`)
         }
     }
 }

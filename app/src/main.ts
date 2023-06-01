@@ -10,11 +10,16 @@ import {CreateGameUseCaseImpl} from 'pointchu.use-cases/src/create-game-use-case
 import {
     createIdSequence, EntityIdSchema, GameId, Player, PlayerId, PlayerSchema, safeParseEntity,
 } from 'pointchu.domain';
-import {authProviderKey, createGameUseCaseProviderKey,} from '@/dependency-injection';
+import {
+    authProviderKey, createGameUseCaseProviderKey, databaseProviderKey, findGameUseCaseProviderKey,
+    updateGameUseCaseProviderKey,
+} from '@/dependency-injection';
 import './assets/main.css'
-import {FindOrCreatePlayerUseCaseImpl, mapToRawPlayer} from 'pointchu.use-cases';
+import {
+    FindGameUseCaseImpl, FindOrCreatePlayerUseCaseImpl, mapToRawPlayer, UpdateGameUseCaseImpl
+} from 'pointchu.use-cases';
 import {PlayerViewPresenter} from '@/presenters/player-view-presenter';
-import {usePlayerStore} from '@/stores/user-store';
+import {usePlayerStore} from '@/stores/player-store';
 
 const firebaseConfig = {
     apiKey: "AIzaSyC3_BvK56Mzs4GyEiZivB6zODpK_YEbygg",
@@ -42,6 +47,19 @@ const createGameUseCase = new CreateGameUseCaseImpl({
         gameRepository
     }
 });
+const findGameUseCase = new FindGameUseCaseImpl({
+    inbound: {},
+    outbound: {
+        gameRepository
+    }
+});
+const updateGameUseCase = new UpdateGameUseCaseImpl({
+    inbound: {},
+    outbound: {
+        gameRepository
+    }
+});
+
 const findOrCreatePlayerUseCase = new FindOrCreatePlayerUseCaseImpl({
     inbound: {
         playerIdSequence: createIdSequence(EntityIdSchema, PlayerId)
@@ -58,8 +76,11 @@ const authorization: Auth = getAuth();
 createApp(App)
     .use(createPinia())
     .use(router)
-    .provide(createGameUseCaseProviderKey, createGameUseCase)
     .provide(authProviderKey, authorization)
+    .provide(databaseProviderKey, database)
+    .provide(createGameUseCaseProviderKey, createGameUseCase)
+    .provide(findGameUseCaseProviderKey, findGameUseCase)
+    .provide(updateGameUseCaseProviderKey, updateGameUseCase)
     .mount('#app');
 
 const playerStore = usePlayerStore();
@@ -85,8 +106,7 @@ authorization.onAuthStateChanged(async (user) => {
 
 signInAnonymously(authorization)
     .then((credential) => {
-        console.log(`Signed in anonymously as user ${JSON.stringify(credential)}`);
-        // TODO: check if player for this uses exists already
+        console.log('Signed in anonymously');
     })
     .catch((error) => {
         const errorCode = error.code;

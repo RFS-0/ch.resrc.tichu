@@ -10,18 +10,19 @@ let displayedCode = ref("");
 let generateRandomCode = true;
 
 const animateCode = () => {
-  console.log('animateCode');
   if (!generateRandomCode) {
-    displayedCode.value = currentGame.joinCode.value || 'this is a test';
     return;
+  } else {
+    displayedCode.value = uuid();
   }
-  displayedCode.value = uuid();
   window.requestAnimationFrame(animateCode);
 }
 
 onMounted(() => {
-  console.log('mounted');
-  setTimeout(() => generateRandomCode = false, 1000);
+  setTimeout(() => {
+    generateRandomCode = false
+    displayedCode.value = currentGame.joinCode.value;
+  }, 1000);
   window.requestAnimationFrame(animateCode);
 })
 

@@ -10,7 +10,7 @@ import {
     Game,
     GameId,
     type IdSequence,
-    JoinCode
+    JoinCode, Team
 } from 'pointchu.domain';
 
 export type CreateGameUseCasePorts = {
@@ -41,7 +41,18 @@ export class CreateGameUseCaseImpl implements CreateGameUseCase {
             id: this.ports.inbound.gameIdSequence.next().value,
             createdBy: request.createdBy.value,
             joinCode: JoinCode.create().value,
-            teams: [],
+            teams: [
+                {
+                    index: 0,
+                    name: 'Team 1',
+                    playerIds: [],
+                },
+                {
+                    index: 1,
+                    name: 'Team 2',
+                    playerIds: [],
+                }
+            ],
             rounds: [],
         });
     }

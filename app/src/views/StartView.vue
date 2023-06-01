@@ -1,39 +1,15 @@
 <script setup lang="ts">
-import {inject} from 'vue';
-import {createGameUseCaseProviderKey} from '@/dependency-injection';
-import {GameViewPresenter} from '@/presenters/game-view-presenter';
-import {Game, GameSchema, PlayerId, safeParseEntity,} from 'pointchu.domain';
-import {mapToRawGame} from 'pointchu.use-cases';
 import {useRouter} from 'vue-router';
 import {useGameStore} from '@/stores/game-store';
-import {usePlayerStore} from '@/stores/user-store';
+import {usePlayerStore} from '@/stores/player-store';
 
 const router = useRouter()
 const gameStore = useGameStore();
 const playerStore = usePlayerStore();
 
-const createGameUseCase = inject(createGameUseCaseProviderKey)
-
 async function onCreateGame(): Promise<void> {
-  if (!createGameUseCase) {
-    throw new Error('createGameUseCase is not defined');
-  }
-  const presenter = new GameViewPresenter();
-  await createGameUseCase.execute(
-      {
-        createdBy: new PlayerId({value: 'a0ada946-fe29-11ed-be56-0242ac120002'}),
-      },
-      presenter
-  );
-  if (!presenter.view) {
-    throw new Error('Either system error or defect occurred. TODO: handle this gracefully');
-  }
-  const parseError = () => new Error('Implementation defect: failed to parse game');
-  const rawGame = mapToRawGame(presenter.view);
-  const newGame = safeParseEntity(rawGame, GameSchema, Game).getOrThrow(parseError);
-  gameStore.currentGame = newGame;
-  console.log('game created', JSON.stringify(presenter.view, null, 2));
-  await router.push('/setup/' + newGame.id.value);
+  await gameStore.createGame(playerStore.currentPlayerId);
+  await router.push('/setup/' + gameStore.currentGame.id.value);
 }
 
 const onJoinGame = () => {

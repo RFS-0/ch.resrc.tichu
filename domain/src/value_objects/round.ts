@@ -3,27 +3,27 @@ import {Tichu} from './tichu';
 import {implement} from '../validation';
 import {z} from 'zod';
 import {PlayerId} from './player-id';
-import {TeamId} from './team-id';
 import {CompositeValueObject, type RawCompositeValueObject} from './value-object';
+import {Team} from './team';
 
 export interface RawRound extends RawCompositeValueObject {
     roundNumber: number,
-    cardPoints: Map<string, number>,
+    cardPoints: Map<number, number>,
     ranks: Map<string, Rank>,
     tichus: Map<string, Tichu>,
 }
 
 export const RoundSchema = implement<RawRound>().with({
     roundNumber: z.number().min(1).max(100),
-    cardPoints: z.map(z.string(), z.number()),
+    cardPoints: z.map(z.number(), z.number()),
     ranks: z.map(z.string(), z.nativeEnum(Rank)),
     tichus: z.map(z.string(), z.nativeEnum(Tichu))
 });
 
-export class Round extends CompositeValueObject  {
+export class Round extends CompositeValueObject {
 
     private _roundNumber: number;
-    private _cardPoints: Map<string, number>;
+    private _cardPoints: Map<number, number>;
     private _ranks: Map<string, Rank>;
     private _tichus: Map<string, Tichu>;
 
@@ -41,12 +41,21 @@ export class Round extends CompositeValueObject  {
         this._tichus = result.data.tichus;
     }
 
-    static create(roundNumber: number, teamIds: string[], playerIds: string[]): Round {
+    static create(roundNumber: number, teams: Team[]): Round {
         return new Round({
                 roundNumber,
-                cardPoints: new Map(teamIds.map(id => [id, 0])),
-                ranks: new Map(playerIds.map(id => [id, Rank.NONE])),
-                tichus: new Map(playerIds.map(id => [id, Tichu.NONE])),
+                cardPoints: new Map([
+                    [0, 0],
+                    [1, 0],
+                ]),
+                ranks: new Map(
+                    teams.flatMap(team => team.playerIds)
+                         .map(playerId => [playerId.value, Rank.NONE])
+                ),
+                tichus: new Map(
+                    teams.flatMap(team => team.playerIds)
+                         .map(playerId => [playerId.value, Tichu.NONE])
+                ),
             }
         );
     }
@@ -143,33 +152,32 @@ export class Round extends CompositeValueObject  {
         return updatedTichus;
     }
 
-    totalPoints(teamId: TeamId, firstPlayerId: PlayerId, secondPlayerId: PlayerId): number {
-        return this.cardPointsOfTeam(teamId)
-            + this.matchPoints(firstPlayerId, secondPlayerId)
-            + this.tichuPointsOfPlayer(firstPlayerId)
-            + this.tichuPointsOfPlayer(secondPlayerId);
+    totalPoints(team: Team): number {
+        return this.cardPointsOfTeam(team.index)
+            + this.matchPoints(team.playerIds)
+            + this.tichuPointsOfPlayer(team.playerIds[0])
+            + this.tichuPointsOfPlayer(team.playerIds[1]);
     }
 
-    cardPointsOfTeam(teamId: TeamId): number {
-        const cardPoints = this.cardPoints.get(teamId.value);
+    cardPointsOfTeam(teamIndex: number): number {
+        const cardPoints = this.cardPoints.get(teamIndex);
         if (cardPoints === undefined) {
             throw new Error('Invariant violated: Card points cannot be undefined');
         }
         return cardPoints;
     }
 
-    isMatch(firstPlayerId: PlayerId, secondPlayerId: PlayerId): boolean {
-        const firstPlayerRank = this.ranks.get(firstPlayerId.value);
-        const secondPlayerRank = this.ranks.get(secondPlayerId.value);
-        if (firstPlayerRank === undefined || secondPlayerRank === undefined) {
-            throw new Error('Invariant violated: Rank cannot be undefined');
-        }
-        const ranks = [firstPlayerRank.valueOf(), secondPlayerRank.valueOf()];
-        return ranks.includes(Rank.FIRST.valueOf()) && ranks.includes(Rank.SECOND.valueOf());
+    isMatch(playerIds: PlayerId[]): boolean {
+        const ranks = new Set([
+            this.ranks.get(playerIds[0].value),
+            this.ranks.get(playerIds[1].value)
+        ]);
+        return ranks.has(Rank.FIRST) && ranks.has(Rank.SECOND);
+
     }
 
-    private matchPoints(firstPlayerId: PlayerId, secondPlayerId: PlayerId): number {
-        return this.isMatch(firstPlayerId, secondPlayerId) ? 100 : 0;
+    private matchPoints(playerIds: PlayerId[]): number {
+        return this.isMatch(playerIds) ? 100 : 0;
     }
 
     private tichuPointsOfPlayer(playerId: PlayerId): number {
@@ -188,7 +196,7 @@ export class Round extends CompositeValueObject  {
         return this._roundNumber;
     }
 
-    get cardPoints(): Map<string, number> {
+    get cardPoints(): Map<number, number> {
         return this._cardPoints;
     }
 

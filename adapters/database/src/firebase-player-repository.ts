@@ -1,5 +1,5 @@
-import {PlayerRepository} from 'pointchu.use-cases';
-import {Player, PlayerId, RawPlayer} from 'pointchu.domain';
+import {type PlayerRepository} from 'pointchu.use-cases';
+import {Player, PlayerId, type RawPlayer} from 'pointchu.domain';
 import {AsyncResult} from 'pointchu.capabilities';
 import {doc, query, where, collection, Firestore, setDoc, getDoc, getDocs} from 'firebase/firestore';
 

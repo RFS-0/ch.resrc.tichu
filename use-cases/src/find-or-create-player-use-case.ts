@@ -1,7 +1,7 @@
-import {IdSequence, Player, PlayerId} from 'pointchu.domain';
-import {PlayerRepository, PlayerView} from './ports';
+import {type IdSequence, Player, PlayerId} from 'pointchu.domain';
+import {type PlayerRepository, type PlayerView} from './ports';
 import {
-    FindOrCreatePlayerPresenter, FindOrCreatePlayerRequest, FindOrCreatePlayerUseCase
+  type  FindOrCreatePlayerPresenter, type FindOrCreatePlayerRequest, type FindOrCreatePlayerUseCase
 } from './ports';
 import {AsyncResult, Problem} from 'pointchu.capabilities';
 import {faker} from '@faker-js/faker';

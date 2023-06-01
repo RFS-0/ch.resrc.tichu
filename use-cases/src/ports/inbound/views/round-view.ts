@@ -2,7 +2,7 @@ import {Rank, type RawRound, Tichu} from 'pointchu.domain';
 
 export interface RoundView {
     roundNumber: number,
-    cardPoints: Map<string, number>,
+    cardPoints: Map<number, number>,
     ranks: Map<string, Rank>,
     tichus: Map<string, Tichu>,
 }

@@ -298,13 +298,6 @@ table {
   margin: 0 1vw 0 1vw;
 }
 
-.confirm.button {
-  background: transparent;
-  color: var(--color-main);
-  outline: none;
-  border: none;
-  border-bottom: 1vh;
-}
 
 .even {
   background: var(--color-dark);
