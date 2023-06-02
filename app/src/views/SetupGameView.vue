@@ -5,11 +5,22 @@ import JoinCode from '@/components/setup/JoinCode.vue';
 import SetupTeam from '@/components/setup/SetupTeam.vue';
 import {useRoute} from 'vue-router';
 import {GameId} from 'pointchu.domain';
+import {computed} from 'vue';
+import router from '@/router';
 
 const route = useRoute();
 const gameStore = useGameStore();
 
 await gameStore.loadGame(new GameId({value: route.params.game_id.toString()}));
+
+const gameConfigured = computed(() => {
+  const game = gameStore.currentGame;
+  return game.numberOfPlayersInGame() === 4;
+});
+
+const startGame = async () => {
+  await router.push('/play/' + gameStore.currentGame.id.value);
+}
 
 </script>
 
@@ -30,6 +41,13 @@ await gameStore.loadGame(new GameId({value: route.params.game_id.toString()}));
       <!--              @click="navigateToPlayGame">-->
       <!--        Start-->
       <!--      </button>-->
+    </div>
+    <div class="setup-game-actions">
+      <button class="start-game-button text--sm"
+              :disabled="!gameConfigured"
+              @click="startGame">
+        Start
+      </button>
     </div>
   </div>
 </template>
@@ -72,6 +90,29 @@ await gameStore.loadGame(new GameId({value: route.params.game_id.toString()}));
   --slide-in-offset: 50vw;
   animation-name: slide-in-team;
   animation-duration: 1s;
+}
+
+.start-game-button {
+  background-color: var(--sys-outline);
+  color: var(--sys-on-outline);
+  width: 30vw;
+  height: 5vh;
+  border-radius: 2vh;
+  margin: 1vh
+}
+
+.start-game-button:disabled {
+  background-color: var(--sys-secondary);
+  color: var(--sys-on-secondary);
+  cursor: not-allowed;
+}
+
+.setup-game-actions {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 1rem;
 }
 
 </style>

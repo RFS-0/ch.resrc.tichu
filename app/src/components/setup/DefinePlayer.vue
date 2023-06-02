@@ -27,12 +27,6 @@ const playerDefined: Ref<UnwrapRef<boolean>> = ref(false);
     <div v-else
          class="add-player-container">
       <AddPlayer :team-index="props.teamIndex" :player-index="props.playerIndex"/>
-      <!--      <add-player :is-left-team="isLeftTeam"-->
-      <!--                  :team-id="teamId"-->
-      <!--                  :player-id="playerId"-->
-      <!--                  :class="{'left-team-background-dark': isLeftTeam, 'right-team-background-dark': !isLeftTeam}"-->
-      <!--                  class="button&#45;&#45;lg">-->
-      <!--      </add-player>-->
     </div>
   </div>
 </template>
