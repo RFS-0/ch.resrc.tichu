@@ -2,6 +2,8 @@ import {type CreatePlayerPresenter, type CreatePlayerRequest, type CreatePlayerU
 import {type IdSequence, Player, PlayerId} from 'pointchu.domain';
 import {AsyncResult, Problem} from 'pointchu.capabilities';
 
+import {faker} from '@faker-js/faker';
+
 export type CreatePlayerUseCasePorts = {
     inbound: {
         playerIdSequence: IdSequence<PlayerId>
@@ -29,7 +31,7 @@ export class CreatePlayerUseCaseImpl implements CreatePlayerUseCase {
         return new Player({
             id: this.ports.inbound.playerIdSequence.next().value,
             userId: request.userId,
-            name: request.name,
+            name: `${faker.word.adjective()}_${faker.word.noun()}`,
         });
     }
 

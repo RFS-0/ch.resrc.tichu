@@ -47,6 +47,49 @@ export class Game extends Entity {
         this._rounds = result.data.rounds.map(round => new Round(round));
     }
 
+    hasPlayerJoinedGame(playerId: PlayerId): boolean {
+        return this.teams.some(team => team.hasPlayer(playerId));
+    }
+
+    private mutate(mutate: (game: Game) => void): Game {
+        const validate = (game: Game) => {
+            const result = GameSchema.safeParse(game.toRaw());
+            if (!result.success) {
+                throw new Error(`Preconditions to mutate ${Game.name} not met because ${result.error.message}`)
+            }
+            return game;
+        }
+        const copy = new Game(this.toRaw());
+        mutate(copy)
+        return validate(copy);
+    }
+
+    addPlayerToTeam(teamIndex: number, playerIndex: number, playerId: PlayerId) {
+        return this.mutate(game => {
+            const teamToUpdate = game.teams[teamIndex];
+            game.teams[teamIndex] = teamToUpdate.addPlayer(playerIndex, playerId);
+        });
+    }
+
+    numberOfPlayersInGame(): number {
+        return this.teams.reduce((sum, team) => sum + Array.from(team.players.keys()).length, 0);
+    }
+
+    idsOfPlayersInGame(): PlayerId[] {
+        return this.teams.flatMap(team => Array.from(team.players.values()));
+    }
+
+    getPlayerOfTeam(teamIndex: number, playerIndex: number) {
+        return this.teams[teamIndex].getPlayer(playerIndex);
+    }
+
+    removePlayerFromTeam(teamIndex: number, playerIndex: number) {
+        return this.mutate(game => {
+            const teamToUpdate = game.teams[teamIndex];
+            game.teams[teamIndex] = teamToUpdate.removePlayer(playerIndex);
+        });
+    }
+
     cardPointsOfTeam(roundNumber: number, teamIndex: number): number {
         const round = this.rounds.find(
             round => round.roundNumber === roundNumber,
@@ -130,10 +173,6 @@ export class Game extends Entity {
 
     get teams(): Team[] {
         return this._teams;
-    }
-
-    get players(): PlayerId[] {
-        return this.teams[0].playerIds.concat(this.teams[1].playerIds);
     }
 
     get rounds(): Round[] {

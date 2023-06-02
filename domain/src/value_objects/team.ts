@@ -43,9 +43,42 @@ export class Team extends CompositeValueObject {
                              );
     }
 
+    private mutate(mutate: (team: Team) => void): Team {
+        const validate = (team: Team) => {
+            const result = TeamSchema.safeParse(team.toRaw());
+            if (!result.success) {
+                throw new Error(`Preconditions to mutate ${Team.name} not met because ${result.error.message}`)
+            }
+            return team;
+        }
+        const copy = new Team(this.toRaw());
+        mutate(copy)
+        return validate(copy);
+    }
+
+    hasPlayer(playerId: PlayerId) {
+        return Array.from(this._playerIds.values()).some(id => id.value === playerId.value);
+    }
+
+    addPlayer(playerIndex: number, playerId: PlayerId) {
+        if (playerIndex < 0 || playerIndex > 1) {
+            throw new Error('Implementation defect: playerIndex must be 0 or 1');
+        }
+        return this.mutate(team => team._playerIds.set(playerIndex, playerId));
+    }
+
+    getPlayer(playerIndex: number) {
+        if (playerIndex < 0 || playerIndex > 1) {
+            throw new Error('Implementation defect: playerIndex must be 0 or 1');
+        }
+        return this._playerIds.get(playerIndex);
+    }
+
     removePlayer(index: number): Team {
-        this._playerIds.delete(index);
-        return this;
+        if (index < 0 || index > 1) {
+            throw new Error('Implementation defect: index must be 0 or 1');
+        }
+        return this.mutate(team => team._playerIds.delete(index));
     }
 
     get index(): number {
@@ -64,10 +97,6 @@ export class Team extends CompositeValueObject {
         return this._playerIds;
     }
 
-    get playerIds(): PlayerId[] {
-        return Array.from(this._playerIds.values());
-    }
-
     toRaw(): RawTeam {
         return {
             index: this.index,
@@ -82,4 +111,5 @@ export class Team extends CompositeValueObject {
                           )
         }
     }
+
 }

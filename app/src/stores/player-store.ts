@@ -35,9 +35,8 @@ export const usePlayerStore = defineStore('players', () => {
     let loggedInPlayer: Ref<UnwrapRef<Player>> = ref(initialPlayer);
     const allPlayers: Ref<UnwrapRef<Player>[]> = ref([]);
     const playerToSubscription: Map<string, Unsubscribe> = new Map();
-    const loggedInPlayerId = computed(() => loggedInPlayer.value.id as PlayerId);
-    const getPlayerById = (id: PlayerId) => computed(
-        () => allPlayers.value.find(player => player.id.value === id.value)
+    const getPlayerById = (playerId: PlayerId) => computed(
+        () => allPlayers.value.find(player => player.id.value === playerId.value)
     );
     const setLoggedInPlayer = (player: Player) => {
         loggedInPlayer.value = player;
@@ -61,7 +60,7 @@ export const usePlayerStore = defineStore('players', () => {
 
     async function loadPlayer(playerId: PlayerId) {
         if (playerToSubscription.has(playerId.value)) {
-            throw new Error('Implementation defect: player already loaded');
+            return;
         }
         const presenter = new PlayerViewPresenter();
         await findPlayerUseCase.execute({playerId}, presenter);
@@ -133,13 +132,16 @@ export const usePlayerStore = defineStore('players', () => {
     const updatePlayerInStore = (updatedPlayer: Player) => {
         const indexOfPlayer = allPlayers.value.findIndex(player => player.id.value === updatedPlayer.id.value);
         if (indexOfPlayer !== -1) {
-            allPlayers.value.splice(indexOfPlayer, 1, updatedPlayer);
+            allPlayers.value = [...allPlayers.value].map((player, index) => index === indexOfPlayer ? updatedPlayer : player);
         } else {
             throw new Error('Implementation defect: player not found in store');
         }
     }
 
     const removePlayerFromStore = (playerId: PlayerId) => {
+        if (playerId.value === loggedInPlayer.value.id.value) {
+            return;
+        }
         const indexOfPlayer = allPlayers.value.findIndex(player => player.id.value === playerId.value);
         if (indexOfPlayer !== -1) {
             unsubscribeFromChangesOfPlayer(playerId);
@@ -149,7 +151,6 @@ export const usePlayerStore = defineStore('players', () => {
 
     return {
         loggedInPlayer,
-        loggedInPlayerId,
         getPlayerById,
         allPlayers,
         setLoggedInPlayer,

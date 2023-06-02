@@ -1,21 +1,7 @@
 import {defineStore} from 'pinia';
+import {inject, type InjectionKey, type Ref, ref, type UnwrapRef} from 'vue';
 import {
-    inject,
-    type InjectionKey,
-    type Ref,
-    ref,
-    type UnwrapRef
-} from 'vue';
-import {
-    createIdSequence,
-    EntityIdSchema,
-    Game,
-    GameId,
-    GameSchema,
-    JoinCode,
-    PlayerId,
-    type RawGame,
-    safeParseEntity
+    createIdSequence, EntityIdSchema, Game, GameId, GameSchema, JoinCode, PlayerId, safeParseEntity
 } from 'pointchu.domain';
 import {
     createGameUseCaseProviderKey, databaseProviderKey, findGameUseCaseProviderKey, updateGameUseCaseProviderKey
@@ -35,7 +21,6 @@ function injectOrThrow<T>(injectionKey: InjectionKey<T>): T {
 }
 
 export const useGameStore = defineStore('games', () => {
-    
     const database = injectOrThrow(databaseProviderKey);
     const createGameUseCase = injectOrThrow(createGameUseCaseProviderKey)
     const findGameUseCase = injectOrThrow(findGameUseCaseProviderKey)
@@ -76,7 +61,7 @@ export const useGameStore = defineStore('games', () => {
                     const updatedGame = snapshot.data();
                     setGame(updatedGame);
                     console.log('Current game: ', JSON.stringify(updatedGame, null, 2));
-                    console.log('All players in current game: ', JSON.stringify(updatedGame.players, null, 2));
+                    console.log('All players of current game: ', JSON.stringify(updatedGame.idsOfPlayersInGame(), null, 2));
                 } else {
                     console.log('No such document!');
                 }
@@ -127,7 +112,8 @@ export const useGameStore = defineStore('games', () => {
         const rawGame = mapToRawGame(presenter.view);
         const parseError = () => new Error('Implementation defect: failed to parse game');
         const game = safeParseEntity(rawGame, GameSchema, Game).getOrThrow(parseError);
-        await playerStore.loadPlayers(game.players);
+        await playerStore.loadPlayers(game.idsOfPlayersInGame());
+        setGame(game);
     }
 
     async function updateGame(updatedGame: Game) {

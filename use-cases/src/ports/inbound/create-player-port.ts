@@ -3,7 +3,6 @@ import {type RawProblem} from 'pointchu.capabilities';
 
 export interface CreatePlayerRequest {
     userId: string | null;
-    name: string;
 }
 
 export interface CreatePlayerResponse {

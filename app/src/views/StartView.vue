@@ -2,13 +2,14 @@
 import {useRouter} from 'vue-router';
 import {useGameStore} from '@/stores/game-store';
 import {usePlayerStore} from '@/stores/player-store';
+import {PlayerId} from 'pointchu.domain';
 
 const router = useRouter()
 const gameStore = useGameStore();
 const playerStore = usePlayerStore();
 
-async function onCreateGame(): Promise<void> {
-  await gameStore.createGame(playerStore.loggedInPlayerId);
+async function createGame(): Promise<void> {
+  await gameStore.createGame(playerStore.loggedInPlayer.id as PlayerId);
   await router.push('/setup/' + gameStore.currentGame.id.value);
 }
 
@@ -22,7 +23,7 @@ const onJoinGame = () => {
     <button
         class="button--xl-dark text--lg"
         :disabled="!playerStore.loggedInPlayer.userId"
-        @click="onCreateGame"
+        @click="createGame"
     >
       Create Game
     </button>
