@@ -30,17 +30,6 @@ const startGame = async () => {
     <div class="configure-teams-container">
       <SetupTeam :team-index="0" class="left-team-background left-slide-in"/>
       <SetupTeam :team-index="1" class="right-team-background right-slide-in"/>
-
-      <!--      <configure-team class="left-team-background left-slide-in" :game-id="gameId" :team-id="leftTeam.id"/>-->
-      <!--      <configure-team class="right-team-background right-slide-in" :game-id="gameId" :team-id="rightTeam.id"/>-->
-      <!--    </div>-->
-      <!--    <div class="container&#45;&#45;column">-->
-      <!--      <button class="button&#45;&#45;lg-dark"-->
-      <!--              v-show="gameConfigured"-->
-      <!--              :disabled="!gameConfigured"-->
-      <!--              @click="navigateToPlayGame">-->
-      <!--        Start-->
-      <!--      </button>-->
     </div>
     <div class="setup-game-actions">
       <button class="start-game-button text--sm"
