@@ -1,4 +1,4 @@
-import {Game} from 'pointchu.domain';
+import {Game, rankOf, tichuOf} from 'pointchu.domain';
 import {type FirestoreDataConverter, QueryDocumentSnapshot, type SnapshotOptions} from "firebase/firestore";
 
 export type PlayerInDB = {
@@ -107,8 +107,8 @@ export const gameConverter: FirestoreDataConverter<Game> = {
                         ]
                     )
                 ),
-                ranks: new Map(round.ranks.map(rank => [Object.keys(rank)[0], Object.values(rank)[0]])),
-                tichus: new Map(round.tichus.map(tichu => [Object.keys(tichu)[0], Object.values(tichu)[0]]))
+                ranks: new Map(round.ranks.map(rank => [Object.keys(rank)[0], rankOf(Object.values(rank)[0])])),
+                tichus: new Map(round.tichus.map(tichu => [Object.keys(tichu)[0], tichuOf(Object.values(tichu)[0])]))
             }))
         });
     }

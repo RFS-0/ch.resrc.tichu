@@ -47,6 +47,7 @@ export const useGameStore = defineStore('games', () => {
     });
 
     const currentGame: Ref<UnwrapRef<Game>> = ref(initialGame);
+    const selectedRoundNumber = ref(1);
 
     const listenToChangesOfGame = (gameId: GameId) => {
         const gameRef = doc(
@@ -60,8 +61,6 @@ export const useGameStore = defineStore('games', () => {
                 if (snapshot.exists()) {
                     const updatedGame = snapshot.data();
                     setGame(updatedGame);
-                    console.log('Current game: ', JSON.stringify(updatedGame, null, 2));
-                    console.log('All players of current game: ', JSON.stringify(updatedGame.idsOfPlayersInGame(), null, 2));
                 } else {
                     console.log('No such document!');
                 }
@@ -122,6 +121,7 @@ export const useGameStore = defineStore('games', () => {
 
     return {
         currentGame,
+        selectedRoundNumber,
         createGame,
         loadGame,
         updateGame,

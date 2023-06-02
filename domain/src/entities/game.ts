@@ -1,6 +1,6 @@
 import {
     EntityIdSchema, GameId, JoinCode, JoinCodeSchema, PlayerId, Rank, type RawRound, type RawTeam, Round, RoundSchema,
-    Team, TeamSchema
+    Team, TeamSchema, Tichu
 } from '../value_objects';
 import {Entity, EntitySchema, type RawEntity} from './entity';
 import {implement} from '../validation';
@@ -68,6 +68,8 @@ export class Game extends Entity {
         return this.mutate(game => {
             const teamToUpdate = game.teams[teamIndex];
             game.teams[teamIndex] = teamToUpdate.addPlayer(playerIndex, playerId);
+            game.rounds[0].tichus.set(playerId.value, Tichu.NONE);
+            game.rounds[0].ranks.set(playerId.value, Rank.NONE);
         });
     }
 
@@ -120,6 +122,24 @@ export class Game extends Entity {
         return this.rounds.reduce((prev, current) => (prev.roundNumber > current.roundNumber) ? prev : current);
     }
 
+    round(roundNumber: number): Round {
+        const round = this.rounds.find(round => round.roundNumber === roundNumber);
+        if (!round) {
+            throw new Error('Invariant violated: round does not exist');
+        }
+        return round;
+    }
+
+    updateRound(round: Round): Game {
+        return this.mutate(game => {
+            const roundIndex = game.rounds.findIndex(r => r.roundNumber === round.roundNumber);
+            if (roundIndex < 0) {
+                throw new Error('Invariant violated: cannot update non existing round');
+            }
+            game.rounds[roundIndex] = round;
+        });
+    }
+
     finishRound(roundNumber: number): Game {
         const round = this.rounds.find(round => round.roundNumber === roundNumber);
         if (!round) {
@@ -127,6 +147,26 @@ export class Game extends Entity {
         }
         round.finishRound();
         return this;
+    }
+
+    rankPlayer(roundNumber: number, playerId: PlayerId): Game {
+        return this.mutate(game => {
+            const round = game.rounds.find(round => round.roundNumber === roundNumber);
+            if (!round) {
+                throw new Error('Invariant violated: cannot finish non existing round');
+            }
+            game.rounds[round.roundNumber - 1] = round.rankPlayer(playerId.value, round.nextRank());
+        });
+    }
+
+    resetRank(roundNumber: number, playerId: any) {
+        return this.mutate(game => {
+            const round = game.rounds.find(round => round.roundNumber === roundNumber);
+            if (!round) {
+                throw new Error('Invariant violated: cannot finish non existing round');
+            }
+            game.rounds[round.roundNumber - 1] = round.resetRank(playerId.value);
+        });
     }
 
     nextRank(): Rank {
@@ -188,4 +228,5 @@ export class Game extends Entity {
             rounds: this.rounds.map(round => round.toRaw()),
         };
     }
+
 }

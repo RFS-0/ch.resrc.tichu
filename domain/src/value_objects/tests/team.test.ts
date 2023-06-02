@@ -49,8 +49,8 @@ describe(`Testing the value object '${Team.name}'`, () => {
                 it(`is ensured that the properties of '${JSON.stringify(validInput)}' are parsed correctly`, () => {
                     const team = new Team(validInput)
                     expect(team.name).toEqual(validInput.name);
-                    expect(team.playerIds[0].value).toEqual(validInput.players.get(0));
-                    expect(team.playerIds[1].value).toEqual(validInput.players.get(1));
+                    expect(team.getPlayer(0)?.value).toEqual(validInput.players.get(0));
+                    expect(team.getPlayer(1)?.value).toEqual(validInput.players.get(1));
                 })
             })
         })

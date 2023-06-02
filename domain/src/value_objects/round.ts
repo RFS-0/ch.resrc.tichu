@@ -41,6 +41,20 @@ export class Round extends CompositeValueObject {
         this._tichus = result.data.tichus;
     }
 
+    private mutate(mutate: (round: Round) => void): Round {
+        const validate = (round: Round) => {
+            const result = RoundSchema.safeParse(round.toRaw());
+            if (!result.success) {
+                throw new Error(`Preconditions to mutate ${Round.name} not met because ${result.error.message}`)
+            }
+            return round;
+        }
+        const copy = new Round(this.toRaw());
+        mutate(copy)
+        return validate(copy);
+    }
+
+
     static create(roundNumber: number, teams: Team[]): Round {
         return new Round({
                 roundNumber,
@@ -49,11 +63,11 @@ export class Round extends CompositeValueObject {
                     [1, 0],
                 ]),
                 ranks: new Map(
-                    teams.flatMap(team => team.playerIds)
+                    teams.flatMap(team => Array.from(team.players.values()))
                          .map(playerId => [playerId.value, Rank.NONE])
                 ),
                 tichus: new Map(
-                    teams.flatMap(team => team.playerIds)
+                    teams.flatMap(team => Array.from(team.players.values()))
                          .map(playerId => [playerId.value, Tichu.NONE])
                 ),
             }
@@ -78,33 +92,35 @@ export class Round extends CompositeValueObject {
     }
 
     resetRank(playerId: string): Round {
-        const updatedRanks = new Map(this.ranks);
-        const rankOfPlayer = this._ranks.get(playerId) || Rank.NONE;
-        this._ranks.forEach((rank, key) => {
-            if (rank !== Rank.NONE && rank.valueOf() > rankOfPlayer.valueOf()) {
-                updatedRanks.set(key, rankOf(rank.valueOf() - 1));
-            }
-        });
-        updatedRanks.set(playerId, Rank.NONE);
-        this._ranks = updatedRanks;
-        return this;
+        return this.mutate(round => {
+            const updatedRanks = new Map(round.ranks);
+            const rankOfPlayer = round._ranks.get(playerId) || Rank.NONE;
+            round._ranks.forEach((rank, key) => {
+                if (rank !== Rank.NONE && rank.valueOf() > rankOfPlayer.valueOf()) {
+                    updatedRanks.set(key, rankOf(rank.valueOf() - 1));
+                }
+            });
+            updatedRanks.set(playerId, Rank.NONE);
+            round._ranks = updatedRanks;
+        })
     }
 
     toggleTichu(playerId: string): Round {
-        const updatedTichus = new Map(this.tichus);
-        const tichuOfPlayer = this.tichus.get(playerId);
-        if (tichuOfPlayer === undefined) {
-            throw new Error('Invariant violated: Tichu cannot be undefined');
-        }
-        if (tichuOfPlayer.valueOf() === Tichu.NONE.valueOf()) {
-            updatedTichus.set(playerId, Tichu.TICHU_CALLED);
-        } else if (tichuOfPlayer.valueOf() === Tichu.TICHU_CALLED.valueOf()) {
-            updatedTichus.set(playerId, Tichu.GRAND_TICHU_CALLED);
-        } else {
-            updatedTichus.set(playerId, Tichu.NONE);
-        }
-        this._tichus = updatedTichus;
-        return this;
+        return this.mutate(round => {
+            const updatedTichus = new Map(round.tichus);
+            const tichuOfPlayer = round.tichus.get(playerId);
+            if (tichuOfPlayer === undefined) {
+                throw new Error('Invariant violated: Tichu cannot be undefined');
+            }
+            if (tichuOfPlayer.valueOf() === Tichu.NONE.valueOf()) {
+                updatedTichus.set(playerId, Tichu.TICHU_CALLED);
+            } else if (tichuOfPlayer.valueOf() === Tichu.TICHU_CALLED.valueOf()) {
+                updatedTichus.set(playerId, Tichu.GRAND_TICHU_CALLED);
+            } else {
+                updatedTichus.set(playerId, Tichu.NONE);
+            }
+            round._tichus = updatedTichus;
+        });
     }
 
     isComplete(): boolean {
@@ -118,8 +134,9 @@ export class Round extends CompositeValueObject {
     }
 
     finishRound(): Round {
-        this._tichus = this.evaluateSuccessOfTichus();
-        return this;
+        return this.mutate(round => {
+            round._tichus = round.evaluateSuccessOfTichus();
+        });
     }
 
     private evaluateSuccessOfTichus(): Map<string, Tichu> {
@@ -153,10 +170,42 @@ export class Round extends CompositeValueObject {
     }
 
     totalPoints(team: Team): number {
+        const playersOfTeam = Array.from(team.players.values());
         return this.cardPointsOfTeam(team.index)
-            + this.matchPoints(team.playerIds)
-            + this.tichuPointsOfPlayer(team.playerIds[0])
-            + this.tichuPointsOfPlayer(team.playerIds[1]);
+            + this.matchPoints(playersOfTeam)
+            + this.tichuPointsOfPlayer(playersOfTeam[0])
+            + this.tichuPointsOfPlayer(playersOfTeam[1]);
+    }
+
+    updateCardPointsOfTeam(teamIndex: number, cardPoints: number): Round {
+        return this.mutate(round => {
+            const sanitizeCardPointValue = (cardPoints: number): number => {
+                if (cardPoints > 100) {
+                    return 100;
+                } else if (cardPoints < -25) {
+                    return -25;
+                } else {
+                    return cardPoints as number;
+                }
+            }
+            let sanitizedPointsOfLeftTeam;
+            let sanitizedPointsOfRightTeam;
+            if (teamIndex === 0) {
+                sanitizedPointsOfLeftTeam = sanitizeCardPointValue(cardPoints);
+                sanitizedPointsOfRightTeam = 100 - sanitizedPointsOfLeftTeam;
+            } else {
+                sanitizedPointsOfRightTeam = sanitizeCardPointValue(cardPoints);
+                sanitizedPointsOfLeftTeam = 100 - sanitizedPointsOfRightTeam;
+            }
+            round._cardPoints.set(0, sanitizedPointsOfLeftTeam);
+            round._cardPoints.set(1, sanitizedPointsOfRightTeam);
+        });
+    }
+
+    rankPlayer(playerId: string, rank: Rank): Round {
+       return this.mutate(round => {
+           round._ranks = round._ranks.set(playerId, rank);
+       })
     }
 
     cardPointsOfTeam(teamIndex: number): number {
@@ -173,7 +222,6 @@ export class Round extends CompositeValueObject {
             this.ranks.get(playerIds[1].value)
         ]);
         return ranks.has(Rank.FIRST) && ranks.has(Rank.SECOND);
-
     }
 
     private matchPoints(playerIds: PlayerId[]): number {

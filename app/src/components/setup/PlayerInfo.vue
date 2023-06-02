@@ -12,7 +12,7 @@ const gameStore = useGameStore();
 
 const isLeftTeam = props.teamIndex === 0;
 const team =  gameStore.currentGame.teams[props.teamIndex]
-const playerName = ref(team.playerIds[props.playerIndex]);
+const playerName = ref(team.getPlayer(props.playerIndex));
 
 const removePlayer = () => {
   team.removePlayer(props.playerIndex);

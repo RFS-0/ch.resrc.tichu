@@ -10,7 +10,7 @@ import {
     Game,
     GameId,
     type IdSequence,
-    JoinCode, Team
+    JoinCode, Rank, Team, Tichu
 } from 'pointchu.domain';
 
 export type CreateGameUseCasePorts = {
@@ -53,7 +53,17 @@ export class CreateGameUseCaseImpl implements CreateGameUseCase {
                     players: new Map(),
                 }
             ],
-            rounds: [],
+            rounds: [
+                {
+                    roundNumber: 1,
+                    cardPoints: new Map<number, number>([
+                        [0, 0],
+                        [1, 0],
+                    ]),
+                    ranks: new Map<string, Rank>(),
+                    tichus: new Map<string, Tichu>(),
+                }
+            ],
         });
     }
 

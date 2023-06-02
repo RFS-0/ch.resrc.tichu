@@ -14,7 +14,6 @@ const gameStore = useGameStore();
 const playerStore = usePlayerStore();
 
 const editingPlayerName = ref(false);
-const playerNameInput = ref<HTMLInputElement | null>(null);
 const playerName = ref('');
 
 const isLeftTeam = props.teamIndex === 0;
@@ -52,7 +51,7 @@ const addPlayer = async () => {
   await gameStore.updateGame(updatedGame);
 }
 const editPlayerName = () => {
-  const name = player.value?.value.name;
+  const name = player.value?.value?.name;
   if (!name) {
     throw new Error('Implementation defect: player name input not found');
   }
@@ -71,12 +70,19 @@ const updatePlayerName = async () => {
   if (!playerToUpdate) {
     throw new Error('Implementation defect: Player not found');
   }
+  if (!playerToUpdate.value) {
+    throw new Error('Implementation defect: Player not found');
+  }
+
   await playerStore.updatePlayer(playerToUpdate.value.changeName(playerName.value));
 }
 
 const removePlayer = async () => {
   const game = gameStore.currentGame;
   const idOfRemovedPlayer = game.teams[props.teamIndex].getPlayer(props.playerIndex);
+  if (!idOfRemovedPlayer) {
+    throw new Error('Implementation defect: Player not found');
+  }
   await gameStore.updateGame(game.removePlayerFromTeam(props.teamIndex, props.playerIndex));
   playerStore.removePlayerFromStore(idOfRemovedPlayer);
 }
