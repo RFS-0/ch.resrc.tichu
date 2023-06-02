@@ -23,6 +23,8 @@ import {
 import {GameViewPresenter} from '@/presenters/game-view-presenter';
 import {mapToRawGame} from 'pointchu.use-cases';
 import {doc, onSnapshot} from "firebase/firestore";
+import {usePlayerStore} from '@/stores/player-store';
+import {gameConverter} from 'pointchu.database-adapter';
 
 function injectOrThrow<T>(injectionKey: InjectionKey<T>): T {
     const dependency = inject(injectionKey);
@@ -33,11 +35,13 @@ function injectOrThrow<T>(injectionKey: InjectionKey<T>): T {
 }
 
 export const useGameStore = defineStore('games', () => {
+    
     const database = injectOrThrow(databaseProviderKey);
     const createGameUseCase = injectOrThrow(createGameUseCaseProviderKey)
     const findGameUseCase = injectOrThrow(findGameUseCaseProviderKey)
     const updateGameUseCase = injectOrThrow(updateGameUseCaseProviderKey);
     const gameIdSequence = createIdSequence(EntityIdSchema, GameId)
+    const playerStore = usePlayerStore();
     const initialGame = new Game({
         id: gameIdSequence.next().value,
         createdBy: null,
@@ -46,12 +50,12 @@ export const useGameStore = defineStore('games', () => {
             {
                 index: 0,
                 name: 'Team 1',
-                playerIds: [],
+                players: new Map(),
             },
             {
                 index: 1,
                 name: 'Team 2',
-                playerIds: [],
+                players: new Map()
             }
         ],
         rounds: [],
@@ -64,16 +68,15 @@ export const useGameStore = defineStore('games', () => {
             database,
             'games',
             gameId.value
-        );
+        ).withConverter(gameConverter);
         return onSnapshot(
             gameRef,
             (snapshot) => {
                 if (snapshot.exists()) {
-                    const rawUpdatedGame = mapToRawGame(snapshot.data() as RawGame);
-                    const parseError = () => new Error('Implementation defect: failed to parse game');
-                    const updatedGame = safeParseEntity(rawUpdatedGame, GameSchema, Game).getOrThrow(parseError);
-                    console.log('Current data: ', JSON.stringify(updatedGame, null, 2));
+                    const updatedGame = snapshot.data();
                     setGame(updatedGame);
+                    console.log('Current game: ', JSON.stringify(updatedGame, null, 2));
+                    console.log('All players in current game: ', JSON.stringify(updatedGame.players, null, 2));
                 } else {
                     console.log('No such document!');
                 }
@@ -113,16 +116,18 @@ export const useGameStore = defineStore('games', () => {
     }
 
     async function loadGame(gameId: GameId) {
-        if (currentGame.value.id.value === gameId.value) {
-            return;
-        }
         unsubscribeToChangesOfGame && unsubscribeToChangesOfGame();
         unsubscribeToChangesOfGame = listenToChangesOfGame(gameId);
         const presenter = new GameViewPresenter();
         await findGameUseCase.execute({gameId}, presenter);
         if (!presenter.view) {
-            throw new Error('Either system error or defect occurred. TODO: handle this gracefully');
+            // TODO: handle this gracefully
+            throw new Error('Either system error or defect occurred.');
         }
+        const rawGame = mapToRawGame(presenter.view);
+        const parseError = () => new Error('Implementation defect: failed to parse game');
+        const game = safeParseEntity(rawGame, GameSchema, Game).getOrThrow(parseError);
+        await playerStore.loadPlayers(game.players);
     }
 
     async function updateGame(updatedGame: Game) {

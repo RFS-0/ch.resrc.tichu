@@ -127,6 +127,7 @@ authorization.onAuthStateChanged(async (user) => {
     const parseError = () => new Error('Implementation defect: failed to parse game');
     const player = safeParseEntity(mapToRawPlayer(presenter.view), PlayerSchema, Player).getOrThrow(parseError);
     playerStore.setLoggedInPlayer(player);
+    playerStore.addPlayerToStore(player)
 });
 
 signInAnonymously(authorization)

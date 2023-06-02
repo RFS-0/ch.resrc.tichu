@@ -6,7 +6,7 @@ import {PlayerId} from './player-id';
 export interface RawTeam extends RawCompositeValueObject {
     index: number
     name: string
-    playerIds: string[]
+    players: Map<number, string>
 }
 
 export const TeamSchema: z.ZodType<RawTeam, ZodTypeDef, RawTeam> = implement<RawTeam>()
@@ -14,14 +14,14 @@ export const TeamSchema: z.ZodType<RawTeam, ZodTypeDef, RawTeam> = implement<Raw
     .with({
         index: z.number().min(0).max(1),
         name: z.string(),
-        playerIds: z.array(z.string()).max(2),
+        players: z.map(z.number(), z.string()),
     });
 
 export class Team extends CompositeValueObject {
 
     private _index: number;
     private _name: string;
-    private _playerIds: PlayerId[];
+    private _playerIds: Map<number, PlayerId>;
 
     constructor(
         input: RawTeam,
@@ -33,11 +33,18 @@ export class Team extends CompositeValueObject {
         }
         this._index = result.data.index;
         this._name = result.data.name;
-        this._playerIds = result.data.playerIds.map(playerId => new PlayerId({value: playerId}));
+        this._playerIds = Array.from(result.data.players.entries())
+                               .reduce(
+                                 (players, [index, playerId]) => {
+                                     players.set(index, new PlayerId({value: playerId}));
+                                     return players;
+                                 },
+                                 new Map<number, PlayerId>()
+                             );
     }
 
     removePlayer(index: number): Team {
-        this._playerIds.splice(index, 1);
+        this._playerIds.delete(index);
         return this;
     }
 
@@ -53,15 +60,26 @@ export class Team extends CompositeValueObject {
         this._name = name;
     }
 
-    get playerIds(): PlayerId[] {
+    get players(): Map<number, PlayerId> {
         return this._playerIds;
+    }
+
+    get playerIds(): PlayerId[] {
+        return Array.from(this._playerIds.values());
     }
 
     toRaw(): RawTeam {
         return {
             index: this.index,
             name: this.name,
-            playerIds: this.playerIds.map(playerId => playerId.value),
+            players: Array.from(this._playerIds)
+                          .reduce(
+                              (players, [index, playerId]) => {
+                                  players.set(index, playerId.value);
+                                  return players;
+                              },
+                              new Map<number, string>()
+                          )
         }
     }
 }

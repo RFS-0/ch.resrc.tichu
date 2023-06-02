@@ -43,6 +43,10 @@ export class Player {
         return this._name;
     }
 
+    set name(name: string) {
+        this._name = name;
+    }
+
     get userId(): string | null {
         return this._userId;
     }

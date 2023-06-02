@@ -2,7 +2,7 @@
 import {computed, ref} from 'vue';
 import PlayerAvatar from '@/components/setup/PlayerAvatar.vue';
 import {useGameStore} from '@/stores/game-store';
-import {Game, Player} from 'pointchu.domain';
+import {Game, Player, PlayerId} from 'pointchu.domain';
 import {usePlayerStore} from '@/stores/player-store';
 
 const props = defineProps<{
@@ -12,20 +12,22 @@ const props = defineProps<{
 
 const gameStore = useGameStore();
 const playerStore = usePlayerStore();
-const player = computed(() => {
-  const playerInPosition = gameStore.currentGame.teams[props.teamIndex].playerIds[props.playerIndex];
-  if (!playerInPosition) {
-    return null;
-  }
-  return playerStore.allPlayers.find(player => player.id.value === playerInPosition.value);
-});
 
 const editingPlayerName = ref(false);
 const playerNameInput = ref<HTMLInputElement | null>(null);
+const updatedPlayerName = ref('');
 
 const isLeftTeam = props.teamIndex === 0;
 const isRightTeam = props.teamIndex === 1;
 
+const player = computed(() => {
+      const playerId = gameStore.currentGame.teams[props.teamIndex].playerIds[props.playerIndex];
+      if (!playerId) {
+        return null;
+      }
+      return playerStore.allPlayers.find(player => player.id.value === playerId.value);
+    },
+);
 
 const addPlayer = async () => {
   const loggedInPlayerAlreadyInTeam = gameStore.currentGame.players.find(
@@ -48,29 +50,36 @@ const addPlayer = async () => {
   playerNameInput.value?.focus()
 }
 const editPlayerName = () => {
-  console.log('editing player name');
+  const name = player.value?.name;
+  if (!name) {
+    throw new Error('Implementation defect: player name input not found');
+  }
+  updatedPlayerName.value = name;
   editingPlayerName.value = true;
-}
-
-const removePlayer = () => {
-  gameStore.currentGame.teams[props.teamIndex].playerIds.splice(props.playerIndex, 1);
-  gameStore.updateGame(gameStore.currentGame as Game);
 }
 
 const updatePlayerName = (event: Event) => {
   const target = event.target as HTMLInputElement;
-  const playerId = gameStore.currentGame.teams[props.teamIndex].playerIds[props.playerIndex];
-  const playerToUpdate = playerStore.allPlayers.find(player => player.id.value === playerId.value)
-  if (!playerToUpdate) {
-    throw new Error(`Could not find player with id ${playerId}`);
-  }
-  playerToUpdate.name = target.value;
-  playerStore.updatePlayer(playerToUpdate as Player);
-  // then update the name of this player
+  updatedPlayerName.value = target.value;
 }
 
 const confirm = () => {
   editingPlayerName.value = false;
+  const playerToUpdate = player.value;
+  if (!playerToUpdate) {
+    throw new Error('Implementation defect: Player not found');
+  }
+  playerToUpdate.name = updatedPlayerName.value;
+  playerStore.updatePlayer(playerToUpdate as Player);
+  console.log(updatedPlayerName.value);
+  console.log(playerToUpdate);
+}
+
+const removePlayer = () => {
+  const teamToUpdate = gameStore.currentGame.teams[props.teamIndex]
+  const playerToRemove = teamToUpdate.playerIds[props.playerIndex];
+  gameStore.updateGame(gameStore.currentGame as Game);
+  playerStore.removePlayerFromStore(playerToRemove as PlayerId);
 }
 </script>
 
@@ -84,7 +93,7 @@ const confirm = () => {
              ref="input"
              :class="{'left-team-background-dark': isLeftTeam, 'right-team-background-dark': isRightTeam}"
              class="text--sm input--text"
-             :value="player?.name"
+             :value="updatedPlayerName"
              @input="updatePlayerName"/>
       <div class="confirm button"
            @click="confirm">
@@ -98,9 +107,8 @@ const confirm = () => {
         v-else-if="player"
         class="remove-player"
         :class="{'left-team-background-dark': isLeftTeam, 'right-team-background-dark': isRightTeam}"
-        @click="removePlayer"
     >
-        <div>{{ player.name }}</div>
+      <div>{{ player.name }}</div>
       <div class="edit-player-action">
         <div
             class="button--lg"

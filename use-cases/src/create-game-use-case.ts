@@ -45,12 +45,12 @@ export class CreateGameUseCaseImpl implements CreateGameUseCase {
                 {
                     index: 0,
                     name: 'Team 1',
-                    playerIds: [],
+                    players: new Map(),
                 },
                 {
                     index: 1,
                     name: 'Team 2',
-                    playerIds: [],
+                    players: new Map(),
                 }
             ],
             rounds: [],

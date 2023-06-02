@@ -1,4 +1,4 @@
-import {type GameRepository, type GameView, UpdateGamePresenter, UpdateGameRequest, UpdateGameUseCase} from './ports';
+import {type GameRepository, type GameView, type UpdateGamePresenter, type UpdateGameRequest, type UpdateGameUseCase} from './ports';
 import {AsyncResult, Problem} from 'pointchu.capabilities';
 import {Game} from 'pointchu.domain';
 

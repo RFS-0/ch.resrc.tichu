@@ -1,5 +1,5 @@
-import {CreatePlayerPresenter, CreatePlayerRequest, CreatePlayerUseCase, PlayerRepository, PlayerView} from './ports';
-import {IdSequence, Player, PlayerId} from 'pointchu.domain';
+import {type CreatePlayerPresenter, type CreatePlayerRequest, type CreatePlayerUseCase, type PlayerRepository, type PlayerView} from './ports';
+import {type IdSequence, Player, PlayerId} from 'pointchu.domain';
 import {AsyncResult, Problem} from 'pointchu.capabilities';
 
 export type CreatePlayerUseCasePorts = {

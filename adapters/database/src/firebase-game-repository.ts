@@ -2,7 +2,7 @@ import {type GameRepository} from 'pointchu.use-cases';
 import {Game, GameId, type RawGame,} from 'pointchu.domain';
 import {AsyncResult} from 'pointchu.capabilities';
 import {doc, type Firestore, getDoc, setDoc} from "firebase/firestore";
-
+import {gameConverter} from './data-types/firebase-data-types';
 
 export class GameRepositoryImpl implements GameRepository {
     private readonly COLLECTION = 'games';
@@ -15,13 +15,15 @@ export class GameRepositoryImpl implements GameRepository {
             .fromValue(games)
             .doAsyncEffect(async games => {
                 for (const game of games) {
+                    const gameRef = doc(
+                        this.database,
+                        this.COLLECTION,
+                        game.id.value
+                    )
+                        .withConverter(gameConverter);
                     await setDoc(
-                        doc(
-                            this.database,
-                            this.COLLECTION,
-                            game.id.value
-                        ),
-                        game.toRaw()
+                        gameRef,
+                        game
                     );
                 }
             });
@@ -37,14 +39,16 @@ export class GameRepositoryImpl implements GameRepository {
             this.database,
             this.COLLECTION,
             gameId.value
-        );
+        )
+            .withConverter(gameConverter);
+
         return AsyncResult
             .fromPromise(() => getDoc(gameRef))
             .map(snapshot => {
                 if (!snapshot.exists()) {
                     return undefined;
                 }
-                return new Game(snapshot.data() as RawGame);
+                return snapshot.data();
             })
     }
 
@@ -53,13 +57,15 @@ export class GameRepositoryImpl implements GameRepository {
             .fromValue(updatedGames)
             .doAsyncEffect(async games => {
                 for (const game of games) {
+                    const gameRef = doc(
+                        this.database,
+                        this.COLLECTION,
+                        game.id.value
+                    )
+                        .withConverter(gameConverter);
                     await setDoc(
-                        doc(
-                            this.database,
-                            this.COLLECTION,
-                            game.id.value
-                        ),
-                        game.toRaw()
+                        gameRef,
+                        game
                     );
                 }
             });

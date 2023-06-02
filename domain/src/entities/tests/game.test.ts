@@ -12,19 +12,20 @@ const validInputs: RawGame[] = [
             {
                 index: 0,
                 name: 'John & Doe',
-                playerIds: [
-                    '8e3255a4-fe43-11ed-be56-0242ac120002',
-                    '934d1056-fe43-11ed-be56-0242ac120002',
-
-                ]
+                players: new Map([
+                        [0, '8e3255a4-fe43-11ed-be56-0242ac120002'],
+                        [0, '934d1056-fe43-11ed-be56-0242ac120002'],
+                    ]
+                )
             },
             {
                 index: 1,
                 name: 'Fizz & Buzz',
-                playerIds: [
-                    'd676be28-fe51-11ed-be56-0242ac120002',
-                    'dab96120-fe51-11ed-be56-0242ac120002',
-                ],
+                players: new Map([
+                        [0, 'd676be28-fe51-11ed-be56-0242ac120002'],
+                        [0, 'dab96120-fe51-11ed-be56-0242ac120002'],
+                    ]
+                ),
             }
         ],
         rounds: [
@@ -60,18 +61,20 @@ const invalidInputs = [
             {
                 index: 0,
                 name: 'John & Doe',
-                playerIds: [
-                    '8e3255a4-fe43-11ed-be56-0242ac120002',
-                    '934d1056-fe43-11ed-be56-0242ac120002',
-                ]
+                players: new Map([
+                        [0, '8e3255a4-fe43-11ed-be56-0242ac120002'],
+                        [1, '934d1056-fe43-11ed-be56-0242ac120002'],
+                    ]
+                )
             },
             {
                 index: 1,
                 name: 'Fizz & Buzz',
-                playerIds: [
-                    'd676be28-fe51-11ed-be56-0242ac120002',
-                    'dab96120-fe51-11ed-be56-0242ac120002',
-                ],
+                players: new Map([
+                        [0, 'd676be28-fe51-11ed-be56-0242ac120002'],
+                        [1, 'dab96120-fe51-11ed-be56-0242ac120002'],
+                    ]
+                )
             }
         ],
         rounds: []
@@ -84,7 +87,7 @@ const invalidInputs = [
             {
                 index: 0,
                 name: 'John & Doe',
-                playerIds: [
+                players: [
                     '8e3255a4-fe43-11ed-be56-0242ac120002',
                     '934d1056-fe43-11ed-be56-0242ac120002',
                 ]
@@ -92,7 +95,7 @@ const invalidInputs = [
             {
                 index: 1,
                 name: 'Fizz & Buzz',
-                playerIds: [
+                players: [
                     'd676be28-fe51-11ed-be56-0242ac120002',
                     'dab96120-fe51-11ed-be56-0242ac120002',
                 ],
@@ -118,8 +121,8 @@ describe(`Testing the entity '${Game.name}'`, () => {
                     expect(game.id.value).toEqual(validInput.id);
                     expect(game.createdBy?.value).toEqual(validInput.createdBy);
                     expect(game.joinCode.value).toEqual(validInput.joinCode);
-                    expect(game.leftTeam.toRaw()).toEqual(validInput.teams[0]);
-                    expect(game.rightTeam.toRaw()).toEqual(validInput.teams[1]);
+                    expect(game.teams[0].toRaw()).toEqual(validInput.teams[0]);
+                    expect(game.teams[1].toRaw()).toEqual(validInput.teams[1]);
                     expect(game.rounds.map(round => round.toRaw())).toEqual(validInput.rounds);
                 })
                 it(`is ensured that safe parsing valid input results in success`, () => {

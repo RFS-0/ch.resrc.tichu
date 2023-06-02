@@ -8,7 +8,7 @@ import {
 } from '@/dependency-injection';
 import {type CreatePlayerRequest, mapToRawPlayer} from 'pointchu.use-cases';
 import {PlayerViewPresenter} from '@/presenters/player-view-presenter';
-import {doc, onSnapshot} from 'firebase/firestore';
+import {doc, onSnapshot, type Unsubscribe} from 'firebase/firestore';
 
 function injectOrThrow<T>(injectionKey: InjectionKey<T>): T {
     const dependency = inject(injectionKey);
@@ -19,6 +19,7 @@ function injectOrThrow<T>(injectionKey: InjectionKey<T>): T {
 }
 
 export const usePlayerStore = defineStore('players', () => {
+    const COLLECTION = 'players';
     const database = injectOrThrow(databaseProviderKey);
     const createPlayerUseCase = injectOrThrow(createPlayerUseCaseProviderKey)
     const updatePlayerUseCase = injectOrThrow(updatePlayerUseCaseProviderKey)
@@ -33,15 +34,12 @@ export const usePlayerStore = defineStore('players', () => {
 
     let loggedInPlayer: Ref<UnwrapRef<Player>> = ref(initialPlayer);
     const allPlayers: Ref<UnwrapRef<Player>[]> = ref([]);
+    const playerToSubscription: Map<string, Unsubscribe> = new Map();
     const loggedInPlayerId = computed(() => loggedInPlayer.value.id as PlayerId);
     const getPlayerById = (id: PlayerId) => computed(
         () => allPlayers.value.find(player => player.id.value === id.value)
     );
-
     const setLoggedInPlayer = (player: Player) => {
-        const indexOfPreviouslyLoggedInPlayer = allPlayers.value.indexOf(loggedInPlayer.value);
-        allPlayers.value.splice(indexOfPreviouslyLoggedInPlayer, 1, player);
-        listenToChangesOfPlayer(player.id);
         loggedInPlayer.value = player;
     };
 
@@ -57,17 +55,28 @@ export const usePlayerStore = defineStore('players', () => {
         const rawPlayer = mapToRawPlayer(presenter.view);
         const parseError = () => new Error('Implementation defect: failed to parse game');
         const player = safeParseEntity(rawPlayer, PlayerSchema, Player).getOrThrow(parseError);
-        allPlayers.value.push(player);
-        listenToChangesOfPlayer(player.id);
+        addPlayerToStore(player);
         return player;
     }
 
-    // TODO: implement
     async function loadPlayer(playerId: PlayerId) {
+        if (playerToSubscription.has(playerId.value)) {
+            throw new Error('Implementation defect: player already loaded');
+        }
         const presenter = new PlayerViewPresenter();
         await findPlayerUseCase.execute({playerId}, presenter);
         if (!presenter.view) {
             throw new Error('Either system error or defect occurred. TODO: handle this gracefully');
+        }
+        const rawPlayer = mapToRawPlayer(presenter.view);
+        const parseError = () => new Error('Implementation defect: failed to parse game');
+        const player = safeParseEntity(rawPlayer, PlayerSchema, Player).getOrThrow(parseError);
+        addPlayerToStore(player);
+    }
+
+    async function loadPlayers(playerIds: PlayerId[]) {
+        for (const playerId of playerIds) {
+            await loadPlayer(playerId);
         }
     }
 
@@ -75,20 +84,10 @@ export const usePlayerStore = defineStore('players', () => {
         await updatePlayerUseCase.execute({updatedPlayer}, new PlayerViewPresenter());
     }
 
-    const setPlayer = (player: Player) => {
-        const indexOfPlayer = allPlayers.value.indexOf(player);
-        if (indexOfPlayer === -1) {
-            allPlayers.value.push(player);
-        } else {
-            allPlayers.value.splice(indexOfPlayer, 1, player);
-        }
-    }
-
-
     const listenToChangesOfPlayer = (playerId: PlayerId) => {
         const gameRef = doc(
             database,
-            'games',
+            COLLECTION,
             playerId.value
         );
         return onSnapshot(
@@ -98,8 +97,8 @@ export const usePlayerStore = defineStore('players', () => {
                     const rawUpdatedPlayer = mapToRawPlayer(snapshot.data() as RawPlayer);
                     const parseError = () => new Error('Implementation defect: failed to parse game');
                     const updatedPlayer = safeParseEntity(rawUpdatedPlayer, PlayerSchema, Player).getOrThrow(parseError);
-                    setPlayer(updatedPlayer);
-                    console.log('Current data: ', JSON.stringify(allPlayers.value, null, 2));
+                    updatePlayerInStore(updatedPlayer);
+                    console.log('All players: ', JSON.stringify(allPlayers.value, null, 2));
                 } else {
                     console.log('No such document!');
                 }
@@ -110,13 +109,55 @@ export const usePlayerStore = defineStore('players', () => {
         );
     };
 
+    const subscribeToChangesOfPlayer = (playerId: PlayerId) => {
+        playerToSubscription.set(playerId.value, listenToChangesOfPlayer(playerId));
+    }
+
+    const unsubscribeFromChangesOfPlayer = (playerId: PlayerId) => {
+        const unsubscribe = playerToSubscription.get(playerId.value);
+        if (unsubscribe) {
+            unsubscribe();
+            playerToSubscription.delete(playerId.value);
+            removePlayerFromStore(playerId);
+        }
+    }
+
+    const addPlayerToStore = (playerToAdd: Player) => {
+        const indexOfPlayer = allPlayers.value.findIndex(player => playerToAdd.id.value === player.id.value)
+        if (indexOfPlayer === -1) {
+            allPlayers.value.push(playerToAdd);
+            subscribeToChangesOfPlayer(playerToAdd.id);
+        }
+    }
+
+    const updatePlayerInStore = (updatedPlayer: Player) => {
+        const indexOfPlayer = allPlayers.value.findIndex(player => player.id.value === updatedPlayer.id.value);
+        if (indexOfPlayer !== -1) {
+            allPlayers.value.splice(indexOfPlayer, 1, updatedPlayer);
+        } else {
+            throw new Error('Implementation defect: player not found in store');
+        }
+    }
+
+    const removePlayerFromStore = (playerId: PlayerId) => {
+        const indexOfPlayer = allPlayers.value.findIndex(player => player.id.value === playerId.value);
+        if (indexOfPlayer !== -1) {
+            unsubscribeFromChangesOfPlayer(playerId);
+            allPlayers.value.splice(indexOfPlayer, 1);
+        }
+    }
+
     return {
         loggedInPlayer,
         loggedInPlayerId,
         getPlayerById,
         allPlayers,
         setLoggedInPlayer,
+        addPlayerToStore,
+        removePlayerFromStore,
         createPlayer,
+        loadPlayer,
+        loadPlayers,
         updatePlayer,
     }
 });

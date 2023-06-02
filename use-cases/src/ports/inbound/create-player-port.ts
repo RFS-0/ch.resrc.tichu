@@ -1,5 +1,5 @@
-import {PlayerView} from './views';
-import {RawProblem} from 'pointchu.capabilities';
+import {type PlayerView} from './views';
+import {type RawProblem} from 'pointchu.capabilities';
 
 export interface CreatePlayerRequest {
     userId: string | null;
