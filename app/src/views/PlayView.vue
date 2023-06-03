@@ -12,38 +12,41 @@ const route = useRoute();
 const gameStore = useGameStore();
 await gameStore.loadGame(new GameId({value: route.params.game_id.toString()}));
 
+gameStore.setSelectRoundNumber(gameStore.currentGame.rounds.length);
+
 const historyShown = ref(false);
-const selectedRoundNumber = ref(0);
 
 const gameComplete = computed(() => {
   return gameStore.currentGame.isComplete();
 });
 
+const round = computed(() => {
+  return gameStore.currentGame.round(gameStore.selectedRoundNumber);
+});
+
 const selectedRoundComplete = computed(() => {
-  gameStore.currentGame.currentRound()
-  return false;
+  return round.value.isComplete();
 });
 
 const latestRoundSelected = computed(() => {
-  return false;
+  return gameStore.selectedRoundNumber === gameStore.currentGame.rounds.length;
 });
 
 const updateRound = async () => {
-  console.log('updateRound');
-  const updatedGame = gameStore.currentGame.finishRound(selectedRoundNumber.value);
+  const updatedGame = gameStore.currentGame.finishRound(gameStore.selectedRoundNumber);
   await gameStore.updateGame(updatedGame);
-  selectedRoundNumber.value = updatedGame.rounds.length;
+  gameStore.selectedRoundNumber = updatedGame.rounds.length;
 }
 
 const finishRound = async () => {
   console.log('finishRound');
-  let updatedGame = gameStore.currentGame.finishRound(selectedRoundNumber.value);
+  let updatedGame = gameStore.currentGame.finishRound(gameStore.selectedRoundNumber);
   if (!updatedGame.isComplete()) {
     const nextRoundNumber = updatedGame.rounds.length + 1;
     updatedGame = updatedGame.createRound(nextRoundNumber);
   }
   await gameStore.updateGame(updatedGame);
-  selectedRoundNumber.value = selectedRoundNumber.value + 1;
+  gameStore.setSelectRoundNumber(gameStore.currentGame.rounds.length);
 }
 
 const finishGame = async () => {

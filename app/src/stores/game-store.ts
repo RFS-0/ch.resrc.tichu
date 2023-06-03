@@ -49,6 +49,11 @@ export const useGameStore = defineStore('games', () => {
     const currentGame: Ref<UnwrapRef<Game>> = ref(initialGame);
     const selectedRoundNumber = ref(1);
 
+    const setSelectRoundNumber = (roundNumber: number) => {
+        selectedRoundNumber.value = roundNumber;
+    }
+
+
     const listenToChangesOfGame = (gameId: GameId) => {
         const gameRef = doc(
             database,
@@ -75,7 +80,6 @@ export const useGameStore = defineStore('games', () => {
 
     const setGame = (game: Game) => {
         if (currentGame.value.id.value !== game.id.value) {
-            console.log('Unsubscribing from changes of game', currentGame.value.id);
             unsubscribeToChangesOfGame && unsubscribeToChangesOfGame();
             unsubscribeToChangesOfGame = listenToChangesOfGame(game.id);
         }
@@ -122,6 +126,7 @@ export const useGameStore = defineStore('games', () => {
     return {
         currentGame,
         selectedRoundNumber,
+        setSelectRoundNumber,
         createGame,
         loadGame,
         updateGame,

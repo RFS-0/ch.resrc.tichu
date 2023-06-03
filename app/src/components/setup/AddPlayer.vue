@@ -22,7 +22,6 @@ const isRightTeam = props.teamIndex === 1;
 const player = computed(() => {
       const playerId = gameStore.currentGame.getPlayerOfTeam(props.teamIndex, props.playerIndex)
       if (!playerId) {
-        console.log('No player found')
         return null;
       }
       const player = playerStore.getPlayerById(playerId)

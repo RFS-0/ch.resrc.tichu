@@ -24,15 +24,10 @@ const tichu = computed(() => {
   if (!playerId) {
     throw new Error('Implementation defect: player not found');
   }
-  let tichuOfPlayer = round.value.tichus.get(playerId.value);
-  if (!tichuOfPlayer) {
-    throw new Error('Implementation defect: tichu not found');
-  }
-  return tichuOfPlayer;
+  return  round.value.tichus.get(playerId.value) ?? -1;
 });
 
 const toggleTichu = async () => {
-  console.log('toggleTichu');
   const playerId = gameStore.currentGame.getPlayerOfTeam(props.teamIndex, props.playerIndex);
   if (!playerId) {
     throw new Error('Implementation defect: player not found');

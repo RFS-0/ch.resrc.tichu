@@ -11,7 +11,6 @@ const props = defineProps<{
 const isLeftTeam = props.teamIndex === 0;
 const isRightTeam = props.teamIndex === 1;
 
-
 const shouldAddUserAsPlayer = true;
 
 const playerDefined: Ref<UnwrapRef<boolean>> = ref(false);

@@ -62,7 +62,9 @@ const updateCardPoints = async () => {
 }
 
 const anyMatch = computed(() => {
-  return false;
+  const playersOfLeftTeam = Array.from(gameStore.currentGame.teams[0].players.values());
+  const playersORightTeam = Array.from(gameStore.currentGame.teams[1].players.values());
+  return round.value.isMatch(playersOfLeftTeam) || round.value.isMatch(playersORightTeam);
 });
 </script>
 

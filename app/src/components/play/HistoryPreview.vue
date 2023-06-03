@@ -14,11 +14,11 @@ const rightTeam = computed(() => {
 });
 
 const totalPointsOfLeftTeam = computed(() => {
-  return 100;
+  return gameStore.currentGame.totalPointsOfTeam(0);
 });
 
 const totalPointsOfRightTeam = computed(() => {
-  return 200;
+  return gameStore.currentGame.totalPointsOfTeam(1);
 });
 
 </script>

@@ -97,7 +97,6 @@ export const usePlayerStore = defineStore('players', () => {
                     const parseError = () => new Error('Implementation defect: failed to parse game');
                     const updatedPlayer = safeParseEntity(rawUpdatedPlayer, PlayerSchema, Player).getOrThrow(parseError);
                     updatePlayerInStore(updatedPlayer);
-                    console.log('All players: ', JSON.stringify(allPlayers.value, null, 2));
                 } else {
                     console.log('No such document!');
                 }

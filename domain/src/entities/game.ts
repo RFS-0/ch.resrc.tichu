@@ -141,12 +141,17 @@ export class Game extends Entity {
     }
 
     finishRound(roundNumber: number): Game {
-        const round = this.rounds.find(round => round.roundNumber === roundNumber);
-        if (!round) {
-            throw new Error('Invariant violated: cannot finish non existing round');
-        }
-        round.finishRound();
-        return this;
+        return this.mutate(game => {
+            const roundIndex = game.rounds.findIndex(round => roundNumber === round.roundNumber);
+            if (roundIndex < 0) {
+                throw new Error('Invariant violated: cannot update non existing round');
+            }
+            const round = game.rounds[roundIndex];
+            if (!round) {
+                throw new Error('Invariant violated: cannot finish non existing round');
+            }
+            game.rounds[roundIndex] = round.finishRound();
+        });
     }
 
     rankPlayer(roundNumber: number, playerId: PlayerId): Game {
@@ -173,20 +178,23 @@ export class Game extends Entity {
         return this.currentRound().nextRank();
     }
 
-    totalPointsOfTeam(team: Team): number {
+    totalPointsOfTeam(teamIndex: number): number {
+        const team = this.teams[teamIndex];
         return this.rounds
                    .map(round => round.totalPoints(team))
                    .reduce((prev, current) => prev + current) || 0;
     }
 
-    totalPointsOfRound(roundNumber: number, team: Team): number {
+    totalPointsOfRound(roundNumber: number, teamIndex: number): number {
+        const team = this.teams[teamIndex];
         return this.rounds
                    .filter(round => round.roundNumber === roundNumber)
                    .map(round => round.totalPoints(team))
                    .reduce((prev, current) => prev + current) || 0;
     }
 
-    totalPointsUpToRound(roundNumber: number, team: Team): number {
+    totalPointsUpToRound(roundNumber: number, teamIndex: number): number {
+        const team = this.teams[teamIndex];
         return this.rounds
                    .filter(round => round.roundNumber <= roundNumber)
                    .map(round => round.totalPoints(team))
@@ -194,8 +202,8 @@ export class Game extends Entity {
     }
 
     isComplete() {
-        const totalPointsLeftTeam = this.totalPointsOfTeam(this.teams[0]);
-        const totalPointsRightTeam = this.totalPointsOfTeam(this.teams[1]);
+        const totalPointsLeftTeam = this.totalPointsOfTeam(0);
+        const totalPointsRightTeam = this.totalPointsOfTeam(1);
         return totalPointsLeftTeam >= 1000 || totalPointsRightTeam >= 1000;
     }
 
